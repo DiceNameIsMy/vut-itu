@@ -86,7 +86,7 @@ Disadvantages:
 6. Absense of filtering and sorting options when searching for attractions.
 7. Offline maps are only for the paid Pro version.
 
-**Sygic Travel (Pupilla)****
+**Sygic Travel (Pupilla)**
 Strengths:
 1. Simpler interface compared to Wanderlog.
 2. Integrates reviews from external platforms such as TripAdvisor.
@@ -178,4 +178,4 @@ TODO: Describe how GUI communicates with a BE. +API Documentation.
 TODO: Describe it & attach some screenshots?
 
 **Klicove casti FE**
-TODO: Describe it & attach some screenshots?
+TODO: Describe it & attach some screenshots?	
