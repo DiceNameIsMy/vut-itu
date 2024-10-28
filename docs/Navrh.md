@@ -11,39 +11,46 @@
 ### Customers research (Uživatelský průzkum a specifikace)
 
 **Our customers (kdo je konkrétní uživatel):**
-- People that love traveling. 
-- Travel someplace every once in a while as a hobby. 
-- Primarily those that have a car or are used to renting it.
+- Individuals passionate about travel, traveling occasionally as a hobby.
+- Primarily users who own or frequently rent a car when travelling.
 
 **What they want/need from the application (co přesně od aplikace potřebuje):**
-- A tool to simplify planning of the tourism activity
+- A tool that simplifies tourism planning.
 
 **Customer Requirements (požadavky uživatele):**
 
 **Their experience**:
 Albert's research:
-- Google forms (TODO: add a link?)
-- 2 respondents
+- Created a Google Form (TODO: add a link?)
+- Surveyed 2 respondents
 - TODO: Summarize their replies?
 
 Pupilla's research:
-- Made a list of questions that were asked during a conversation with respondents
-- 2 respondents
+- Developed a list of questions for in-person respondent interviews.
+- Surveyed 2 respondents
 - TODO: Summarize their replies?
 
 Nur's research
-- Made a list of questions that were asked during a conversation with a respondent
-- 1 respondent
-- TODO: Summarize their replies?
+- Developed a list of questions for in-person respondent interviews.
+- Surveyed 1 respondent
+- TODO: Summarize his reply?
+- Made research in reddit
+**Reddit (Nur)**
+The discussions across the three Reddit pages [1](https://www.reddit.com/r/travel/comments/pd6j4g/psa_use_wanderlog_for_your_next_trip_hands_down/), [2](https://www.reddit.com/r/travel/comments/hhrh6c/best_travel_apps/ ), and [3](https://www.reddit.com/r/travel/comments/nryok7/some_travel_apps_i_use_to_plan_my_trips/) highlight user experiences and opinions on various travel planning apps, particularly focusing on Wanderlog, TripIt, and other alternatives. Note: [Co authored with Perplexity](https://www.perplexity.ai/search/summarize-me-this-page-https-w-HnlEcsbCSKKLXIu9SCYo0A)
+**User Complaints**
+- **Cluttered Interfaces**: Many users found Wanderlog's interface overwhelming and cluttered, making it challenging to navigate. This sentiment was echoed by users of other apps who also expressed frustration with excessive prompts and marketing distractions.
+- **Pricing Issues**: The annual fee for Wanderlog's Pro version ($60) was frequently criticized as being too high. Users suggested that a more reasonable price point would be around $20, especially since many only plan a few trips each year. Comparisons were made to credit card services that offer more comprehensive benefits for similar prices.
+- **Functionality Problems**: Users reported issues with Wanderlog’s ability to parse complex itineraries correctly, particularly with multiple flights. Other apps like TripIt were noted for better handling of such tasks.
+- **Lack of Customization**: Many users expressed a desire for more customizable features in travel apps, including the ability to add personal notes and manage itineraries without excessive prompts for bookings or suggestions.
 
 To summarize, our customer's wishes are:
-- Not overcrowded with features, intuitive interface.
-- Browse attractions to visit.
+- A streamlined, intuitive interface with minimal clutter.
+- Ability to browse attractions with user recommendations on routes, not just destinations.
 - **Recommendations from real users** not only on places to visit, but **on whole routes to take.**
 - Be able to find and research places. With pictures. When they are found and selected, **suggest possible routes to take.**
-- Some customers mentioned a shared account so that everyone could participate in the planning.
-- Weather forecast for the upcoming dates & places. 
-- Place to store relevant info: Airplane tickets, QR codes to enter museums, theaters, etc., locations related to a trip.
+- Shared accounts for group planning.
+- Weather forecasts for planned dates and destinations.
+- Storage for travel-related documents (tickets, QR codes, location details).
 
 ---
 ### Research of existing solutions (Průzkum existujících řešení)
@@ -52,27 +59,29 @@ To summarize, our customer's wishes are:
 TripIt is a travel management application designed to streamline the organization of travel plans by consolidating all trip details in one place. It automatically creates a detailed timeline from booking confirmations for flights, hotels, car rentals, and other services by forwarding confirmation emails to a dedicated address.
 
 Strengths:
-- Intuitive, easy to navigate, visually appealing timeline of your trip.
-- Related info about an upcoming trip can be stored in one place. Booking confirmations, vouchers, tickets, etc.
-- The timeline can be shared, and modified by many people.
+- Intuitive, easy to navigate, visually appealing timeline of trip details.
+- Centralizes booking info like confirmations and tickets.
+- Allows shared, multi-user trip editing.
 Weaknesses:
-- Overwhelming amount of fields to fill when adding an event to visit, which does not benefit the UX.
-- Absense of a recommendation system. Users must research and manually add places of interest.
-- Only up to 3 documents can be uploaded in the free version. Paid version is only available for an annual billing cycle.
+- Overwhelming field options for adding events, hindering user experience.
+- No recommendation system, requiring manual addition of destinations.
+- Limited document uploads in the free version; paid version billed annually.
 
 **MakeMyTrip (Albert)**
+MakeMyTrip integrates booking options for flights, hotels, and packages in one app, simplifying travel planning.
+
 Strengths:
 1. Integrated bookings for flights, hotels, transport, and packages in one app, streamlining travel planning.
-2. Loyalty System: Regular users enjoy bonuses and discounts, incentivizing continued use.
+2. Loyalty System: Regular users enjoy bonuses and discounts.
 3. Travel Community Forum and Blog: Users can read and post reviews, sharing experiences and tips, which assists in planning.
 Disadvantages:
 1. Cluttered Interface: The app's interface is overloaded and suggests services like hotel bookings before destination selection, complicating navigation, especially for undecided users.
 2. Tailored mainly for Indian users, limiting feature access for international travelers.
 3. Trip Planning Post-Purchase: Itineraries auto-populate only after booking, inconvenient for users who prefer route planning before purchase.
 
-
 **Wanderlog (Pupilla)**
 A comprehensive tool for organizing trips from start to finish.
+
 Strengths:  
 1. Has a wide range of features. Has almost everything you need to plan a trip: organize itineraries, plan routes, store reservations, accommodation and track expenses.  
 2. Allows for online collaboration with other people coming on a trip.
@@ -98,18 +107,17 @@ Disadvantages
 
 **Sygic Travel (Nur)**
 Strengths:
-1. Simpler interface compared to Wanderlog.
-2. Integrates reviews from external platforms such as TripAdvisor.
-3. More advanced filtering options than Wanderlog.
-4. Detailed guides for cities and destinations worldwide.  
-5. A wide range of features. Users can organise itineraries, routes, reservations, accommodation and expenses.  
-6. Users can fill their journey with places to visit using a map with icons of attractions
+1. Integrates reviews from external platforms such as TripAdvisor.
+3. Detailed guides for cities and destinations worldwide.  
+4. A wide range of features. Users can organise itineraries, routes, reservations, accommodation and expenses.  
+5. Users can fill their journey with places to visit using a map with icons of attractions
 Disadvantages:
-1. The interface is unintuitive and people with trypanophobia would find it unpleasant.  
-2. No collaboration between travelers.
-3. Maps customisation in Google Maps is noticeably better.
-4. Offline maps are only for the paid Pro version. 
-5. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
+1. The interface is unintuitive.
+2. People with trypanophobia would find it unpleasant.
+3. No collaboration between travelers.
+4. Maps customisation in Google Maps is noticeably better.
+5. Offline maps are only for the paid Pro version. 
+6. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
 
 **TripAdvisor (Nur)**
 Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
@@ -122,7 +130,15 @@ Weaknesses:
 - Limited trip planning flexibility, especially regarding detailed scheduling and route tracking.
 - Complex and unintuitive trip organization interface.
 - Ads and commercial influence on search results.
+## **User Expectations and Desires**
 
+- **Collaboration Features**: There is a strong demand for better collaboration tools that allow users to share itineraries easily with friends and family.
+- **Simplified Planning Tools**: Users want straightforward tools that allow them to plan itineraries without unnecessary complexity. They prefer apps that can integrate their travel information seamlessly without overwhelming them with ads or upselling.
+- **Integration with Other Services**: Suggestions were made for integrating travel planning apps with credit card services to enhance functionality, as many users already utilize these cards for travel-related benefits.
+
+## **Willingness to Pay**
+
+While some users are open to paying for premium features, the consensus is that the current pricing models are often seen as excessive. Many indicated they would consider paying around $20 per year for an app that meets their needs but find $60 unjustifiable given the limited frequency of their travel.Overall, while there is enthusiasm for tools like Wanderlog and TripIt, significant concerns about usability, pricing strategies, and feature sets have led many users to revert to simpler solutions or a mix of existing tools like Google Maps and spreadsheets.
 
 **Conclusion**
 None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). Sygic seems to be the best all-in-one app to manage your trips we've reviewed. Lacking in with ... though.
