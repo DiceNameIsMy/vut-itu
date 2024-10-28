@@ -48,18 +48,6 @@ To summarize, our customer's wishes are:
 ---
 ### Research of existing solutions (Průzkum existujících řešení)
 
-**TripAdvisor (Albert)**
-Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
-
-Strengths:
-- Large information database on attractions, restaurants, and hotels with reviews and ratings from users.
-- Booking options directly through the app, simplifying travel planning.
-- Integration with maps and navigation services.
-Weaknesses:
-- Limited trip planning flexibility, especially regarding detailed scheduling and route tracking.
-- Complex and unintuitive trip organization interface.
-- Ads and commercial influence on search results.
-
 **Tripit (Albert)**
 TripIt is a travel management application designed to streamline the organization of travel plans by consolidating all trip details in one place. It automatically creates a detailed timeline from booking confirmations for flights, hotels, car rentals, and other services by forwarding confirmation emails to a dedicated address.
 
@@ -72,8 +60,19 @@ Weaknesses:
 - Absense of a recommendation system. Users must research and manually add places of interest.
 - Only up to 3 documents can be uploaded in the free version. Paid version is only available for an annual billing cycle.
 
+**MakeMyTrip (Albert)**
+Strengths:
+1. Integrated bookings for flights, hotels, transport, and packages in one app, streamlining travel planning.
+2. Loyalty System: Regular users enjoy bonuses and discounts, incentivizing continued use.
+3. Travel Community Forum and Blog: Users can read and post reviews, sharing experiences and tips, which assists in planning.
+Disadvantages:
+1. Cluttered Interface: The app's interface is overloaded and suggests services like hotel bookings before destination selection, complicating navigation, especially for undecided users.
+2. Tailored mainly for Indian users, limiting feature access for international travelers.
+3. Trip Planning Post-Purchase: Itineraries auto-populate only after booking, inconvenient for users who prefer route planning before purchase.
+
+
 **Wanderlog (Pupilla)**
-Wanderlog is a comprehensive tool for organizing trips from start to finish.
+A comprehensive tool for organizing trips from start to finish.
 Strengths:  
 1. Has a wide range of features. Has almost everything you need to plan a trip: organize itineraries, plan routes, store reservations, accommodation and track expenses.  
 2. Allows for online collaboration with other people coming on a trip.
@@ -86,7 +85,18 @@ Disadvantages:
 6. Absense of filtering and sorting options when searching for attractions.
 7. Offline maps are only for the paid Pro version.
 
-**Sygic Travel (Pupilla)**
+**Stippl (Pupilla)**
+Strengths:
+1. Detailed guides to some cities and destinations for inspiration.  
+2. Allows users to collaborate with fellow travelers.  
+3. Trip info can be easily shared.
+Disadvantages  
+1. Interaction with a map is confusing and very "lacking" in features
+2. Doesn't have a help guide. TODO: What does that mean?
+3. Some users find the interface to be too complicated.
+5. Does not include user reviews of destinations or attractions.
+
+**Sygic Travel (Nur)**
 Strengths:
 1. Simpler interface compared to Wanderlog.
 2. Integrates reviews from external platforms such as TripAdvisor.
@@ -101,19 +111,18 @@ Disadvantages:
 4. Offline maps are only for the paid Pro version. 
 5. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
 
-**Stippl (Nur)**
-Strengths:
-1. Detailed guides to some cities and destinations for inspiration.  
-2. Allows users to collaborate with fellow travelers.  
-3. Trip info can be easily shared.
-Disadvantages  
-1. Interaction with a map is confusing and very "lacking" in features
-2. Doesn't have a help guide. TODO: What does that mean?
-3. Some users find the interface to be too complicated.
-5. Does not include user reviews of destinations or attractions.
+**TripAdvisor (Nur)**
+Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
 
-**MakeMyTrip (Nur)**
-TODO
+Strengths:
+- Large information database on attractions, restaurants, and hotels with reviews and ratings from users.
+- Booking options directly through the app, simplifying travel planning.
+- Integration with maps and navigation services.
+Weaknesses:
+- Limited trip planning flexibility, especially regarding detailed scheduling and route tracking.
+- Complex and unintuitive trip organization interface.
+- Ads and commercial influence on search results.
+
 
 **Conclusion**
 None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). Sygic seems to be the best all-in-one app to manage your trips we've reviewed. Lacking in with ... though.
