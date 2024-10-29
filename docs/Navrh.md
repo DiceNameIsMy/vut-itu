@@ -28,7 +28,15 @@ Albert's research:
 Pupilla's research:
 - Developed a list of questions for in-person respondent interviews.
 - Surveyed 2 respondents
-- TODO: Summarize their replies?
+To summarize, our potential customers want a travel app to have:
+- a basic interface initially that grows in complexity only as needed.
+- a clean, minimalistic design with color accents for important menu items.
+- an easy-to-create wish list of destinations marked on a map without requiring daily or hourly scheduling.
+- automatic distance calculation between wish-listed spots, with suggestions for nearby attractions.
+- minor, lesser-known locations (e.g., cemeteries, small landmarks, abandoned buildings) with photos and descriptions, even if these places aren't typically classified as "mainstream" attractions.
+- a simple list of local, free events without cluttering the primary experience.
+- filters or tags to prioritize affordable food, accommodation, and travel options.
+- user-provided guides about places to eat, stay, visit, and other minor areas of interest.
 
 Nur's research
 - Developed a list of questions for in-person respondent interviews.
