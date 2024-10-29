@@ -4,7 +4,7 @@
 **Name: TODO**
 **Team members:**
 - Albert Popov ()
-- Pupilla ()
+- Nadzeya Antsipenka (xantsi00)
 - Nurdaulet Turar (xturarn00) <- Leader
 
 ---
@@ -25,9 +25,10 @@ Albert's research:
 - Surveyed 2 respondents
 - TODO: Summarize their replies?
 
-Pupilla's research:
+Nadzeya's research:
 - Developed a list of questions for in-person respondent interviews.
-- Surveyed 2 respondents
+- Surveyed 2 respondents.
+
 To summarize, our potential customers want a travel app to have:
 - a basic interface initially that grows in complexity only as needed.
 - a clean, minimalistic design with color accents for important menu items.
@@ -87,7 +88,7 @@ Disadvantages:
 2. Tailored mainly for Indian users, limiting feature access for international travelers.
 3. Trip Planning Post-Purchase: Itineraries auto-populate only after booking, inconvenient for users who prefer route planning before purchase.
 
-**Wanderlog (Pupilla)**
+**Wanderlog (Nadzeya)**
 A comprehensive tool for organizing trips from start to finish.
 
 Strengths:  
@@ -102,7 +103,7 @@ Disadvantages:
 6. Absense of filtering and sorting options when searching for attractions.
 7. Offline maps are only for the paid Pro version.
 
-**Stippl (Pupilla)**
+**Stippl (Nadzeya)**
 Strengths:
 1. Detailed guides to some cities and destinations for inspiration.  
 2. Allows users to collaborate with fellow travelers.  
