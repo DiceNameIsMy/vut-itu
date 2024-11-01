@@ -30,6 +30,7 @@ We have found and interviewed relevant 5 customers in total. An offline intervie
 #### 1.2.2 What they want/need from the application (co přesně od aplikace potřebuje)
 - A tool that makes planning of a trip easy.
 #### 1.2.3 Customer Requirements (poždavky uživatele)
+A summary:
 - A streamlined, intuitive interface with minimal clutter.
 - Ability to browse attractions with user recommendations on routes, not just destinations. TODO: What does that mean?
 - **Recommendations** not only on places to visit, but **on whole routes with attractions to take**.
@@ -44,7 +45,6 @@ We have found and interviewed relevant 5 customers in total. An offline intervie
 - Created a Google Form (TODO: add a link?)
 - Surveyed 2 respondents
 - TODO: Summarize their replies?
-
 ##### 1.2.4.2 Nadzeya's customer research:
 - Developed a list of questions for in-person respondent interviews.
 - Surveyed 2 respondents.
@@ -62,7 +62,7 @@ To summarize, our potential customers want a travel app to have:
 - Developed a list of questions for in-person respondent interviews.
 - Made research in reddit
 
-Nikita Krivenko:
+Nikita Krivienko:
 I have had interviewed him about his traveling experience. Why he likes traveling, how a trip planning process starts, how did some of his trips go. Tried to find some ideas what he might be missing in this process that he'd appreciate without asking directly, and then asked directly nonetheless. To summarize it, here are most relevant questions and answers:
 1. **Have you ever planned a trip to a completely new location?** (It would make no sense to continue if an answer was a no)
     - Yes
@@ -168,7 +168,6 @@ Keypoints:
 - It's very important to keep in mind our customer's first interaction when designing a multi-purpose, all-around app, because the first impression is the biggest factor in user retention.
 - TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
 	- TODO: ...
-
 ### 1.4 App Requirements (Zadání)
 TODO: Translate & describe the app itself, what can be done there, etc.
 
