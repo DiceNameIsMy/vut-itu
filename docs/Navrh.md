@@ -10,34 +10,42 @@ TODO: Obsah.
 
 # 1. The Application (Zadání)
 ### 1.1 Name & Topic (Název a téma)
-**Name: YouQuest**
-**Team members:**
+#### 1.1.1 YouQuest
+We have decided we'd like to look into applications that provide tooling to help people in planning their upcoming trips, be it one or many cities, a new country, or a different continent. Nadzeya came up with this idea because of the many issues she and her friends had with the tooling they were recently using. Some of them being:
+- As they've been traveling on a rented car, it was unplesant that there isn't mush information on the road type, it's quality, which can be important to know when driving though less populated areas.
+- Driving in a car can get boring. They wanted like to have a way to discover & visit nearby attractions while on their way to their main destination.
+- TODO?
+
+#### 1.1.2 Team members
 - Albert Popov () <- Captain
 - Nadzeya Antsipenka (xantsi00)
 - Nurdaulet Turar (xturarn00)
 
 ---
 ### 1.2 Customers research (Uživatelský průzkum a specifikace)
+We have found and interviewed relevant 5 customers in total. An offline interview, open-ended Q&A, and an online questionnare were used. Here's what we've learned from them:
+#### 1.2.1 Our customers (kdo je konkrétní uživatel)
+- People interested in traveling.
+- Primarily people who own, or are used to renting a car when traveling.
+#### 1.2.2 What they want/need from the application (co přesně od aplikace potřebuje)
+- A tool that makes planning of a trip easy.
+#### 1.2.3 Customer Requirements (poždavky uživatele)
+- A streamlined, intuitive interface with minimal clutter.
+- Ability to browse attractions with user recommendations on routes, not just destinations. TODO: What does that mean?
+- **Recommendations** not only on places to visit, but **on whole routes with attractions to take**.
+- Be able to find and research places. With pictures. When they are found and selected, **suggest possible routes to take.**
+- Shared accounts for group planning.
+- Weather forecasts for planned dates and destinations.
+- Storage for travel-related documents (tickets, QR codes, location details).
 
-**Our customers (kdo je konkrétní uživatel):**
-- Individuals passionate about travel, traveling occasionally as a hobby.
-- Primarily users who own or frequently rent a car when travelling.
+#### 1.2.4 Underlying Research
 
-**What they want/need from the application (co přesně od aplikace potřebuje):**
-- A tool that simplifies planning of their trips.
-
-**Customer Requirements (požadavky uživatele):**
-
-**Their experience**:
-
-Albert's research:
+##### 1.2.4.1 Albert's customer research:
 - Created a Google Form (TODO: add a link?)
 - Surveyed 2 respondents
 - TODO: Summarize their replies?
 
----
-
-Nadzeya's research:
+##### 1.2.4.2 Nadzeya's customer research:
 - Developed a list of questions for in-person respondent interviews.
 - Surveyed 2 respondents.
 
@@ -50,10 +58,7 @@ To summarize, our potential customers want a travel app to have:
 - a simple list of local, free events without cluttering the primary experience.
 - filters or tags to prioritize affordable food, accommodation, and travel options.
 - user-provided guides about places to eat, stay, visit, and other minor areas of interest.
-
----
-
-Nur's research
+##### 1.2.4.3 Nurdaulet's customer research
 - Developed a list of questions for in-person respondent interviews.
 - Made research in reddit
 
@@ -75,21 +80,9 @@ I have had interviewed him about his traveling experience. Why he likes travelin
 7. **While traveling from one location to another, do you explore sights along the way?**
     -  Yes
 
----
-
-To summarize, our customers wishes are:
-- A streamlined, intuitive interface with minimal clutter.
-- Ability to browse attractions with user recommendations on routes, not just destinations. TODO: What does that mean?
-- **Recommendations** not only on places to visit, but **on whole routes with attractions to take**.
-- Be able to find and research places. With pictures. When they are found and selected, **suggest possible routes to take.**
-- Shared accounts for group planning.
-- Weather forecasts for planned dates and destinations.
-- Storage for travel-related documents (tickets, QR codes, location details).
-
----
 ### 1.3 Research of existing solutions (Průzkum existujících řešení)
 
-**Tripit (Albert)**
+#### 1.3.1 Tripit (Albert)
 TripIt is a travel management application designed to streamline the organization of travel plans by consolidating all trip details in one place. It automatically creates a detailed timeline from booking confirmations for flights, hotels, car rentals, and other services by forwarding confirmation emails to a dedicated address.
 
 Pros:
@@ -101,7 +94,7 @@ Cons:
 - No recommendation system, requiring manual addition of destinations.
 - Limited document uploads in the free version; paid version billed annually.
 
-**MakeMyTrip (Albert)**
+#### 1.3.2 MakeMyTrip (Albert)
 MakeMyTrip integrates booking options for flights, hotels, and packages in one app, simplifying travel planning.
 
 Pros:
@@ -113,7 +106,7 @@ Cons:
 2. Tailored mainly for Indian users, limiting feature access for international travelers.
 3. Trip Planning Post-Purchase: Itineraries auto-populate only after booking, inconvenient for users who prefer route planning before purchase.
 
-**Wanderlog (Nadzeya)**
+#### 1.3.3 Wanderlog (Nadzeya)
 A comprehensive tool for organizing trips from start to finish.
 
 Pros:  
@@ -128,7 +121,7 @@ Cons:
 6. Absense of filtering and sorting options when searching for attractions.
 7. Offline maps are only for the paid Pro version.
 
-**Stippl (Nadzeya)**
+#### 1.3.4 Stippl (Nadzeya)
 Pros:
 1. Detailed guides to some cities and destinations for inspiration.  
 2. Allows users to collaborate with fellow travelers.  
@@ -139,7 +132,7 @@ Cons:
 3. Some users find the interface to be too complicated.
 5. Does not include user reviews of destinations or attractions.
 
-**Sygic Travel (Nur)**
+#### 1.3.5 Sygic Travel (Nur)
 Pros:
 1. Integrates reviews from external platforms such as TripAdvisor.
 3. Detailed guides for cities and destinations worldwide.  
@@ -152,7 +145,7 @@ Cons:
 4. Offline maps are only for the paid Pro version. 
 5. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
 
-**TripAdvisor (Nur)**
+#### 1.3.6 TripAdvisor (Nur)
 Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
 
 Pros:
@@ -168,18 +161,13 @@ Cons:
 - **Collaboration Features**: There is a strong demand for better collaboration tools that allow users to share itineraries easily with friends and family.
 - **Simplified Planning Tools**: Users want straightforward tools that allow them to plan itineraries without unnecessary complexity. They prefer apps that can integrate their travel information seamlessly without overwhelming them with ads or upselling.
 - **Integration with Other Services**: Suggestions were made for integrating travel planning apps with credit card services to enhance functionality, as many users already utilize these cards for travel-related benefits.
-
-**Willingness to Pay**
-
-While some users are open to paying for premium features, the consensus is that the current pricing models are often seen as excessive. Many indicated they would consider paying around $20 per year for an app that meets their needs but find $60 unjustifiable given the limited frequency of their travel.Overall, while there is enthusiasm for tools like Wanderlog and TripIt, significant concerns about usability, pricing strategies, and feature sets have led many users to revert to simpler solutions or a mix of existing tools like Google Maps and spreadsheets.
-
-**Conclusion**
-None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). Sygic seems to be the best all-in-one app to manage your trips we've reviewed. Lacking in with ... though.
+#### 1.3.7 Conclusion
+None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). TODO: Add smth about Sygic & MakeMyTrip?
 
 Keypoints:
 - It's very important to keep in mind our customer's first interaction when designing a multi-purpose, all-around app, because the first impression is the biggest factor in user retention.
 - TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
-- TODO: ...
+	- TODO: ...
 
 ### 1.4 App Requirements (Zadání)
 TODO: Translate & describe the app itself, what can be done there, etc.
