@@ -1,29 +1,41 @@
+# Návrh Projektu ITU 2024/2025
+Brno University of Technology - Faculty of Information Technology
 
-# The Application (Zadání)
-### Name & Topic (Název a téma)
+---
+
+TODO: Obsah
+
+<div style="page-break-after: always;"></div>
+---
+
+# 1. The Application (Zadání)
+### 1.1 Name & Topic (Název a téma)
 **Name: TODO**
 **Team members:**
 - Albert Popov ()
 - Nadzeya Antsipenka (xantsi00)
-- Nurdaulet Turar (xturarn00) <- Leader
+- Nurdaulet Turar (xturarn00)
 
 ---
-### Customers research (Uživatelský průzkum a specifikace)
+### 1.2 Customers research (Uživatelský průzkum a specifikace)
 
 **Our customers (kdo je konkrétní uživatel):**
 - Individuals passionate about travel, traveling occasionally as a hobby.
 - Primarily users who own or frequently rent a car when travelling.
 
 **What they want/need from the application (co přesně od aplikace potřebuje):**
-- A tool that simplifies tourism planning.
+- A tool that simplifies planning of their trips.
 
 **Customer Requirements (požadavky uživatele):**
 
 **Their experience**:
+
 Albert's research:
 - Created a Google Form (TODO: add a link?)
 - Surveyed 2 respondents
 - TODO: Summarize their replies?
+
+---
 
 Nadzeya's research:
 - Developed a list of questions for in-person respondent interviews.
@@ -39,39 +51,52 @@ To summarize, our potential customers want a travel app to have:
 - filters or tags to prioritize affordable food, accommodation, and travel options.
 - user-provided guides about places to eat, stay, visit, and other minor areas of interest.
 
+---
+
 Nur's research
 - Developed a list of questions for in-person respondent interviews.
-- Surveyed 1 respondent
-- TODO: Summarize his reply?
 - Made research in reddit
-**Reddit (Nur)**
-The discussions across the three Reddit pages [1](https://www.reddit.com/r/travel/comments/pd6j4g/psa_use_wanderlog_for_your_next_trip_hands_down/), [2](https://www.reddit.com/r/travel/comments/hhrh6c/best_travel_apps/ ), and [3](https://www.reddit.com/r/travel/comments/nryok7/some_travel_apps_i_use_to_plan_my_trips/) highlight user experiences and opinions on various travel planning apps, particularly focusing on Wanderlog, TripIt, and other alternatives. Note: [Co authored with Perplexity](https://www.perplexity.ai/search/summarize-me-this-page-https-w-HnlEcsbCSKKLXIu9SCYo0A)
-**User Complaints**
-- **Cluttered Interfaces**: Many users found Wanderlog's interface overwhelming and cluttered, making it challenging to navigate. This sentiment was echoed by users of other apps who also expressed frustration with excessive prompts and marketing distractions.
-- **Pricing Issues**: The annual fee for Wanderlog's Pro version ($60) was frequently criticized as being too high. Users suggested that a more reasonable price point would be around $20, especially since many only plan a few trips each year. Comparisons were made to credit card services that offer more comprehensive benefits for similar prices.
-- **Functionality Problems**: Users reported issues with Wanderlog’s ability to parse complex itineraries correctly, particularly with multiple flights. Other apps like TripIt were noted for better handling of such tasks.
-- **Lack of Customization**: Many users expressed a desire for more customizable features in travel apps, including the ability to add personal notes and manage itineraries without excessive prompts for bookings or suggestions.
 
-To summarize, our customer's wishes are:
+Nikita Krivenko:
+I have had interviewed him about his traveling experience. Why he likes traveling, how a trip planning process starts, how did some of his trips go. Tried to find some ideas what he might be missing in this process that he'd appreciate without asking directly, and then asked directly nonetheless. To summarize it, here are most relevant questions and answers:
+1. **Have you ever planned a trip to a completely new location?** (It would make no sense to continue if an answer was a no)
+    - Yes
+2. **How did you plan it? How did you choose places or cities to visit? What were your selection criteria?**
+    - My mother wanted to travel, so we searched on Google and used 34Travel along with friends’ recommendations. The main criteria were sightseeing opportunities, financial accessibility, and if possible, a location within the EU for visa purposes.
+3. **What applications did you use during the planning process?**
+    - Beach spots: photos and reviews on the web
+    - Other attractions: reviews and articles on the web (reviews are more relevant than articles)
+4. **How was your experience? What did you enjoy, and what could be improved?**
+    - It would be convenient to have a tool for simultaneously planning places to visit (find & browse attractions, decide on whether they are interesting see reviews, photos, etc.) and organizing a route (decide on how to visit places chosen, see if all works out timetable).
+5. **Do you consider events happening at your travel destinations?**
+    -  No
+6. **When you arrive in a city, are you interested in seeing nearby attractions?**
+    -  Yes
+7. **While traveling from one location to another, do you explore sights along the way?**
+    -  Yes
+
+---
+
+To summarize, our customers wishes are:
 - A streamlined, intuitive interface with minimal clutter.
-- Ability to browse attractions with user recommendations on routes, not just destinations.
-- **Recommendations from real users** not only on places to visit, but **on whole routes to take.**
+- Ability to browse attractions with user recommendations on routes, not just destinations. TODO: What does that mean?
+- **Recommendations** not only on places to visit, but **on whole routes with attractions to take**.
 - Be able to find and research places. With pictures. When they are found and selected, **suggest possible routes to take.**
 - Shared accounts for group planning.
 - Weather forecasts for planned dates and destinations.
 - Storage for travel-related documents (tickets, QR codes, location details).
 
 ---
-### Research of existing solutions (Průzkum existujících řešení)
+### 1.3 Research of existing solutions (Průzkum existujících řešení)
 
 **Tripit (Albert)**
 TripIt is a travel management application designed to streamline the organization of travel plans by consolidating all trip details in one place. It automatically creates a detailed timeline from booking confirmations for flights, hotels, car rentals, and other services by forwarding confirmation emails to a dedicated address.
 
-Strengths:
+Pros:
 - Intuitive, easy to navigate, visually appealing timeline of trip details.
 - Centralizes booking info like confirmations and tickets.
 - Allows shared, multi-user trip editing.
-Weaknesses:
+Cons:
 - Overwhelming field options for adding events, hindering user experience.
 - No recommendation system, requiring manual addition of destinations.
 - Limited document uploads in the free version; paid version billed annually.
@@ -79,11 +104,11 @@ Weaknesses:
 **MakeMyTrip (Albert)**
 MakeMyTrip integrates booking options for flights, hotels, and packages in one app, simplifying travel planning.
 
-Strengths:
+Pros:
 1. Integrated bookings for flights, hotels, transport, and packages in one app, streamlining travel planning.
 2. Loyalty System: Regular users enjoy bonuses and discounts.
 3. Travel Community Forum and Blog: Users can read and post reviews, sharing experiences and tips, which assists in planning.
-Disadvantages:
+Cons:
 1. Cluttered Interface: The app's interface is overloaded and suggests services like hotel bookings before destination selection, complicating navigation, especially for undecided users.
 2. Tailored mainly for Indian users, limiting feature access for international travelers.
 3. Trip Planning Post-Purchase: Itineraries auto-populate only after booking, inconvenient for users who prefer route planning before purchase.
@@ -91,11 +116,11 @@ Disadvantages:
 **Wanderlog (Nadzeya)**
 A comprehensive tool for organizing trips from start to finish.
 
-Strengths:  
+Pros:  
 1. Has a wide range of features. Has almost everything you need to plan a trip: organize itineraries, plan routes, store reservations, accommodation and track expenses.  
 2. Allows for online collaboration with other people coming on a trip.
 3. Includes lists of attractions that can help users find new entertainment ideas.  
-Disadvantages:
+Cons:
 1. Has a cluttered, unintuitive interface that can put off new users.  
 2. Users are unable to add customised pins or markers on a map.
 3. Does not include real-time updates for weather or traffic.
@@ -104,48 +129,47 @@ Disadvantages:
 7. Offline maps are only for the paid Pro version.
 
 **Stippl (Nadzeya)**
-Strengths:
+Pros:
 1. Detailed guides to some cities and destinations for inspiration.  
 2. Allows users to collaborate with fellow travelers.  
 3. Trip info can be easily shared.
-Disadvantages  
+Cons:
 1. Interaction with a map is confusing and very "lacking" in features
 2. Doesn't have a help guide. TODO: What does that mean?
 3. Some users find the interface to be too complicated.
 5. Does not include user reviews of destinations or attractions.
 
 **Sygic Travel (Nur)**
-Strengths:
+Pros:
 1. Integrates reviews from external platforms such as TripAdvisor.
 3. Detailed guides for cities and destinations worldwide.  
 4. A wide range of features. Users can organise itineraries, routes, reservations, accommodation and expenses.  
 5. Users can fill their journey with places to visit using a map with icons of attractions
-Disadvantages:
+Cons:
 1. The interface is unintuitive.
-2. People with trypanophobia would find it unpleasant.
-3. No collaboration between travelers.
-4. Maps customisation in Google Maps is noticeably better.
-5. Offline maps are only for the paid Pro version. 
-6. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
+2. No collaboration between travelers.
+3. Maps customisation in Google Maps is noticeably better.
+4. Offline maps are only for the paid Pro version. 
+5. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
 
 **TripAdvisor (Nur)**
 Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
 
-Strengths:
+Pros:
 - Large information database on attractions, restaurants, and hotels with reviews and ratings from users.
 - Booking options directly through the app, simplifying travel planning.
 - Integration with maps and navigation services.
-Weaknesses:
+Cons:
 - Limited trip planning flexibility, especially regarding detailed scheduling and route tracking.
 - Complex and unintuitive trip organization interface.
 - Ads and commercial influence on search results.
-## **User Expectations and Desires**
+**User Expectations and Desires**
 
 - **Collaboration Features**: There is a strong demand for better collaboration tools that allow users to share itineraries easily with friends and family.
 - **Simplified Planning Tools**: Users want straightforward tools that allow them to plan itineraries without unnecessary complexity. They prefer apps that can integrate their travel information seamlessly without overwhelming them with ads or upselling.
 - **Integration with Other Services**: Suggestions were made for integrating travel planning apps with credit card services to enhance functionality, as many users already utilize these cards for travel-related benefits.
 
-## **Willingness to Pay**
+**Willingness to Pay**
 
 While some users are open to paying for premium features, the consensus is that the current pricing models are often seen as excessive. Many indicated they would consider paying around $20 per year for an app that meets their needs but find $60 unjustifiable given the limited frequency of their travel.Overall, while there is enthusiasm for tools like Wanderlog and TripIt, significant concerns about usability, pricing strategies, and feature sets have led many users to revert to simpler solutions or a mix of existing tools like Google Maps and spreadsheets.
 
@@ -157,8 +181,8 @@ Keypoints:
 - TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
 - TODO: ...
 
-### App Requirements (Zadání)
-TODO: Translate
+### 1.4 App Requirements (Zadání)
+TODO: Translate & describe the app itself, what can be done there, etc.
 
 Мы хотим сделать croud sourced приложение для путешественников.
 - Маршруты от других людей
@@ -192,7 +216,11 @@ TODO: Translate
 - A screen to make a plan to visit selected locations (Make or choose a route. Set dates when to visit. See a weather forecast?)
 
 ---
-# App proposal (Navrh)
+
+### 1.5 FE Work distribution (Rozdělení práce týmu na FE)
+TODO
+
+# 2. App proposal (Návrh)
 
 ### GUI (Návrh GUI)
 TODO: Screenshots & an explanation how does it fulfill the user requirements.
@@ -206,10 +234,12 @@ TODO: Describe BE. It's core functionality. What library(-s) was(were) used.
 TODO: Describe how GUI communicates with a BE. +API Documentation.
 
 ---
-# Funkční základ aplikace
+### 2.1 Návrh GUI
+### 2.2 Výběr technologií
+### 2.3 Návrh API k BE (v rámci týmu)
+# 3. Funkční základ aplikace
 
-**BE Implementation (Implementace BE)**
-TODO: Describe it & attach some screenshots?
-
-**Klicove casti FE**
+### 3.1 BE Implementation (Implementace BE)
+		TODO: Describe it & attach some screenshots?
+### 3.2 Klicove casti FE
 TODO: Describe it & attach some screenshots?	

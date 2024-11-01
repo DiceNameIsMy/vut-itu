@@ -1,18 +1,23 @@
 
 ---
 
-Никита Кривьенко нам рассказал:
-- Да
-- Мама захотела. Выбирали через поиск в гугле и\или 34тревел + отзывы знакомых. Критерии - красиво, доступно финансов. Желательно в ЕС для визы для мамы.
-
-- пляж: фотки и отзывы
-- ост: статьи но это куда менее релеыантно нежели отзывы
-
-- было бы удобно иметь штуку для одновременного планирования мест для посещения и маршрута.
-- мероприятия: нет
-- посмотреть окресности? да
-- несколько локаций
-- потсмотреть места по пути: да
+Nikita Krivenko:
+I have had interviewed him about his traveling experience. Why he likes traveling, how a trip planning process starts, how did some of his trips go. Tried to find some ideas what he might be missing in this process that he'd appreciate without asking directly, and then asked directly nonetheless. To summarize it, here are most relevant questions and answers:
+1. **Have you ever planned a trip to a completely new location?** (It would make no sense to continue if an answer was a no)
+    - Yes
+2. **How did you plan it? How did you choose places or cities to visit? What were your selection criteria?**
+    - My mother wanted to travel, so we searched on Google and used 34Travel along with friends’ recommendations. The main criteria were sightseeing opportunities, financial accessibility, and if possible, a location within the EU for visa purposes.
+3. **What applications did you use during the planning process?**
+    - Beach spots: photos and reviews on the web
+    - Other attractions: reviews and articles on the web (reviews are more relevant than articles)
+4. **How was your experience? What did you enjoy, and what could be improved?**
+    - It would be convenient to have a tool for simultaneously planning places to visit (find & browse attractions, decide on whether they are interesting see reviews, photos, etc.) and organizing a route (decide on how to visit places chosen, see if all works out timetable).
+5. **Do you consider events happening at your travel destinations?**
+    -  No
+6. **When you arrive in a city, are you interested in seeing nearby attractions?**
+    -  Yes
+7. **While traveling from one location to another, do you explore sights along the way?**
+    -  Yes
 
 ---
 
