@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'card.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -112,6 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const MyCard(button1Text: "Let's go!", button2Text: "Not sure yet?", ),
+            const MyCard(button1Text: "Let's go2!", button2Text: "Not sure yet2?", ),
           ],
         ),
       ),
