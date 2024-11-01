@@ -3,16 +3,16 @@ Brno University of Technology - Faculty of Information Technology
 
 ---
 
-TODO: Obsah
+TODO: Obsah. 
 
 <div style="page-break-after: always;"></div>
 ---
 
 # 1. The Application (Zadání)
 ### 1.1 Name & Topic (Název a téma)
-**Name: TODO**
+**Name: YouQuest**
 **Team members:**
-- Albert Popov ()
+- Albert Popov () <- Captain
 - Nadzeya Antsipenka (xantsi00)
 - Nurdaulet Turar (xturarn00)
 
@@ -220,6 +220,7 @@ TODO: Translate & describe the app itself, what can be done there, etc.
 ### 1.5 FE Work distribution (Rozdělení práce týmu na FE)
 TODO
 
+<div style="page-break-after: always;"></div>
 # 2. App proposal (Návrh)
 
 ### GUI (Návrh GUI)
@@ -237,9 +238,10 @@ TODO: Describe how GUI communicates with a BE. +API Documentation.
 ### 2.1 Návrh GUI
 ### 2.2 Výběr technologií
 ### 2.3 Návrh API k BE (v rámci týmu)
+<div style="page-break-after: always;"></div>
 # 3. Funkční základ aplikace
 
 ### 3.1 BE Implementation (Implementace BE)
-		TODO: Describe it & attach some screenshots?
+TODO: Describe it & attach some screenshots?
 ### 3.2 Klicove casti FE
 TODO: Describe it & attach some screenshots?	
