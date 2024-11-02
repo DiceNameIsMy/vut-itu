@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vut_itu/second_route.dart';
 
 import 'card.dart';
 
@@ -116,6 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const MyCard(button1Text: "Let's go!", button2Text: "Not sure yet?", ),
             const MyCard(button1Text: "Let's go2!", button2Text: "Not sure yet2?", ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FirstRoute()));
+                },
+                child: const Text("Go Forward")),
           ],
         ),
       ),
