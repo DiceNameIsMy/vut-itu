@@ -38,7 +38,6 @@ A summary:
 - Shared accounts for group planning.
 - Weather forecasts for planned dates and destinations.
 - Storage for travel-related documents (tickets, QR codes, location details).
-
 #### 1.2.4 Underlying Research
 
 ##### 1.2.4.1 Albert's customer research:
@@ -167,7 +166,7 @@ None of the applications fulfill all the main wishes of our respondents we've id
 Keypoints:
 - It's very important to keep in mind our customer's first interaction when designing a multi-purpose, all-around app, because the first impression is the biggest factor in user retention.
 - TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
-	- TODO: ...
+- TODO: ...
 ### 1.4 App Requirements (Zadání)
 TODO: Translate & describe the app itself, what can be done there, etc.
 
@@ -213,15 +212,25 @@ TODO
 ### GUI (Návrh GUI)
 TODO: Screenshots & an explanation how does it fulfill the user requirements.
 TODO: How to separate our work?
-
 ### Tech stack choice (Výběr technologií)
-TODO
+We have decided to make a mobile application. The reasons for such a choice are:
+- Our users are always carrying their phones with them (everyone do). Since we provide offline navigation, storing of tickets, passes, TODO: Add more?, a **web or mobile platforms are the only ones we considered.**
+- Application needs to be able to send notifications. Due to web platform's limitations, being unability to send notifications while not focused on the app, we chose a mobile application.
+- When considering the choice of technology stack, we've been considering **Time To Market**, being how fast an application can be built, **performance**, since displaying a customized map is moderatly intensive task. **We did not care about the application size**, since it's safe to say that these days most phones can easily allocate ~100 MB of storage.
+
+#### Chosen Framework
+We have chosen Flutter, since it is the best fit for our application. Here's a table of comparison:
+
+| Platform         | Development Time                                              | Team Experience                             | Performance             | Application Size |
+| ---------------- | ------------------------------------------------------------- | ------------------------------------------- | ----------------------- | ---------------- |
+| **Native**       | Longest development time                                      | No experience with native development       | Highest performance     | Minimal          |
+| **React Native** | Shorter time to market                                        | Limited prior experience                    | Below average           | Relatively small |
+| **Xamarin**      | Moderate time to market; may need platform-specific expertise | Strong in C# and .NET                       | Average                 | Moderate         |
+| **Flutter**      | Shorter time to market                                        | Dart is similar to C#; solid OOP background | Near-native performance | Relatively large |
 
 ### BE API (Návrh API k BE)
 TODO: Describe BE. It's core functionality. What library(-s) was(were) used.
 TODO: Describe how GUI communicates with a BE. +API Documentation.
-
----
 ### 2.1 Návrh GUI
 ### 2.2 Výběr technologií
 ### 2.3 Návrh API k BE (v rámci týmu)
