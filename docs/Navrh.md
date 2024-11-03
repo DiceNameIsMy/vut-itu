@@ -168,58 +168,69 @@ Keypoints:
 - TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
 - TODO: ...
 ### 1.4 App Requirements (Zadání)
-TODO: Translate & describe the app itself, what can be done there, etc.
+**Key Feature: Crowdsourcing**
+This is the core of our app. What makes us different from out competitiors. We want to bring users to a platform where they can share experiences, provide guidance to others.
 
-Мы хотим сделать croud sourced приложение для путешественников.
-- Маршруты от других людей
-- Отзывы о локациях
-- Возникает вопрос: А наши пользователи стали бы этим заниматься?
+**Additional Feature: Route Recommendation System**  
+A recommendation system to help users generate personalized routes. When a user has chosen places he'd like to visit, he will be able to get a recommended routes without the hassle for figuring it out manually on his own.
 
-Главная киллер фича приложения: крауд сорсинг.
-- отзывы на места
-- добавление мест на карте
-- создание маршрутов для других пользователей
+**Other User Capabilities:**  
+Our app will allow users to:
+- View an interactive map of the whole globe. Browse cities and attractions. Add them to a wishlist.
+- Create routes to connect his chosen cities and/or attractions:
+    1. Manually or automatically (with suggested points of interest)
+    2. Choose from routes created by other users
+- View and save routes shared by others to their wishlist
+- Share reviews of places they've visited.
+- Share information about ongoing activities.
+- Create and share routes they've taken with other users.
+- Add new locations to the map.
+- Share routes via social media or directly with friends
+- View weather forecasts for dates associated with their chosen routes
 
-Второстепенная: Система рекомендаций для создания мaршрутов.
-- Сделаем простую имплементацию (генерацию рекомендаций мб сделаем позже)
-
-Пользователь может:
-- Смотреть на карте места, точки интереса
-- Добавить точку интереса/город в вишлист
-- Проложить маршрут
-	1) Вручную, автоматически (можно преложить ещё точки интереса)
-	2) Выбрать среди уже проложенных другими пользователями маршрут
-- Просмотр маршрутов ранее добывленными пользователями
-- Добавить маршрут в вишлист
-- Добавить точку интереса на карте
-- Поделиться маршрутом в сети
-- Поделиться маршрутом друзьям
-- Во время просмотра его маршрута целиком мб показывать погоду на те даты
-
-**Key FE Components (Klicove casti BE)**
-- Onboarding
-- A screen to search, view and select locations (& attractions?)
-- A screen to make a plan to visit selected locations (Make or choose a route. Set dates when to visit. See a weather forecast?)
+**Core Front-End Components**
+- An onboarding process to introduce new users to the app by skipping several steps & keeping first-time interaction as fluent as possible.
+- Inspirations screen for browsing ideas for trips to take, places to visit.
+- A search screen to browse and save/select locations and/or attractions.
+- A planning screen for creating or selecting routes, setting visit dates, and viewing weather forecasts for the trip.
 
 ---
 
 ### 1.5 FE Work distribution (Rozdělení práce týmu na FE)
-TODO
 
+TODO: IT'S A SAMPLE. CAN BE CHANGED.
+#### 1.5.1 Albert's FE
+- Wishlist screen
+- Route selection screen
+#### 1.5.2  Nadzeya's FE
+- Main screen
+- Options (Settings)
+#### 1.5.3 Nurdaulet's FE
+- Onboarding
+- An interactive map
 <div style="page-break-after: always;"></div>
 # 2. App proposal (Návrh)
 
-### GUI (Návrh GUI)
-TODO: Screenshots & an explanation how does it fulfill the user requirements.
-TODO: How to separate our work?
-### Tech stack choice (Výběr technologií)
+### 2.1 GUI (Návrh GUI)
+#### 2.1.1 Albert's GUI
+- Wishlist screen
+- Route selection screen
+- TODO: Screenshot from Figma of work done
+#### 2.1.2  Nadzeya's GUI
+- Main screen
+- Options (Settings)
+- TODO: Screenshot from Figma of work done
+#### 2.1.3 Nurdaulet's GUI
+- Onboarding
+- TODO: Screenshot from Figma of work done
+### 2.2 Tech stack choice (Výběr technologií)
+The following sections detail our choices for the platform and framework, along with the reasoning behind each decision.
+#### 2.2.1 Chosen FE Platform
 We have decided to make a mobile application. The reasons for such a choice are:
-- Our users are always carrying their phones with them (everyone do). Since we provide offline navigation, storing of tickets, passes, TODO: Add more?, a **web or mobile platforms are the only ones we considered.**
-- Application needs to be able to send notifications. Due to web platform's limitations, being unability to send notifications while not focused on the app, we chose a mobile application.
-- When considering the choice of technology stack, we've been considering **Time To Market**, being how fast an application can be built, **performance**, since displaying a customized map is moderatly intensive task. **We did not care about the application size**, since it's safe to say that these days most phones can easily allocate ~100 MB of storage.
-
-#### Chosen Framework
-We have chosen Flutter, since it is the best fit for our application. Here's a table of comparison:
+- Our users are always carrying their phones with them (everyone do). Since we provide offline navigation, storing of tickets, passes, TODO: Add more?, a web or mobile platforms are the only ones we considered.
+- Application needs to be able to send notifications for TODO: something about asking users to give their review and/or suggest an article about a place they have arrived to. Due to web platform's limitations, being unability to send notifications while not focused on the app, we chose a mobile application.
+#### 2.2.2 Chosen FE Framework
+We have chosen Flutter as out mobile framework, since it is the best fit for our application. When considering the choice of technology stack, we've been considering **Time To Market**, being how fast an application can be built & released, **performance**, since displaying a customized map is a moderatly intensive task. **We did not care about the application size**, since it's safe to say that these days most phones can easily allocate ~100 MB of storage. Here's a table of comparison:
 
 | Platform         | Development Time                                              | Team Experience                             | Performance             | Application Size |
 | ---------------- | ------------------------------------------------------------- | ------------------------------------------- | ----------------------- | ---------------- |
@@ -227,17 +238,45 @@ We have chosen Flutter, since it is the best fit for our application. Here's a t
 | **React Native** | Shorter time to market                                        | Limited prior experience                    | Below average           | Relatively small |
 | **Xamarin**      | Moderate time to market; may need platform-specific expertise | Strong in C# and .NET                       | Average                 | Moderate         |
 | **Flutter**      | Shorter time to market                                        | Dart is similar to C#; solid OOP background | Near-native performance | Relatively large |
+#### 2.2.3 Chosen BE Framework
+We've chosen .NET to develop an API for our application. Reasoning behind this:
+- We all have experience with .NET Framework -> it's the fastest way for us to create a BE.
+- It's both performant in development time and execution time.
+- Huge and very mature developers community.
+### 2.3 BE API (Návrh API k BE, v rámci týmu)
 
-### BE API (Návrh API k BE)
+#### 2.3.1 Architecture: MVVM
+TODO: Add more specificity
+```mermaid
+graph TD
+BEServer[Backend API]
+BELocal[Model, LocalStorage]
+VM[ViewModel]
+V[View]
+
+BEServer-->|Synchronize|BELocal
+BELocal-->|Propagate Command Results|BEServer
+VM-->|Send requests to perform commands|BELocal
+BELocal-->|Load state|VM
+VM-->|Provide Application State| V
+V-->|Send Commands| VM
+```
 TODO: Describe BE. It's core functionality. What library(-s) was(were) used.
 TODO: Describe how GUI communicates with a BE. +API Documentation.
-### 2.1 Návrh GUI
-### 2.2 Výběr technologií
-### 2.3 Návrh API k BE (v rámci týmu)
 <div style="page-break-after: always;"></div>
 # 3. Funkční základ aplikace
 
 ### 3.1 BE Implementation (Implementace BE)
-TODO: Describe it & attach some screenshots?
+For the Proof Of Concept (PoC), we'll be storing almost everything locally. It will enable us to release faster. Time spent on local storage is not wasted, since our applicaiton must be accessible offline anyways. The only data that is loaded via web are:
+- A map. It will be downloadable, but to not waste too much storage, offline maps will be downloaded only after explicit confirmation.
+- Weather forecasts. Via external API.
+- Croudsourced data (Mocked for PoC): Attractions, reviews, events, routes.
+
+Then, part of the data would be extracted to a BE server (Likely a .NET API).
+- User information to enable synchronization with other devices.
+- Trip information to enable sharing it with other people.
+- TODO: Add other things we'd like to have in BE.
+
+TODO: Attach some screenshots?
 ### 3.2 Klicove casti FE
 TODO: Describe it & attach some screenshots?	
