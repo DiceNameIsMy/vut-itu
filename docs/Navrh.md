@@ -12,7 +12,7 @@ TODO: Obsah.
 ### 1.1 Name & Topic (Název a téma)
 #### 1.1.1 YouQuest
 We have decided we'd like to look into applications that provide tooling to help people in planning their upcoming trips, be it one or many cities, a new country, or a different continent. Nadzeya came up with this idea because of the many issues she and her friends had with the tooling they were recently using. Some of them being:
-- As they've been traveling on a rented car, it was unplesant that there isn't mush information on the road type, it's quality, which can be important to know when driving though less populated areas.
+- As they've been traveling on a rented car, it was unplesant that there isn't mush information on the road type, it's quality, which can be important to know when driving though less populated areas.//TODO I think we should rewrite this part, because the concept and the main idea of an app has changed a lot.
 - Driving in a car can get boring. They wanted like to have a way to discover & visit nearby attractions while on their way to their main destination.
 - TODO?
 
