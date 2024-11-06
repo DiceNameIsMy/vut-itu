@@ -168,31 +168,26 @@ Keypoints:
 - TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
 - TODO: ...
 ### 1.4 App Requirements (Zadání)
-**Key Feature: Crowdsourcing**
-This is the core of our app. What makes us different from out competitiors. We want to bring users to a platform where they can share experiences, provide guidance to others.
 
-**Additional Feature: Route Recommendation System**  
-A recommendation system to help users generate personalized routes. When a user has chosen places he'd like to visit, he will be able to get a recommended routes without the hassle for figuring it out manually on his own.
-
-**Other User Capabilities:**  
+#### 1.4.1 User Capabilities
 Our app will allow users to:
-- View an interactive map of the whole globe. Browse cities and attractions. Add them to a wishlist.
-- Create routes to connect his chosen cities and/or attractions:
-    1. Manually or automatically (with suggested points of interest)
-    2. Choose from routes created by other users
-- View and save routes shared by others to their wishlist
-- Share reviews of places they've visited.
-- Share information about ongoing activities.
+- **Crowdsourcing** is the core of our app. What makes us different from out competitiors. We want to bring users to a platform where they can share experiences, provide guidance to others.
+- **Browse cities and attractions** using an interactive map of the whole globe. Add them to a wishlist.
+- **Create routes between cities and attractions**
+    1. Automatically using the built-in navigation software. Be able to tweak it if deemed necessary.
+    2. Choose from routes created by other users.
+- View and save **routes from the community** to their wishlist.
+- View weather forecasts for dates associated with their chosen routes.
+- Make reviews of places they've visited.
+- Share information about ongoing activities, festivals, parties.
 - Create and share routes they've taken with other users.
+- Share routes via social media or using a link.
 - Add new locations to the map.
-- Share routes via social media or directly with friends
-- View weather forecasts for dates associated with their chosen routes
-
-**Core Front-End Components**
-- An onboarding process to introduce new users to the app by skipping several steps & keeping first-time interaction as fluent as possible.
-- Inspirations screen for browsing ideas for trips to take, places to visit.
-- A search screen to browse and save/select locations and/or attractions.
-- A planning screen for creating or selecting routes, setting visit dates, and viewing weather forecasts for the trip.
+#### 1.4.2 Core Front-End Components
+- **Onboarding** screens that skip several steps of the default use flow to introduce new users to the app. By doing so we aim to have the first-time interaction as frictionless as possible.
+- **Inspirations** screen for browsing ideas for trips to take, places to visit.
+- **Interactive map** for browsing and saving/selecting locations and/or attractions.
+- **Organizing** screen for creating or selecting routes, setting visit dates, and viewing weather forecasts for the trip.
 
 ---
 
@@ -202,7 +197,7 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 #### 1.5.1 Albert's FE
 - Wishlist screen
 - Route selection screen
-#### 1.5.2  Nadzeya's FE
+#### 1.5.2 Nadzeya's FE
 - Main screen
 - Options (Settings)
 #### 1.5.3 Nurdaulet's FE
