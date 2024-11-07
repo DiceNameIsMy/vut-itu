@@ -277,7 +277,7 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 - Options (Settings)
 #### 1.5.3 Nurdaulet's FE
 - Onboarding
-- An interactive map
+- Documents uploading
 <div style="page-break-after: always;"></div>
 # 2. App proposal (Návrh)
 
@@ -288,17 +288,15 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 - TODO: Screenshot from Figma of work done
 #### 2.1.2  Nadzeya's GUI
 - Main screen
-- Options (Settings)
 - TODO: Screenshot from Figma of work done
 #### 2.1.3 Nurdaulet's GUI
 - Onboarding
+- Document viewing & uploading
 - TODO: Screenshot from Figma of work done
 ### 2.2 Tech stack choice (Výběr technologií)
 The following sections detail our choices for the platform and framework, along with the reasoning behind each decision.
 #### 2.2.1 Chosen FE Platform
-We have decided to make a mobile application. The reasons for such a choice are:
-- Our users are always carrying their phones with them (everyone do). Since we provide offline navigation, storing of tickets, passes, TODO: Add more?, a web or mobile platforms are the only ones we considered.
-- Application needs to be able to send notifications for TODO: something about asking users to give their review and/or suggest an article about a place they have arrived to. Due to web platform's limitations, being unability to send notifications while not focused on the app, we chose a mobile application.
+We have decided to make a mobile application. Our users are always carrying their phones with them (everyone do). Since we provide **offline navigation**, storing of tickets, passes, mobile platform fits best for our use case.
 #### 2.2.2 Chosen FE Framework
 We have chosen Flutter as out mobile framework, since it is the best fit for our application. When considering the choice of technology stack, we've been considering **Time To Market**, being how fast an application can be built & released, **performance**, since displaying a customized map is a moderatly intensive task. **We did not care about the application size**, since it's safe to say that these days most phones can easily allocate ~100 MB of storage. Here's a table of comparison:
 
@@ -327,7 +325,7 @@ V[View]
 BEServer-->|Synchronize|BELocal
 BELocal-->|Propagate Command Results|BEServer
 VM-->|Send requests to perform commands|BELocal
-BELocal-->|Load state|VM
+BELocal-->|Listen for state changes|VM
 VM-->|Provide Application State| V
 V-->|Send Commands| VM
 ```
