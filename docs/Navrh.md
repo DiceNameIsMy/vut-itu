@@ -59,24 +59,28 @@ To summarize, our potential customers want a travel app to have:
 - user-provided guides about places to eat, stay, visit, and other minor areas of interest.
 ##### 1.2.4.3 Nurdaulet's customer research
 - Developed a list of questions for in-person respondent interviews.
-- Made research in reddit
+- Using that, has interviewed 1 relevant customer.
+- Researched people's opinions on the web. More on that in section **1.3 Research of existing solutions**
 
-Nikita Krivienko:
-I have had interviewed him about his traveling experience. Why he likes traveling, how a trip planning process starts, how did some of his trips go. Tried to find some ideas what he might be missing in this process that he'd appreciate without asking directly, and then asked directly nonetheless. To summarize it, here are most relevant questions and answers:
-1. **Have you ever planned a trip to a completely new location?** (It would make no sense to continue if an answer was a no)
+My interviewee does not have extensive experience with other trip-planning apps. I conducted an interview to learn more about his travel experiences, focusing on why he enjoys traveling, how he approaches trip planning, and how some of his past trips have went. 
+
+He is open to exploring new apps to find a better fit for his needs. Specifically, he would like an app that can assist with trip planning while suggesting activities and places to visit. A key use case he mentioned is when driving to a new city - using a navigation app to display interesting attractions and sightseeing opportunities along the route.
+
+I aimed to find spots in his process, that we could optimize to improve his experience. To learn about that, I've started by asking open-ended questions, but then went more directly. Below is a summary of the most relevant questions and responses:
+1. Have you ever planned a trip to a completely new location? (It would make no sense to continue if an answer was a no)
     - Yes
-2. **How did you plan it? How did you choose places or cities to visit? What were your selection criteria?**
+2. How did you plan it? How did you choose places or cities to visit? What were your selection criteria?
     - My mother wanted to travel, so we searched on Google and used 34Travel along with friends’ recommendations. The main criteria were sightseeing opportunities, financial accessibility, and if possible, a location within the EU for visa purposes.
-3. **What applications did you use during the planning process?**
+3. What applications did you use during the planning process?
     - Beach spots: photos and reviews on the web
     - Other attractions: reviews and articles on the web (reviews are more relevant than articles)
-4. **How was your experience? What did you enjoy, and what could be improved?**
+4. How was your experience? What did you enjoy, and what could be improved?
     - It would be convenient to have a tool for simultaneously planning places to visit (find & browse attractions, decide on whether they are interesting see reviews, photos, etc.) and organizing a route (decide on how to visit places chosen, see if all works out timetable).
-5. **Do you consider events happening at your travel destinations?**
+5. Do you consider events happening at your travel destinations?
     -  No
-6. **When you arrive in a city, are you interested in seeing nearby attractions?**
+6. Are you interested in seeing nearby attractions?**
     -  Yes
-7. **While traveling from one location to another, do you explore sights along the way?**
+7. While traveling from one location to another (they use carsharing), do you explore places, attractions along the way?
     -  Yes
 
 ### 1.3 Research of existing solutions (Průzkum existujících řešení)
@@ -133,16 +137,15 @@ Cons:
 
 #### 1.3.5 Sygic Travel (Nur)
 Pros:
-1. Integrates reviews from external platforms such as TripAdvisor.
+1. Offline maps, which is useful in areas with poor coverage.
+2. Integrates reviews from external platforms such as TripAdvisor.
 3. Detailed guides for cities and destinations worldwide.  
-4. A wide range of features. Users can organise itineraries, routes, reservations, accommodation and expenses.  
-5. Users can fill their journey with places to visit using a map with icons of attractions
+4. A wide range of features. Users can organise itineraries, routes, reservations, accommodation and expenses.
+5. An appealing interactive map for planning activities within a city
 Cons:
-1. The interface is unintuitive.
-2. No collaboration between travelers.
-3. Maps customisation in Google Maps is noticeably better.
-4. Offline maps are only for the paid Pro version. 
-5. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
+1. Absense of collaboration features.
+2. Offline maps are only for the paid Pro version. 
+3. Does not include user reviews of destinations or attractions and other guidelines or advices from other travelers.
 
 #### 1.3.6 TripAdvisor (Nur)
 Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
@@ -275,3 +278,8 @@ Then, part of the data would be extracted to a BE server (Likely a .NET API).
 TODO: Attach some screenshots?
 ### 3.2 Klicove casti FE
 TODO: Describe it & attach some screenshots?	
+
+
+$$
+	
+$$
