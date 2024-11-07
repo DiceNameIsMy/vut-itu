@@ -12,9 +12,6 @@ TODO: Obsah.
 ### 1.1 Name & Topic (Název a téma)
 #### 1.1.1 YouQuest
 We have decided we'd like to look into applications that provide tooling to help people in planning their upcoming trips, be it one or many cities, a new country, or a different continent. Nadzeya came up with this idea because of the many issues she and her friends had with the tooling they were recently using. Some of them being:
-- As they've been traveling on a rented car, it was unplesant that there isn't mush information on the road type, it's quality, which can be important to know when driving though less populated areas.//TODO I think we should rewrite this part, because the concept and the main idea of an app has changed a lot.
-- Driving in a car can get boring. They wanted like to have a way to discover & visit nearby attractions while on their way to their main destination.
-- TODO?
 
 #### 1.1.2 Team members
 - Albert Popov (xpopov10) <- Captain
@@ -203,7 +200,7 @@ Pros:
 3. Trip info can be easily shared.
 Cons:
 1. Interaction with a map is confusing and very "lacking" in features
-2. Doesn't have a help guide. TODO???: What does that mean?
+2. Doesn't have a app using tutorial.
 3. Some users find the interface to be too complicated.
 4. Does not include user reviews of destinations or attractions.
 
@@ -236,12 +233,15 @@ Cons:
 - **Simplified Planning Tools**: Users want straightforward tools that allow them to plan itineraries without unnecessary complexity. They prefer apps that can integrate their travel information seamlessly without overwhelming them with ads or upselling.
 - **Integration with Other Services**: Suggestions were made for integrating travel planning apps with credit card services to enhance functionality, as many users already utilize these cards for travel-related benefits.
 #### 1.3.7 Conclusion
-None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). TODO: Add smth about Sygic & MakeMyTrip?
+None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). //TODO: Add smth about Sygic & MakeMyTrip?
 
 Keypoints:
 - It's very important to keep in mind our customer's first interaction when designing a multi-purpose, all-around app, because the first impression is the biggest factor in user retention.
-- TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
-- TODO: ...
+- //TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
+- //TODO: ...
+- Driving in a car can get boring. They wanted like to have a way to discover & visit nearby attractions while on their way to their main destination.
+- //TODO Написать о том что мы при планировании поездок мы используем множетсво ресурсов в рамках одного приложения
+- //TODO 
 ### 1.4 App Requirements (Zadání)
 
 #### 1.4.1 User Capabilities
