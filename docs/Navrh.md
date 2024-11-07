@@ -17,7 +17,7 @@ We have decided we'd like to look into applications that provide tooling to help
 - TODO?
 
 #### 1.1.2 Team members
-- Albert Popov () <- Captain
+- Albert Popov (xpopov10) <- Captain
 - Nadzeya Antsipenka (xantsi00)
 - Nurdaulet Turar (xturarn00)
 
@@ -41,9 +41,80 @@ A summary:
 #### 1.2.4 Underlying Research
 
 ##### 1.2.4.1 Albert's customer research:
-- Created a Google Form (TODO: add a link?)
+- Created a Google Form (https://forms.gle/QXqrSPgtp4VPS8CR9)
 - Surveyed 2 respondents
-- TODO: Summarize their replies?
+
+
+1. **Have you travelled or are you planning to travel? Or has someone planned it for you?**
+- Yes
+- Yes, I have travelled
+
+2. **How did you plan it? How did you choose the places, cities to visit? What criteria did you use to choose?**
+- Proximity to each member of the expedition, relatively cheap accommodation and flights.
+- Internet guides. Hashtags on Instagram. Reviews on Google maps
+
+3. **Do you use apps when planning your trip, if so, which ones?**
+
+- No
+- Help notes on mobile
+
+4. **What was your experience? What did you like about it? What could have been done better? (if you haven't used the app, you can skip it)**
+
+- I like the ease of use. Easy to change the schedule. Ease of sharing notes.
+- (Not using any apps)
+
+5. **Do you factor in events (fairs, carnivals, festivals) in the places you visit?**
+
+- No
+- Yes
+
+6. **Do you go for the sights of a city or for the events in that city?**
+
+- The first option
+- Both sights and events
+
+7. **What is your usual budget? Floating or specific?**
+
+- I usually don't have a segmented amount and i often spend more than expected
+- Floating
+
+8. **When you visit a city, are you interested in seeing the sights around that city? (Out of town)**
+
+- Yes, thats why i love traveling by car
+- Yes, as long as it is easily accessible by public transportation.
+
+9. **Do you prefer to visit only one city or several cities?**
+
+- I prefer to visit several cities and even several countries within my trip
+- Depends on the number of days and the size of the city. 3 days for a small city (Znojmo), 10 days for a big city (Paris).
+
+10. **When traveling from one city to another, would you like to see sights along the way?**
+
+- Yes
+- Rather no than yes. Only if a private car
+
+11. **Are there any wishes for the apps you use?**
+
+- Easy to use, so that I wouldn't be too lazy to use it after a couple of uses
+- No
+
+12. **What do you miss when planning your travels? What would help you with that?**
+
+- Maybe it would be great to have an app where i can store all QR codes, PINs, addresses, and telephone numbers related to this trip (flights, accommodation etc).
+- Automatic weather updates. For example, two days before departure/leave get an alert: “It will rain in $city_name for the next two days. Don't forget to take an umbrella” etc.
+
+Survey Conclusion
+
+    Trip Planning: Both respondents had travelled before and planned their trips themselves. They chose destinations based on accessibility, accommodation and transport costs, as well as online reviews and social media such as Instagram and Google Maps.
+
+    Use of apps: Both respondents indicated that they do not use specialised planning apps, relying on notes on mobile devices. They appreciate the ease and convenience of editing schedules and sharing notes.
+
+    Travel interests: One respondent prefers to visit attractions, while the other is interested in both attractions and events such as fairs and festivals.
+
+    Budget: Learners indicated that their budget is usually ‘floating’ and they often spend more than they had planned. This indicates a flexible approach to finances.
+
+Thus, it can be concluded that users are interested in an app that would integrate route planning, trip information storage and weather alerts to facilitate trip organisation and improve travel comfort.
+
 ##### 1.2.4.2 Nadzeya's customer research:
 - Developed a list of questions for in-person respondent interviews.
 - Surveyed 2 respondents.
@@ -89,13 +160,13 @@ I aimed to find spots in his process, that we could optimize to improve his expe
 TripIt is a travel management application designed to streamline the organization of travel plans by consolidating all trip details in one place. It automatically creates a detailed timeline from booking confirmations for flights, hotels, car rentals, and other services by forwarding confirmation emails to a dedicated address.
 
 Pros:
-- Intuitive, easy to navigate, visually appealing timeline of trip details.
-- Centralizes booking info like confirmations and tickets.
-- Allows shared, multi-user trip editing.
+1. Intuitive, easy to navigate, visually appealing timeline of trip details.
+2. Centralizes booking info like confirmations and tickets.
+3. Allows shared, multi-user trip editing.
 Cons:
-- Overwhelming field options for adding events, hindering user experience.
-- No recommendation system, requiring manual addition of destinations.
-- Limited document uploads in the free version; paid version billed annually.
+1. Overwhelming field options for adding events, hindering user experience.
+2. No recommendation system, requiring manual addition of destinations.
+3. Limited document uploads in the free version; paid version billed annually.
 
 #### 1.3.2 MakeMyTrip (Albert)
 MakeMyTrip integrates booking options for flights, hotels, and packages in one app, simplifying travel planning.
@@ -108,6 +179,7 @@ Cons:
 1. Cluttered Interface: The app's interface is overloaded and suggests services like hotel bookings before destination selection, complicating navigation, especially for undecided users.
 2. Tailored mainly for Indian users, limiting feature access for international travelers.
 3. Trip Planning Post-Purchase: Itineraries auto-populate only after booking, inconvenient for users who prefer route planning before purchase.
+4. You trip plan is available only on online
 
 #### 1.3.3 Wanderlog (Nadzeya)
 A comprehensive tool for organizing trips from start to finish.
@@ -121,8 +193,8 @@ Cons:
 2. Users are unable to add customised pins or markers on a map.
 3. Does not include real-time updates for weather or traffic.
 4. Does not include user reviews of destinations or attractions and other guidelines or advice from other travelers.
-6. Absense of filtering and sorting options when searching for attractions.
-7. Offline maps are only for the paid Pro version.
+5. Absense of filtering and sorting options when searching for attractions.
+6. Offline maps are only for the paid Pro version.
 
 #### 1.3.4 Stippl (Nadzeya)
 Pros:
@@ -131,9 +203,9 @@ Pros:
 3. Trip info can be easily shared.
 Cons:
 1. Interaction with a map is confusing and very "lacking" in features
-2. Doesn't have a help guide. TODO: What does that mean?
+2. Doesn't have a help guide. TODO???: What does that mean?
 3. Some users find the interface to be too complicated.
-5. Does not include user reviews of destinations or attractions.
+4. Does not include user reviews of destinations or attractions.
 
 #### 1.3.5 Sygic Travel (Nur)
 Pros:
