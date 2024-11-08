@@ -3,28 +3,27 @@ Brno University of Technology - Faculty of Information Technology
 
 ---
 
-TODO: Obsah. 
-
-<div style="page-break-after: always;"></div>
----
-
 # 1. The Application (Zadání)
 ### 1.1 Name & Topic (Název a téma)
 #### 1.1.1 YouQuest
 We have decided we'd like to look into applications that provide tooling to help people in planning their upcoming trips, be it one or many cities, a new country, or a different continent. Nadzeya came up with this idea because of the many issues she and her friends had with the tooling they were recently using. Some of them being:
-
 #### 1.1.2 Team members
-- Albert Popov (xpopov10)
+- Albert Popov (xpopov10) <- Captain
 - Nadzeya Antsipenka (xantsi00)
 - Nurdaulet Turar (xturarn00)
 
 ---
+<div style="page-break-after: always;"></div>
+
 ### 1.2 Customers research (Uživatelský průzkum a specifikace)
+
 We have found and interviewed relevant 5 customers in total. An offline interview, open-ended Q&A, and an online questionnare were used. Here's what we've learned from them:
 #### 1.2.1 Our customers (kdo je konkrétní uživatel)
+
 - People interested in traveling.
 - Primarily people who own, or are used to renting a car when traveling.
 #### 1.2.2 What they want/need from the application (co přesně od aplikace potřebuje)
+
 - A tool that makes planning of a trip easy.
 
 #### 1.2.3 Underlying Research
@@ -32,7 +31,6 @@ We have found and interviewed relevant 5 customers in total. An offline intervie
 ##### 1.2.3.1 Albert's customer research:
 - Created a Google Form (https://forms.gle/QXqrSPgtp4VPS8CR9)
 - Surveyed 2 respondents
-
 
 1. **Have you travelled or are you planning to travel? Or has someone planned it for you?**
 - Yes
@@ -43,66 +41,51 @@ We have found and interviewed relevant 5 customers in total. An offline intervie
 - Internet guides. Hashtags on Instagram. Reviews on Google maps
 
 3. **Do you use apps when planning your trip, if so, which ones?**
-
 - No
 - Help notes on mobile
 
 4. **What was your experience? What did you like about it? What could have been done better? (if you haven't used the app, you can skip it)**
-
 - I like the ease of use. Easy to change the schedule. Ease of sharing notes.
 - (Not using any apps)
 
 5. **Do you factor in events (fairs, carnivals, festivals) in the places you visit?**
-
 - No
 - Yes
 
 6. **Do you go for the sights of a city or for the events in that city?**
-
 - The first option
 - Both sights and events
 
 7. **What is your usual budget? Floating or specific?**
-
 - I usually don't have a segmented amount and i often spend more than expected
 - Floating
 
 8. **When you visit a city, are you interested in seeing the sights around that city? (Out of town)**
-
 - Yes, thats why i love traveling by car
 - Yes, as long as it is easily accessible by public transportation.
 
 9. **Do you prefer to visit only one city or several cities?**
-
 - I prefer to visit several cities and even several countries within my trip
 - Depends on the number of days and the size of the city. 3 days for a small city (Znojmo), 10 days for a big city (Paris).
 
 10. **When traveling from one city to another, would you like to see sights along the way?**
-
 - Yes
 - Rather no than yes. Only if a private car
 
 11. **Are there any wishes for the apps you use?**
-
 - Easy to use, so that I wouldn't be too lazy to use it after a couple of uses
 - No
 
 12. **What do you miss when planning your travels? What would help you with that?**
-
 - Maybe it would be great to have an app where i can store all QR codes, PINs, addresses, and telephone numbers related to this trip (flights, accommodation etc).
 - Automatic weather updates. For example, two days before departure/leave get an alert: “It will rain in $city_name for the next two days. Don't forget to take an umbrella” etc.
 
-Survey Conclusion
-
-    Trip Planning: Both respondents had travelled before and planned their trips themselves. They chose destinations based on accessibility, accommodation and transport costs, as well as online reviews and social media such as Instagram and Google Maps.
-
-    Use of apps: Both respondents indicated that they do not use specialised planning apps, relying on notes on mobile devices. They appreciate the ease and convenience of editing schedules and sharing notes.
-
-    Travel interests: One respondent prefers to visit attractions, while the other is interested in both attractions and events such as fairs and festivals.
-
-    Budget: Learners indicated that their budget is usually ‘floating’ and they often spend more than they had planned. This indicates a flexible approach to finances.
-
-Thus, it can be concluded that users are interested in an app that would integrate route planning, trip information storage and weather alerts to facilitate trip organisation and improve travel comfort.
+Survey Conclusion:
+- Trip Planning: Both respondents had travelled before and planned their trips themselves. They chose destinations based on accessibility, accommodation and transport costs, as well as online reviews and social media such as Instagram and Google Maps.
+- Use of apps: Both respondents indicated that they do not use specialised planning apps, relying on notes on mobile devices. They appreciate the ease and convenience of editing schedules and sharing notes.
+- Travel interests: One respondent prefers to visit attractions, while the other is interested in both attractions and events such as fairs and festivals.
+- Budget: Learners indicated that their budget is usually ‘floating’ and they often spend more than they had planned. This indicates a flexible approach to finances.
+- Thus, it can be concluded that users are interested in an app that would integrate route planning, trip information storage and weather alerts to facilitate trip organisation and improve travel comfort.
 
 ##### 1.2.3.2 Nadzeya's customer research:
 - Developed a list of questions for in-person respondent interviews.
@@ -117,6 +100,7 @@ To summarize, our potential customers want a travel app to have:
 - a simple list of local, free events without cluttering the primary experience.
 - filters or tags to prioritize affordable food, accommodation, and travel options.
 - user-provided guides about places to eat, stay, visit, and other minor areas of interest.
+
 ##### 1.2.3.3 Nurdaulet's customer research
 - Developed a list of questions for in-person respondent interviews.
 - Using that, has interviewed 1 relevant customer.
@@ -152,8 +136,9 @@ A summary:
 - Weather forecasts for planned dates and destinations.
 - Storage for travel-related documents (tickets, QR codes, location details).
 
-### 1.3 Research of existing solutions (Průzkum existujících řešení)
+<div style="page-break-after: always;"></div>
 
+### 1.3 Research of existing solutions (Průzkum existujících řešení)
 We have decided to research 6 applications that are trying to do what our users are looking for. They are: Tripit, MakeMyTrip, Wanderlog, Stippl, Sygic Travel, and TripAdvisor.
 
 #### 1.3.1 Tripit (Albert)
@@ -230,22 +215,27 @@ Cons:
 - Limited trip planning flexibility, especially regarding detailed scheduling and route tracking.
 - Complex and unintuitive trip organization interface.
 - Ads and commercial influence on search results.
-**User Expectations and Desires**
 
-- **Collaboration Features**: There is a strong demand for better collaboration tools that allow users to share itineraries easily with friends and family.
-- **Simplified Planning Tools**: Users want straightforward tools that allow them to plan itineraries without unnecessary complexity. They prefer apps that can integrate their travel information seamlessly without overwhelming them with ads or upselling.
-- **Integration with Other Services**: Suggestions were made for integrating travel planning apps with credit card services to enhance functionality, as many users already utilize these cards for travel-related benefits.
-#### 1.3.7 Conclusion
-- None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). 
-- MakeMyTrip, and Wanderlog suffer from overwhelming interfaces that can be intimidating for new users. The abundance of features is not organized intuitively, making the user experience less pleasant. 
-- While some apps allow users to add destinations, they often do not provide recommendations for entire routes or suggest attractions along the way. For example, TripIt and TripAdvisor focus more on individual bookings and reviews rather than holistic route suggestions.
-- Interactive maps are crucial for visual planning, yet apps like Stippl have confusing map features that detract from usability.
+### 1.3.7 Conclusion
 
-Keypoints:
-- It's very important to keep in mind our customer's first interaction when designing a multi-purpose, all-around app, because the first impression is the biggest factor in user retention.
-- As noted in the customer survey, some respondents assumed that they gather information about the place they want to visit before planning a trip, but they gather information from many resources (social media, Google Maps, friends). It is planned that a user can use only one app for this, if they want to visit a place but don't know anything about it, the app will provide some itineraries based on other users' past trips to give newcomers some ideas for travelling or some recommendations that app can give them based on place reviews.
-- The importance of creating notes (timetables, booking codes, reminders, etc.) for trips is mostly a bit underestimated by the developers of the above mentioned apps, and the user's desire to save some travel documents in the app can be a solution to complex paperwork.
+**User Needs and Preferences**
+	- **Collaboration Tools**: Users want robust features to easily share itineraries with friends and family.
+- **Simplified Planning**: Users seek straightforward tools for itinerary planning that integrate travel information seamlessly, without intrusive ads or excessive upselling.
+- **Service Integration**: Users suggested linking the app to credit card services, as many already use these for travel benefits.
+
+**Competitor Analysis**
+- **Feature Gaps**: No existing app fully meets our respondents' top preferences. Some apps like TripAdvisor and TripIt excel in specific areas, while others, like Wanderlog, attempt to be comprehensive but overlook key user priorities.
+- **Overwhelming Interfaces**: Apps like MakeMyTrip and Wanderlog suffer from cluttered interfaces, complicating navigation and detracting from the user experience.
+- **Route and Attraction Recommendations**: Most apps, including TripIt and TripAdvisor, focus on individual bookings or reviews rather than offering comprehensive route recommendations or attractions along the way.
+- **Interactive Maps**: Visual planning tools are essential, but apps like Stippl have confusing map features, reducing usability.
+
+**Key Takeaways**
+- **First Impressions Matter**: Designing a user-friendly, multi-functional app is crucial, as first impressions strongly impact retention.
+- **Information Aggregation**: Respondents noted that they often gather travel information from various sources (social media, Google Maps, friends). Our app could consolidate this information, offering itineraries based on user reviews to help newcomers plan trips to unfamiliar destinations.
+- **Trip Notes and Document Storage**: Many apps overlook managing travel documents and notes (e.g., timetables, booking codes). Adding this feature could streamline users' travel planning.
  
+<div style="page-break-after: always;"></div>
+
 ### 1.4 App Requirements (Zadání)
 
 #### 1.4.1 User Capabilities
@@ -269,7 +259,7 @@ Our app will allow users to:
 - **Organizing** screen for creating or selecting routes, setting visit dates, and viewing weather forecasts for the trip.
 - **Document Upload** for a trip. Plane tickets, QR Codes for entering museums, City passes, etc.
 
----
+<div style="page-break-after: always;"></div>
 
 ### 1.5 FE Work distribution (Rozdělení práce týmu na FE)
 
@@ -289,19 +279,34 @@ Our app will allow users to:
 # 2. App proposal (Návrh)
 
 ### 2.1 GUI (Návrh GUI)
+
 #### 2.1.1 Albert's GUI
 - Active Trip Section
 - Options (Settings)
-- TODO: Screenshot from Figma of work done
+
+![Trip Plan Figma](img/trip_plan_figma.png)
+
+<div style="page-break-after: always;"></div>
+
 #### 2.1.2  Nadzeya's GUI
 - Main screen
 - Wishlist screen
 - Route selection screen
-- TODO: Screenshot from Figma of work done
+
+![Trip Plan Figma](img/inspirations_figma.png)
+
+<div style="page-break-after: always;"></div>
+
 #### 2.1.3 Nurdaulet's GUI
 - Onboarding
 - Documents viewing & uploading
-- TODO: Screenshot from Figma of work done
+
+![Onboarding Figma](img/onboarding_figma.png)
+![Doc UploadFigma](img/document_upload_figma.png)
+
+<div style="page-break-after: always;"></div>
+<div style="page-break-after: always;"></div>
+
 ### 2.2 Tech stack choice (Výběr technologií)
 The following sections detail our choices for the platform and framework, along with the reasoning behind each decision.
 #### 2.2.1 Chosen FE Platform
@@ -331,7 +336,6 @@ We have defined 3 layers of a FE part of the application:
 
 ![FE Architecture](img/image.png)
 
-![FE Architecture](Pasted%20image%2020241107230844.png)
 #### 2.3.2 Data model
 Below our current sketch of our data model is presented. Cities are added when a place within that city is added. User can plan to visit several places within one city.
 
