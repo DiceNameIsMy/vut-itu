@@ -128,9 +128,8 @@ To summarize, our potential customers want a travel app to have:
 ##### 1.2.4.3 Nurdaulet's customer research
 - Developed a list of questions for in-person respondent interviews.
 - Using that, has interviewed 1 relevant customer.
-- Researched people's opinions on the web. More on that in section **1.3 Research of existing solutions**
 
-My interviewee does not have extensive experience with other trip-planning apps. I conducted an interview to learn more about his travel experiences, focusing on why he enjoys traveling, how he approaches trip planning, and how some of his past trips have went. 
+My interviewee does not have extensive experience with other trip-planning apps. I conducted an interview to learn more about his travel experiences, focusing on why he enjoys traveling, how he approaches trip planning, and how some of his past trips have went.
 
 He is open to exploring new apps to find a better fit for his needs. Specifically, he would like an app that can assist with trip planning while suggesting activities and places to visit. A key use case he mentioned is when driving to a new city - using a navigation app to display interesting attractions and sightseeing opportunities along the route.
 
@@ -277,7 +276,8 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 - Options (Settings)
 #### 1.5.3 Nurdaulet's FE
 - Onboarding
-- Documents uploading
+- Documents viewing & uploading
+
 <div style="page-break-after: always;"></div>
 # 2. App proposal (Návrh)
 
@@ -291,7 +291,7 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 - TODO: Screenshot from Figma of work done
 #### 2.1.3 Nurdaulet's GUI
 - Onboarding
-- Document viewing & uploading
+- Documents viewing & uploading
 - TODO: Screenshot from Figma of work done
 ### 2.2 Tech stack choice (Výběr technologií)
 The following sections detail our choices for the platform and framework, along with the reasoning behind each decision.
@@ -312,32 +312,35 @@ We've chosen .NET to develop an API for our application. Reasoning behind this:
 - It's both performant in development time and execution time.
 - Huge and very mature developers community.
 ### 2.3 BE API (Návrh API k BE, v rámci týmu)
+#### 2.3.1 Architecture: MVVM at FE
 
-#### 2.3.1 Architecture: MVVM
-TODO: Add more specificity
-```mermaid
-graph TD
-BEServer[Backend API]
-BELocal[Model, LocalStorage]
-VM[ViewModel]
-V[View]
+![FE Architecture](Pasted%20image%2020241107230844.png)
+	#### 2.3.2 Data model
+Below our current sketch of our data model is presented. Cities are added when a place within that city is added. User can plan to visit several places within one city.
 
-BEServer-->|Synchronize|BELocal
-BELocal-->|Propagate Command Results|BEServer
-VM-->|Send requests to perform commands|BELocal
-BELocal-->|Listen for state changes|VM
-VM-->|Provide Application State| V
-V-->|Send Commands| VM
-```
-TODO: Describe BE. It's core functionality. What library(-s) was(were) used.
-TODO: Describe how GUI communicates with a BE. +API Documentation.
+![Data Model](Pasted%20image%2020241107231140.png)
+#### 2.3.3 Backend
+Most of the functionality is going to be provided via http API.
+
+Our API will provide the following:
+- 🌍 Querying of **Points of Interest (PoI)** within some location range. It can be a city, a town, a museum, a mall, or whatever else.
+- 🌄 Querying of Trips for inspiration. If user likes something, provide an action to copy it to his list of trips. 
+	- On BE, a recommendation system would be added (out of scope, won't implement). It would pick out trip ideas from a database of trips of other users, that would then be shown to users that are looking for some inspiration.
+- 🏛️ Adding a **Place** he wants to visit which is linked to a **PoI**.
+- ☁️ Get a weather forecast for the **Cities** or **Places** he wants to visit for the dates range. It can be within his planned visiting dates, or a wider range to pick better dates.
+- ✈️ CRUD of his **Trips**, an entity that holds the places he wants to visit during the trip.
+- 🏛️ CRUD of his places.
+- 📄 CRUD of his **Documents**, files that are useful to have in hand during the trip.
+- ⭐ Create a review for a **Place** he had visited.
+During development, more actions may be added as we spot what we might've missed.
+
 <div style="page-break-after: always;"></div>
 # 3. Funkční základ aplikace
 
 ### 3.1 BE Implementation (Implementace BE)
-For the Proof Of Concept (PoC), we'll be storing almost everything locally. It will enable us to release faster. Time spent on local storage is not wasted, since our applicaiton must be accessible offline anyways. The only data that is loaded via web are:
+For the Proof Of Concept (PoC), we'll be storing almost everything locally. Time spent on local storage is not wasted, since our applicaiton must be accessible offline anyways. The only data that is loaded via web are:
 - A map. It will be downloadable, but to not waste too much storage, offline maps will be downloaded only after explicit confirmation.
-- Weather forecasts. Via external API.
+- Weather forecasts. Via external API. Cacheable
 - Croudsourced data (Mocked for PoC): Attractions, reviews, events, routes.
 
 Then, part of the data would be extracted to a BE server (Likely a .NET API).
