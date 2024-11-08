@@ -267,14 +267,11 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 #### 2.1.1 Albert's GUI
 - Wishlist screen
 - Route selection screen
-- TODO: Screenshot from Figma of work done
 #### 2.1.2  Nadzeya's GUI
 - Main screen
-- TODO: Screenshot from Figma of work done
 #### 2.1.3 Nurdaulet's GUI
 - Onboarding
 - Documents viewing & uploading
-- TODO: Screenshot from Figma of work done
 ### 2.2 Tech stack choice (Výběr technologií)
 The following sections detail our choices for the platform and framework, along with the reasoning behind each decision.
 #### 2.2.1 Chosen FE Platform
