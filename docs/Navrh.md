@@ -22,8 +22,9 @@ We have found and interviewed 5 relevant customers in total. An offline intervie
 
 - People interested in traveling.
 	- People who plan their trips without the help of travel agents
+
 #### 1.2.2 What they want/need from the application (co přesně od aplikace potřebuje)
-	
+
 - A tool that makes planning of a trip easy.
 
 #### 1.2.3 Underlying Research
@@ -175,7 +176,6 @@ Cons:
 
 #### 1.4.1 User Capabilities
 Our app will allow users to:
-- **Crowdsourcing** is the core of our app. What makes us different from out competitiors. We want to bring users to a platform where they can share experiences, provide guidance to others.
 - **Browse cities and attractions** using an interactive map of the whole globe. Add them to a wishlist.
 - **Create routes between cities and attractions**
     1. Automatically using the built-in navigation software. Be able to tweak it if deemed necessary.
@@ -265,7 +265,7 @@ We've chosen .NET to develop an API for our application. Reasoning behind this:
 
 #### 2.3.1 Architecture: MVVM at FE
 We have defined 3 layers of a FE part of the application:
-- View: Takes care of GUI representation. Listens for changes in ViewModel layer & re-renders GUI elements when someting changes. Sends events, actions, that ViewModel elements can react to.
+- View: Takes care of GUI representation. Listens for changes in ViewModel layer & re-renders GUI elements when something changes. Sends events, actions, that ViewModel elements can react to.
 - ViewModel: Is a representation of the application state. It defines actions that can be made, like "Add place to trip", "Upload document", "Duplicate the trip", etc.
 - Model: A representation of data actually being stored.
 
