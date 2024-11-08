@@ -332,7 +332,7 @@ We have defined 3 layers of a FE part of the application:
 ![FE Architecture](img/image.png)
 
 ![FE Architecture](Pasted%20image%2020241107230844.png)
-	#### 2.3.2 Data model
+#### 2.3.2 Data model
 Below our current sketch of our data model is presented. Cities are added when a place within that city is added. User can plan to visit several places within one city.
 
 ![Data Model](Pasted%20image%2020241107231140.png)
@@ -351,25 +351,3 @@ Our API will provide the following:
 - ⭐ Create a review for a **Place** he had visited.
 During development, more actions may be added as we spot what we might've missed.
 
-<div style="page-break-after: always;"></div>
-# 3. Funkční základ aplikace
-
-### 3.1 BE Implementation (Implementace BE)
-For the Proof Of Concept (PoC), we'll be storing almost everything locally. Time spent on local storage is not wasted, since our applicaiton must be accessible offline anyways. The only data that is loaded via web are:
-- A map. It will be downloadable, but to not waste too much storage, offline maps will be downloaded only after explicit confirmation.
-- Weather forecasts. Via external API. Cacheable
-- Croudsourced data (Mocked for PoC): Attractions, reviews, events, routes.
-
-Then, part of the data would be extracted to a BE server (Likely a .NET API).
-- User information to enable synchronization with other devices.
-- Trip information to enable sharing it with other people.
-- TODO: Add other things we'd like to have in BE.
-
-TODO: Attach some screenshots?
-### 3.2 Klicove casti FE
-TODO: Describe it & attach some screenshots?	
-
-
-$$
-	
-$$
