@@ -14,8 +14,8 @@ TODO: Obsah.
 We have decided we'd like to look into applications that provide tooling to help people in planning their upcoming trips, be it one or many cities, a new country, or a different continent. Nadzeya came up with this idea because of the many issues she and her friends had with the tooling they were recently using. Some of them being:
 
 #### 1.1.2 Team members
-- Albert Popov (xpopov10) <- Captain
-- Nadzeya Antsipenka (xantsi00)
+- Albert Popov (xpopov10)
+- Nadzeya Antsipenka (xantsi00) <- Captain
 - Nurdaulet Turar (xturarn00)
 
 ---
@@ -41,7 +41,6 @@ A summary:
 - Created a Google Form (https://forms.gle/QXqrSPgtp4VPS8CR9)
 - Surveyed 2 respondents
 
-
 1. **Have you travelled or are you planning to travel? Or has someone planned it for you?**
 - Yes
 - Yes, I have travelled
@@ -51,52 +50,42 @@ A summary:
 - Internet guides. Hashtags on Instagram. Reviews on Google maps
 
 3. **Do you use apps when planning your trip, if so, which ones?**
-
 - No
 - Help notes on mobile
 
 4. **What was your experience? What did you like about it? What could have been done better? (if you haven't used the app, you can skip it)**
-
 - I like the ease of use. Easy to change the schedule. Ease of sharing notes.
 - (Not using any apps)
 
 5. **Do you factor in events (fairs, carnivals, festivals) in the places you visit?**
-
 - No
 - Yes
 
 6. **Do you go for the sights of a city or for the events in that city?**
-
 - The first option
 - Both sights and events
 
 7. **What is your usual budget? Floating or specific?**
-
 - I usually don't have a segmented amount and i often spend more than expected
 - Floating
 
 8. **When you visit a city, are you interested in seeing the sights around that city? (Out of town)**
-
 - Yes, thats why i love traveling by car
 - Yes, as long as it is easily accessible by public transportation.
 
 9. **Do you prefer to visit only one city or several cities?**
-
 - I prefer to visit several cities and even several countries within my trip
 - Depends on the number of days and the size of the city. 3 days for a small city (Znojmo), 10 days for a big city (Paris).
 
 10. **When traveling from one city to another, would you like to see sights along the way?**
-
 - Yes
 - Rather no than yes. Only if a private car
 
 11. **Are there any wishes for the apps you use?**
-
 - Easy to use, so that I wouldn't be too lazy to use it after a couple of uses
 - No
 
 12. **What do you miss when planning your travels? What would help you with that?**
-
 - Maybe it would be great to have an app where i can store all QR codes, PINs, addresses, and telephone numbers related to this trip (flights, accommodation etc).
 - Automatic weather updates. For example, two days before departure/leave get an alert: “It will rain in $city_name for the next two days. Don't forget to take an umbrella” etc.
 
@@ -145,7 +134,7 @@ I aimed to find spots in his process, that we could optimize to improve his expe
     - It would be convenient to have a tool for simultaneously planning places to visit (find & browse attractions, decide on whether they are interesting see reviews, photos, etc.) and organizing a route (decide on how to visit places chosen, see if all works out timetable).
 5. Do you consider events happening at your travel destinations?
     -  No
-6. Are you interested in seeing nearby attractions?**
+6. Are you interested in seeing nearby attractions?
     -  Yes
 7. While traveling from one location to another (they use carsharing), do you explore places, attractions along the way?
     -  Yes
@@ -166,7 +155,6 @@ Cons:
 
 #### 1.3.2 MakeMyTrip (Albert)
 MakeMyTrip integrates booking options for flights, hotels, and packages in one app, simplifying travel planning.
-
 Pros:
 1. Integrated bookings for flights, hotels, transport, and packages in one app, streamlining travel planning.
 2. Loyalty System: Regular users enjoy bonuses and discounts.
@@ -179,7 +167,6 @@ Cons:
 
 #### 1.3.3 Wanderlog (Nadzeya)
 A comprehensive tool for organizing trips from start to finish.
-
 Pros:  
 1. Has a wide range of features. Has almost everything you need to plan a trip: organize itineraries, plan routes, store reservations, accommodation and track expenses.  
 2. Allows for online collaboration with other people coming on a trip.
@@ -217,7 +204,6 @@ Cons:
 
 #### 1.3.6 TripAdvisor (Nur)
 Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
-
 Pros:
 - Large information database on attractions, restaurants, and hotels with reviews and ratings from users.
 - Booking options directly through the app, simplifying travel planning.
@@ -226,11 +212,7 @@ Cons:
 - Limited trip planning flexibility, especially regarding detailed scheduling and route tracking.
 - Complex and unintuitive trip organization interface.
 - Ads and commercial influence on search results.
-**User Expectations and Desires**
 
-- **Collaboration Features**: There is a strong demand for better collaboration tools that allow users to share itineraries easily with friends and family.
-- **Simplified Planning Tools**: Users want straightforward tools that allow them to plan itineraries without unnecessary complexity. They prefer apps that can integrate their travel information seamlessly without overwhelming them with ads or upselling.
-- **Integration with Other Services**: Suggestions were made for integrating travel planning apps with credit card services to enhance functionality, as many users already utilize these cards for travel-related benefits.
 #### 1.3.7 Conclusion
 None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). //TODO: Add smth about Sygic & MakeMyTrip?
 
@@ -306,19 +288,25 @@ We have chosen Flutter as out mobile framework, since it is the best fit for our
 | **React Native** | Shorter time to market                                        | Limited prior experience                    | Below average           | Relatively small |
 | **Xamarin**      | Moderate time to market; may need platform-specific expertise | Strong in C# and .NET                       | Average                 | Moderate         |
 | **Flutter**      | Shorter time to market                                        | Dart is similar to C#; solid OOP background | Near-native performance | Relatively large |
+
 #### 2.2.3 Chosen BE Framework
+
 We've chosen .NET to develop an API for our application. Reasoning behind this:
 - We all have experience with .NET Framework -> it's the fastest way for us to create a BE.
 - It's both performant in development time and execution time.
 - Huge and very mature developers community.
+
 ### 2.3 BE API (Návrh API k BE, v rámci týmu)
+
 #### 2.3.1 Architecture: MVVM at FE
 
 ![FE Architecture](Pasted%20image%2020241107230844.png)
-	#### 2.3.2 Data model
-Below our current sketch of our data model is presented. Cities are added when a place within that city is added. User can plan to visit several places within one city.
+
+#### 2.3.2 Data model
+Below our current sketch of our data model is presented. Cities are added when a place inside that city is added. User can plan to visit several places within one city.
 
 ![Data Model](Pasted%20image%2020241107231140.png)
+
 #### 2.3.3 Backend
 Most of the functionality is going to be provided via http API.
 
@@ -335,24 +323,49 @@ Our API will provide the following:
 During development, more actions may be added as we spot what we might've missed.
 
 <div style="page-break-after: always;"></div>
-# 3. Funkční základ aplikace
+
+# 3. (Funkční základ aplikace)
 
 ### 3.1 BE Implementation (Implementace BE)
-For the Proof Of Concept (PoC), we'll be storing almost everything locally. Time spent on local storage is not wasted, since our applicaiton must be accessible offline anyways. The only data that is loaded via web are:
+
+#### 3.1.1 BE Tech Stack
+For the Proof Of Concept (PoC), we'll be storing everything locally. Time spent on local storage is not wasted, since our applicaiton must be accessible offline anyways. We'll be using a NoSQL solution for local storage: [Hive](https://pub.dev/documentation/hive/latest/).
+
+The only data that is loaded via web, using other APIs are:
 - A map. It will be downloadable, but to not waste too much storage, offline maps will be downloaded only after explicit confirmation.
 - Weather forecasts. Via external API. Cacheable
-- Croudsourced data (Mocked for PoC): Attractions, reviews, events, routes.
+- Points of Interest (Mocked for PoC): Routes, attractions, reviews, events, routes.
 
-Then, part of the data would be extracted to a BE server (Likely a .NET API).
-- User information to enable synchronization with other devices.
-- Trip information to enable sharing it with other people.
-- TODO: Add other things we'd like to have in BE.
+At some point during the development we'll add a BE API Server to enable sharing routes, reviews, with other users and syncing between devices. BE will be developed using .NET. Data storage implemented using .NET Entity Framework. 
 
-TODO: Attach some screenshots?
+#### 3.1.2 Data on BE
+Points of Interest, reviews, weather forecasts, a map, search and navigation features are not originating from our app. We'll be getting it all from:
+- Points of Interest, reviews: TripAdvisor
+- Weather Forecasts: An API. Which one exactly is not decided yet.
+- Map, search and navigation: OpenStreetMaps API
+
+#### 3.1.3 API Implementation
+For local BE, an extra application layer would be introduced. Its interface provides everything from section `2.3.3 Backend`. To do that, it would be making API Calls, execute read and write queries on a local database. In future releases part of the API calls will be sent to our backend server instead.
+
 ### 3.2 Klicove casti FE
-TODO: Describe it & attach some screenshots?	
-
-
-$$
 	
-$$
+#### 3.2.1 FE Tech Stack
+- [Flutter](https://flutter.dev/) is the framework of choice. 
+- [MobX](https://pub.dev/packages/mobx) package would be used for providing reactivity to our GUI. 
+- [flutter_map](https://pub.dev/packages/flutter_map) package for displaying a map
+
+#### 3.2.2 FE Skeleton
+Source code is separated into following file structure:
+- backend/ Contains an interface and implementation of local backend.
+- shared/ Common GUI elements
+- onboarding/ Onboarding GUI implementation
+- trip_inspiration/ Trip Inspirations GUI implementation
+- trip_planning/ Trip Planning GUI implementation
+- map/ A configurable map GUI implementation. It is used by trip_inspiration and trip_planning GUI modules.
+- doc_upload/ Document uploading screens GUI implementation
+- main.dart An entrypoint of the FE application
+
+#### 3.2.3 Connection with an API
+As mentioned earlier, there would be a separate arhitectural layer for BE. Connection with FE is done via interfaces defined as asynchronous methods.
+
+Connection to a Backend server will be via HTTP API.
