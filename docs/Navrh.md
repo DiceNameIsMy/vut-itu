@@ -139,7 +139,12 @@ I aimed to find spots in his process, that we could optimize to improve his expe
 7. While traveling from one location to another (they use carsharing), do you explore places, attractions along the way?
     -  Yes
 
+### 1.2.4.4 Customer research summary
+TODO: We need this as specified in the project requirements
+
 ### 1.3 Research of existing solutions (Průzkum existujících řešení)
+
+We have decided to research 6 applications that are trying to do what our users are looking for. They are: Tripit, MakeMyTrip, Wanderlog, Stippl, Sygic Travel, and TripAdvisor.
 
 #### 1.3.1 Tripit (Albert)
 TripIt is a travel management application designed to streamline the organization of travel plans by consolidating all trip details in one place. It automatically creates a detailed timeline from booking confirmations for flights, hotels, car rentals, and other services by forwarding confirmation emails to a dedicated address.
@@ -214,7 +219,7 @@ Cons:
 - Ads and commercial influence on search results.
 
 #### 1.3.7 Conclusion
-None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). //TODO: Add smth about Sygic & MakeMyTrip?
+None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but resulted in a cluttered, hard to use interface (Wanderlog). //TODO: Add smth about Sygic & MakeMyTrip?
 
 Keypoints:
 - It's very important to keep in mind our customer's first interaction when designing a multi-purpose, all-around app, because the first impression is the biggest factor in user retention.
@@ -227,7 +232,6 @@ Keypoints:
 
 #### 1.4.1 User Capabilities
 Our app will allow users to:
-- **Crowdsourcing** is the core of our app. What makes us different from out competitiors. We want to bring users to a platform where they can share experiences, provide guidance to others.
 - **Browse cities and attractions** using an interactive map of the whole globe. Add them to a wishlist.
 - **Create routes between cities and attractions**
     1. Automatically using the built-in navigation software. Be able to tweak it if deemed necessary.
@@ -244,6 +248,7 @@ Our app will allow users to:
 - **Inspirations** screen for browsing ideas for trips to take, places to visit.
 - **Interactive map** for browsing and saving/selecting locations and/or attractions.
 - **Organizing** screen for creating or selecting routes, setting visit dates, and viewing weather forecasts for the trip.
+- **Document Upload** for a trip. Plane tickets, QR Codes for entering museums, City passes, etc.
 
 ---
 
@@ -261,21 +266,25 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 - Documents viewing & uploading
 
 <div style="page-break-after: always;"></div>
+
 # 2. App proposal (Návrh)
 
 ### 2.1 GUI (Návrh GUI)
 #### 2.1.1 Albert's GUI
-- Wishlist screen
-- Route selection screen
+- Wishlist screen TODO: Describe how that reflects user requirements
+- Route selection screen TODO: Describe how that reflects user requirements
+- TODO: Add a screenshot from Figma
 #### 2.1.2  Nadzeya's GUI
-- Main screen
+- Main screen TODO: Describe how that reflects user requirements
+- TODO: Add a screenshot from Figma
 #### 2.1.3 Nurdaulet's GUI
-- Onboarding
-- Documents viewing & uploading
+- Onboarding: Simplify the first-time experience to get something useful from the app ASAP.
+- Documents viewing & uploading: Useful during the trip, because they won't need to look for relevan documents in several apps, but instead will have everything in one place.
+- TODO: Add a screenshot from Figma
 ### 2.2 Tech stack choice (Výběr technologií)
 The following sections detail our choices for the platform and framework, along with the reasoning behind each decision.
 #### 2.2.1 Chosen FE Platform
-We have decided to make a mobile application. Our users are always carrying their phones with them (everyone do). Since we provide **offline navigation**, storing of tickets, passes, mobile platform fits best for our use case.
+We have decided to make a mobile application. Our users are always carrying their phones with them (almost everyone does nowadays). Since we provide **offline navigation** and storing of tickets, passes, mobile platform fits best for our use case.
 #### 2.2.2 Chosen FE Framework
 We have chosen Flutter as out mobile framework, since it is the best fit for our application. When considering the choice of technology stack, we've been considering **Time To Market**, being how fast an application can be built & released, **performance**, since displaying a customized map is a moderatly intensive task. **We did not care about the application size**, since it's safe to say that these days most phones can easily allocate ~100 MB of storage. Here's a table of comparison:
 
@@ -287,32 +296,35 @@ We have chosen Flutter as out mobile framework, since it is the best fit for our
 | **Flutter**      | Shorter time to market                                        | Dart is similar to C#; solid OOP background | Near-native performance | Relatively large |
 
 #### 2.2.3 Chosen BE Framework
-
 We've chosen .NET to develop an API for our application. Reasoning behind this:
 - We all have experience with .NET Framework -> it's the fastest way for us to create a BE.
 - It's both performant in development time and execution time.
 - Huge and very mature developers community.
-
 ### 2.3 BE API (Návrh API k BE, v rámci týmu)
 
 #### 2.3.1 Architecture: MVVM at FE
+We have defined 3 layers of a FE part of the application:
+- View: Takes care of GUI representation. Listens for changes in ViewModel layer & re-renders GUI elements when someting changes. Sends events, actions, that ViewModel elements can react to.
+- ViewModel: Is a representation of the application state. It defines actions that can be made, like "Add place to trip", "Upload document", "Duplicate the trip", etc.
+- Model: A representation of data actually being stored.
 
-![FE Architecture](Pasted%20image%2020241107230844.png)
+![FE Architecture](img/image.png)
 
 #### 2.3.2 Data model
-Below our current sketch of our data model is presented. Cities are added when a place inside that city is added. User can plan to visit several places within one city.
+Below our current sketch of the data model is presented. 
+- Cities are added when a place inside that city is added. User can plan to visit several places within one city.
+	- Inpirations are not separated as a separate entity because its actually almost the same thing as the trip.
 
-![Data Model](Pasted%20image%2020241107231140.png)
+![Data Model](img/Pasted%20image%2020241107231140.png)
 
 #### 2.3.3 Backend
-Most of the functionality is going to be provided via http API.
 
-Our API will provide the following:
+Our API will provide the following: 
 - 🌍 Querying of **Points of Interest (PoI)** within some location range. It can be a city, a town, a museum, a mall, or whatever else.
 - 🌄 Querying of Trips for inspiration. If user likes something, provide an action to copy it to his list of trips. 
 	- On BE, a recommendation system would be added (out of scope, won't implement). It would pick out trip ideas from a database of trips of other users, that would then be shown to users that are looking for some inspiration.
 - 🏛️ Adding a **Place** he wants to visit which is linked to a **PoI**.
-- ☁️ Get a weather forecast for the **Cities** or **Places** he wants to visit for the dates range. It can be within his planned visiting dates, or a wider range to pick better dates.
+- ☁️ Get a weather forecast for the **Cities** or **Places** he wants to     visit for the dates range. It can be within his planned visiting dates, or a wider range to pick better dates.
 - ✈️ CRUD of his **Trips**, an entity that holds the places he wants to visit during the trip.
 - 🏛️ CRUD of his places.
 - 📄 CRUD of his **Documents**, files that are useful to have in hand during the trip.
