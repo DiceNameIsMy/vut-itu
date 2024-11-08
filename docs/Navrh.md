@@ -15,7 +15,7 @@ We have decided we'd like to look into applications that provide tooling to help
 
 #### 1.1.2 Team members
 - Albert Popov (xpopov10)
-- Nadzeya Antsipenka (xantsi00) <- Captain
+- Nadzeya Antsipenka (xantsi00)
 - Nurdaulet Turar (xturarn00)
 
 ---
@@ -26,20 +26,13 @@ We have found and interviewed relevant 5 customers in total. An offline intervie
 - Primarily people who own, or are used to renting a car when traveling.
 #### 1.2.2 What they want/need from the application (co přesně od aplikace potřebuje)
 - A tool that makes planning of a trip easy.
-#### 1.2.3 Customer Requirements (poždavky uživatele)
-A summary:
-- A streamlined, intuitive interface with minimal clutter.
-- Ability to browse attractions with user recommendations on routes, not just destinations. TODO: What does that mean?
-- **Recommendations** not only on places to visit, but **on whole routes with attractions to take**.
-- Be able to find and research places. With pictures. When they are found and selected, **suggest possible routes to take.**
-- Shared accounts for group planning.
-- Weather forecasts for planned dates and destinations.
-- Storage for travel-related documents (tickets, QR codes, location details).
-#### 1.2.4 Underlying Research
 
-##### 1.2.4.1 Albert's customer research:
+#### 1.2.3 Underlying Research
+
+##### 1.2.3.1 Albert's customer research:
 - Created a Google Form (https://forms.gle/QXqrSPgtp4VPS8CR9)
 - Surveyed 2 respondents
+
 
 1. **Have you travelled or are you planning to travel? Or has someone planned it for you?**
 - Yes
@@ -50,42 +43,52 @@ A summary:
 - Internet guides. Hashtags on Instagram. Reviews on Google maps
 
 3. **Do you use apps when planning your trip, if so, which ones?**
+
 - No
 - Help notes on mobile
 
 4. **What was your experience? What did you like about it? What could have been done better? (if you haven't used the app, you can skip it)**
+
 - I like the ease of use. Easy to change the schedule. Ease of sharing notes.
 - (Not using any apps)
 
 5. **Do you factor in events (fairs, carnivals, festivals) in the places you visit?**
+
 - No
 - Yes
 
 6. **Do you go for the sights of a city or for the events in that city?**
+
 - The first option
 - Both sights and events
 
 7. **What is your usual budget? Floating or specific?**
+
 - I usually don't have a segmented amount and i often spend more than expected
 - Floating
 
 8. **When you visit a city, are you interested in seeing the sights around that city? (Out of town)**
+
 - Yes, thats why i love traveling by car
 - Yes, as long as it is easily accessible by public transportation.
 
 9. **Do you prefer to visit only one city or several cities?**
+
 - I prefer to visit several cities and even several countries within my trip
 - Depends on the number of days and the size of the city. 3 days for a small city (Znojmo), 10 days for a big city (Paris).
 
 10. **When traveling from one city to another, would you like to see sights along the way?**
+
 - Yes
 - Rather no than yes. Only if a private car
 
 11. **Are there any wishes for the apps you use?**
+
 - Easy to use, so that I wouldn't be too lazy to use it after a couple of uses
 - No
 
 12. **What do you miss when planning your travels? What would help you with that?**
+
 - Maybe it would be great to have an app where i can store all QR codes, PINs, addresses, and telephone numbers related to this trip (flights, accommodation etc).
 - Automatic weather updates. For example, two days before departure/leave get an alert: “It will rain in $city_name for the next two days. Don't forget to take an umbrella” etc.
 
@@ -101,7 +104,7 @@ Survey Conclusion
 
 Thus, it can be concluded that users are interested in an app that would integrate route planning, trip information storage and weather alerts to facilitate trip organisation and improve travel comfort.
 
-##### 1.2.4.2 Nadzeya's customer research:
+##### 1.2.3.2 Nadzeya's customer research:
 - Developed a list of questions for in-person respondent interviews.
 - Surveyed 2 respondents.
 
@@ -114,7 +117,7 @@ To summarize, our potential customers want a travel app to have:
 - a simple list of local, free events without cluttering the primary experience.
 - filters or tags to prioritize affordable food, accommodation, and travel options.
 - user-provided guides about places to eat, stay, visit, and other minor areas of interest.
-##### 1.2.4.3 Nurdaulet's customer research
+##### 1.2.3.3 Nurdaulet's customer research
 - Developed a list of questions for in-person respondent interviews.
 - Using that, has interviewed 1 relevant customer.
 
@@ -134,13 +137,20 @@ I aimed to find spots in his process, that we could optimize to improve his expe
     - It would be convenient to have a tool for simultaneously planning places to visit (find & browse attractions, decide on whether they are interesting see reviews, photos, etc.) and organizing a route (decide on how to visit places chosen, see if all works out timetable).
 5. Do you consider events happening at your travel destinations?
     -  No
-6. Are you interested in seeing nearby attractions?
+6. Are you interested in seeing nearby attractions?**
     -  Yes
 7. While traveling from one location to another (they use carsharing), do you explore places, attractions along the way?
     -  Yes
 
-### 1.2.4.4 Customer research summary
-TODO: We need this as specified in the project requirements
+#### 1.2.4 Customer Requirements (poždavky uživatele)
+A summary:
+- A streamlined, intuitive interface with minimal clutter.
+- Ability to browse attractions with user recommendations on routes, not just destinations.
+- **Recommendations** not only on places to visit, but **on whole routes with attractions to take**.
+- Be able to find and research places. With pictures. When they are found and selected, **suggest possible routes to take.**
+- Shared accounts for group planning.
+- Weather forecasts for planned dates and destinations.
+- Storage for travel-related documents (tickets, QR codes, location details).
 
 ### 1.3 Research of existing solutions (Průzkum existujících řešení)
 
@@ -160,6 +170,7 @@ Cons:
 
 #### 1.3.2 MakeMyTrip (Albert)
 MakeMyTrip integrates booking options for flights, hotels, and packages in one app, simplifying travel planning.
+
 Pros:
 1. Integrated bookings for flights, hotels, transport, and packages in one app, streamlining travel planning.
 2. Loyalty System: Regular users enjoy bonuses and discounts.
@@ -172,6 +183,7 @@ Cons:
 
 #### 1.3.3 Wanderlog (Nadzeya)
 A comprehensive tool for organizing trips from start to finish.
+
 Pros:  
 1. Has a wide range of features. Has almost everything you need to plan a trip: organize itineraries, plan routes, store reservations, accommodation and track expenses.  
 2. Allows for online collaboration with other people coming on a trip.
@@ -209,6 +221,7 @@ Cons:
 
 #### 1.3.6 TripAdvisor (Nur)
 Helps travelers find, review, and plan visits to attractions, restaurants, and events worldwide. It provides user-generated reviews, ratings, and booking options to assist with informed travel decisions.
+
 Pros:
 - Large information database on attractions, restaurants, and hotels with reviews and ratings from users.
 - Booking options directly through the app, simplifying travel planning.
@@ -217,21 +230,27 @@ Cons:
 - Limited trip planning flexibility, especially regarding detailed scheduling and route tracking.
 - Complex and unintuitive trip organization interface.
 - Ads and commercial influence on search results.
+**User Expectations and Desires**
 
+- **Collaboration Features**: There is a strong demand for better collaboration tools that allow users to share itineraries easily with friends and family.
+- **Simplified Planning Tools**: Users want straightforward tools that allow them to plan itineraries without unnecessary complexity. They prefer apps that can integrate their travel information seamlessly without overwhelming them with ads or upselling.
+- **Integration with Other Services**: Suggestions were made for integrating travel planning apps with credit card services to enhance functionality, as many users already utilize these cards for travel-related benefits.
 #### 1.3.7 Conclusion
-None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but resulted in a cluttered, hard to use interface (Wanderlog). //TODO: Add smth about Sygic & MakeMyTrip?
+- None of the applications fulfill all the main wishes of our respondents we've identified. Some excel at their own thing (TripAdvisor, TripIt), some tried to include everything on one place but failed to consider what's the most important for users (Wanderlog). 
+- MakeMyTrip, and Wanderlog suffer from overwhelming interfaces that can be intimidating for new users. The abundance of features is not organized intuitively, making the user experience less pleasant. 
+- While some apps allow users to add destinations, they often do not provide recommendations for entire routes or suggest attractions along the way. For example, TripIt and TripAdvisor focus more on individual bookings and reviews rather than holistic route suggestions.
+- Interactive maps are crucial for visual planning, yet apps like Stippl have confusing map features that detract from usability.
 
 Keypoints:
 - It's very important to keep in mind our customer's first interaction when designing a multi-purpose, all-around app, because the first impression is the biggest factor in user retention.
-- //TODO: Add something about none of the apps providing routes from real users, or them being badly implemented. We can to better.
-- //TODO: ...
-- Driving in a car can get boring. They wanted like to have a way to discover & visit nearby attractions while on their way to their main destination.
-- //TODO Написать о том что мы при планировании поездок мы используем множетсво ресурсов в рамках одного приложения
-- //TODO 
+- As noted in the customer survey, some respondents assumed that they gather information about the place they want to visit before planning a trip, but they gather information from many resources (social media, Google Maps, friends). It is planned that a user can use only one app for this, if they want to visit a place but don't know anything about it, the app will provide some itineraries based on other users' past trips to give newcomers some ideas for travelling or some recommendations that app can give them based on place reviews.
+- The importance of creating notes (timetables, booking codes, reminders, etc.) for trips is mostly a bit underestimated by the developers of the above mentioned apps, and the user's desire to save some travel documents in the app can be a solution to complex paperwork.
+ 
 ### 1.4 App Requirements (Zadání)
 
 #### 1.4.1 User Capabilities
 Our app will allow users to:
+- **Crowdsourcing** is the core of our app. What makes us different from out competitiors. We want to bring users to a platform where they can share experiences, provide guidance to others.
 - **Browse cities and attractions** using an interactive map of the whole globe. Add them to a wishlist.
 - **Create routes between cities and attractions**
     1. Automatically using the built-in navigation software. Be able to tweak it if deemed necessary.
@@ -254,13 +273,13 @@ Our app will allow users to:
 
 ### 1.5 FE Work distribution (Rozdělení práce týmu na FE)
 
-TODO: IT'S A SAMPLE. CAN BE CHANGED.
 #### 1.5.1 Albert's FE
-- Wishlist screen
-- Route selection screen
+- Active Trip Section
+- Options (Settings)
 #### 1.5.2 Nadzeya's FE
 - Main screen
-- Options (Settings)
+- Wishlist screen
+- Route selection screen
 #### 1.5.3 Nurdaulet's FE
 - Onboarding
 - Documents viewing & uploading
@@ -271,20 +290,22 @@ TODO: IT'S A SAMPLE. CAN BE CHANGED.
 
 ### 2.1 GUI (Návrh GUI)
 #### 2.1.1 Albert's GUI
-- Wishlist screen TODO: Describe how that reflects user requirements
-- Route selection screen TODO: Describe how that reflects user requirements
-- TODO: Add a screenshot from Figma
+- Active Trip Section
+- Options (Settings)
+- TODO: Screenshot from Figma of work done
 #### 2.1.2  Nadzeya's GUI
-- Main screen TODO: Describe how that reflects user requirements
-- TODO: Add a screenshot from Figma
+- Main screen
+- Wishlist screen
+- Route selection screen
+- TODO: Screenshot from Figma of work done
 #### 2.1.3 Nurdaulet's GUI
-- Onboarding: Simplify the first-time experience to get something useful from the app ASAP.
-- Documents viewing & uploading: Useful during the trip, because they won't need to look for relevan documents in several apps, but instead will have everything in one place.
-- TODO: Add a screenshot from Figma
+- Onboarding
+- Documents viewing & uploading
+- TODO: Screenshot from Figma of work done
 ### 2.2 Tech stack choice (Výběr technologií)
 The following sections detail our choices for the platform and framework, along with the reasoning behind each decision.
 #### 2.2.1 Chosen FE Platform
-We have decided to make a mobile application. Our users are always carrying their phones with them (almost everyone does nowadays). Since we provide **offline navigation** and storing of tickets, passes, mobile platform fits best for our use case.
+We have decided to make a mobile application. Our users are always carrying their phones with them (everyone do). Since we provide **offline navigation**, storing of tickets, passes, mobile platform fits best for our use case.
 #### 2.2.2 Chosen FE Framework
 We have chosen Flutter as out mobile framework, since it is the best fit for our application. When considering the choice of technology stack, we've been considering **Time To Market**, being how fast an application can be built & released, **performance**, since displaying a customized map is a moderatly intensive task. **We did not care about the application size**, since it's safe to say that these days most phones can easily allocate ~100 MB of storage. Here's a table of comparison:
 
@@ -310,23 +331,45 @@ We have defined 3 layers of a FE part of the application:
 
 ![FE Architecture](img/image.png)
 
-#### 2.3.2 Data model
-Below our current sketch of the data model is presented. 
-- Cities are added when a place inside that city is added. User can plan to visit several places within one city.
-	- Inpirations are not separated as a separate entity because its actually almost the same thing as the trip.
+![FE Architecture](Pasted%20image%2020241107230844.png)
+	#### 2.3.2 Data model
+Below our current sketch of our data model is presented. Cities are added when a place within that city is added. User can plan to visit several places within one city.
 
-![Data Model](img/Pasted%20image%2020241107231140.png)
-
+![Data Model](Pasted%20image%2020241107231140.png)
 #### 2.3.3 Backend
+Most of the functionality is going to be provided via http API.
 
-Our API will provide the following: 
+Our API will provide the following:
 - 🌍 Querying of **Points of Interest (PoI)** within some location range. It can be a city, a town, a museum, a mall, or whatever else.
 - 🌄 Querying of Trips for inspiration. If user likes something, provide an action to copy it to his list of trips. 
 	- On BE, a recommendation system would be added (out of scope, won't implement). It would pick out trip ideas from a database of trips of other users, that would then be shown to users that are looking for some inspiration.
 - 🏛️ Adding a **Place** he wants to visit which is linked to a **PoI**.
-- ☁️ Get a weather forecast for the **Cities** or **Places** he wants to     visit for the dates range. It can be within his planned visiting dates, or a wider range to pick better dates.
+- ☁️ Get a weather forecast for the **Cities** or **Places** he wants to visit for the dates range. It can be within his planned visiting dates, or a wider range to pick better dates.
 - ✈️ CRUD of his **Trips**, an entity that holds the places he wants to visit during the trip.
 - 🏛️ CRUD of his places.
 - 📄 CRUD of his **Documents**, files that are useful to have in hand during the trip.
 - ⭐ Create a review for a **Place** he had visited.
 During development, more actions may be added as we spot what we might've missed.
+
+<div style="page-break-after: always;"></div>
+# 3. Funkční základ aplikace
+
+### 3.1 BE Implementation (Implementace BE)
+For the Proof Of Concept (PoC), we'll be storing almost everything locally. Time spent on local storage is not wasted, since our applicaiton must be accessible offline anyways. The only data that is loaded via web are:
+- A map. It will be downloadable, but to not waste too much storage, offline maps will be downloaded only after explicit confirmation.
+- Weather forecasts. Via external API. Cacheable
+- Croudsourced data (Mocked for PoC): Attractions, reviews, events, routes.
+
+Then, part of the data would be extracted to a BE server (Likely a .NET API).
+- User information to enable synchronization with other devices.
+- Trip information to enable sharing it with other people.
+- TODO: Add other things we'd like to have in BE.
+
+TODO: Attach some screenshots?
+### 3.2 Klicove casti FE
+TODO: Describe it & attach some screenshots?	
+
+
+$$
+	
+$$
