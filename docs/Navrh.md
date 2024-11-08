@@ -6,7 +6,7 @@ Brno University of Technology - Faculty of Information Technology
 # 1. The Application (Zadání)
 ### 1.1 Name & Topic (Název a téma)
 #### 1.1.1 YouQuest
-We have decided we'd like to look into applications that provide tooling to help people in planning their upcoming trips, be it one or many cities, a new country, or a different continent. Nadzeya came up with this idea because of the many issues she and her friends had with the tooling they were recently using. Some of them being:
+We have decided we'd like to look into applications that provide tooling to help people in planning their upcoming trips, be it one or many cities, a new country, or a different continent. Nadzeya came up with this idea because of the many issues she and her friends had with the tooling they were recently using.
 #### 1.1.2 Team members
 - Albert Popov (xpopov10) <- Captain
 - Nadzeya Antsipenka (xantsi00)
@@ -17,13 +17,13 @@ We have decided we'd like to look into applications that provide tooling to help
 
 ### 1.2 Customers research (Uživatelský průzkum a specifikace)
 
-We have found and interviewed relevant 5 customers in total. An offline interview, open-ended Q&A, and an online questionnare were used. Here's what we've learned from them:
+We have found and interviewed 5 relevant customers in total. An offline interview, open-ended Q&A, and an online questionnare were used. Here's what we've learned from them:
 #### 1.2.1 Our customers (kdo je konkrétní uživatel)
 
 - People interested in traveling.
-- Primarily people who own, or are used to renting a car when traveling.
+	- People who plan their trips without the help of travel agents
 #### 1.2.2 What they want/need from the application (co přesně od aplikace potřebuje)
-
+	
 - A tool that makes planning of a trip easy.
 
 #### 1.2.3 Underlying Research
@@ -31,56 +31,6 @@ We have found and interviewed relevant 5 customers in total. An offline intervie
 ##### 1.2.3.1 Albert's customer research:
 - Created a Google Form (https://forms.gle/QXqrSPgtp4VPS8CR9)
 - Surveyed 2 respondents
-
-1. **Have you travelled or are you planning to travel? Or has someone planned it for you?**
-- Yes
-- Yes, I have travelled
-
-2. **How did you plan it? How did you choose the places, cities to visit? What criteria did you use to choose?**
-- Proximity to each member of the expedition, relatively cheap accommodation and flights.
-- Internet guides. Hashtags on Instagram. Reviews on Google maps
-
-3. **Do you use apps when planning your trip, if so, which ones?**
-- No
-- Help notes on mobile
-
-4. **What was your experience? What did you like about it? What could have been done better? (if you haven't used the app, you can skip it)**
-- I like the ease of use. Easy to change the schedule. Ease of sharing notes.
-- (Not using any apps)
-
-5. **Do you factor in events (fairs, carnivals, festivals) in the places you visit?**
-- No
-- Yes
-
-6. **Do you go for the sights of a city or for the events in that city?**
-- The first option
-- Both sights and events
-
-7. **What is your usual budget? Floating or specific?**
-- I usually don't have a segmented amount and i often spend more than expected
-- Floating
-
-8. **When you visit a city, are you interested in seeing the sights around that city? (Out of town)**
-- Yes, thats why i love traveling by car
-- Yes, as long as it is easily accessible by public transportation.
-
-9. **Do you prefer to visit only one city or several cities?**
-- I prefer to visit several cities and even several countries within my trip
-- Depends on the number of days and the size of the city. 3 days for a small city (Znojmo), 10 days for a big city (Paris).
-
-10. **When traveling from one city to another, would you like to see sights along the way?**
-- Yes
-- Rather no than yes. Only if a private car
-
-11. **Are there any wishes for the apps you use?**
-- Easy to use, so that I wouldn't be too lazy to use it after a couple of uses
-- No
-
-12. **What do you miss when planning your travels? What would help you with that?**
-- Maybe it would be great to have an app where i can store all QR codes, PINs, addresses, and telephone numbers related to this trip (flights, accommodation etc).
-- Automatic weather updates. For example, two days before departure/leave get an alert: “It will rain in $city_name for the next two days. Don't forget to take an umbrella” etc.
-
-Survey Conclusion:
 - Trip Planning: Both respondents had travelled before and planned their trips themselves. They chose destinations based on accessibility, accommodation and transport costs, as well as online reviews and social media such as Instagram and Google Maps.
 - Use of apps: Both respondents indicated that they do not use specialised planning apps, relying on notes on mobile devices. They appreciate the ease and convenience of editing schedules and sharing notes.
 - Travel interests: One respondent prefers to visit attractions, while the other is interested in both attractions and events such as fairs and festivals.
@@ -92,14 +42,14 @@ Survey Conclusion:
 - Surveyed 2 respondents.
 
 To summarize, our potential customers want a travel app to have:
-- a basic interface initially that grows in complexity only as needed.
-- a clean, minimalistic design with color accents for important menu items.
-- an easy-to-create wish list of destinations marked on a map without requiring daily or hourly scheduling.
-- automatic distance calculation between wish-listed spots, with suggestions for nearby attractions.
-- minor, lesser-known locations (e.g., cemeteries, small landmarks, abandoned buildings) with photos and descriptions, even if these places aren't typically classified as "mainstream" attractions.
-- a simple list of local, free events without cluttering the primary experience.
-- filters or tags to prioritize affordable food, accommodation, and travel options.
-- user-provided guides about places to eat, stay, visit, and other minor areas of interest.
+- A basic interface initially that grows in complexity only as needed.
+- A clean, minimalistic design with color accents for important menu items.
+- An easy-to-create wish list of destinations marked on a map without requiring daily or hourly scheduling.
+- Automatic distance calculation between wish-listed spots, with suggestions for nearby attractions.
+- Minor, lesser-known locations (e.g., cemeteries, small landmarks, abandoned buildings) with photos and descriptions, even if these places aren't typically classified as "mainstream" attractions.
+- A simple list of local, free events without cluttering the primary experience.
+- Filters or tags to prioritize affordable food, accommodation, and travel options.
+- User-provided guides about places to eat, stay, visit, and other minor areas of interest.
 
 ##### 1.2.3.3 Nurdaulet's customer research
 - Developed a list of questions for in-person respondent interviews.
@@ -107,24 +57,9 @@ To summarize, our potential customers want a travel app to have:
 
 My interviewee does not have extensive experience with other trip-planning apps. I conducted an interview to learn more about his travel experiences, focusing on why he enjoys traveling, how he approaches trip planning, and how some of his past trips have went.
 
-He is open to exploring new apps to find a better fit for his needs. Specifically, he would like an app that can assist with trip planning while suggesting activities and places to visit. A key use case he mentioned is when driving to a new city - using a navigation app to display interesting attractions and sightseeing opportunities along the route.
+I aimed to find spots in his process, that we could optimize to improve his experience. To learn about that, I've started by asking open-ended questions, but then went more directly.
 
-I aimed to find spots in his process, that we could optimize to improve his experience. To learn about that, I've started by asking open-ended questions, but then went more directly. Below is a summary of the most relevant questions and responses:
-1. Have you ever planned a trip to a completely new location? (It would make no sense to continue if an answer was a no)
-    - Yes
-2. How did you plan it? How did you choose places or cities to visit? What were your selection criteria?
-    - My mother wanted to travel, so we searched on Google and used 34Travel along with friends’ recommendations. The main criteria were sightseeing opportunities, financial accessibility, and if possible, a location within the EU for visa purposes.
-3. What applications did you use during the planning process?
-    - Beach spots: photos and reviews on the web
-    - Other attractions: reviews and articles on the web (reviews are more relevant than articles)
-4. How was your experience? What did you enjoy, and what could be improved?
-    - It would be convenient to have a tool for simultaneously planning places to visit (find & browse attractions, decide on whether they are interesting see reviews, photos, etc.) and organizing a route (decide on how to visit places chosen, see if all works out timetable).
-5. Do you consider events happening at your travel destinations?
-    -  No
-6. Are you interested in seeing nearby attractions?**
-    -  Yes
-7. While traveling from one location to another (they use carsharing), do you explore places, attractions along the way?
-    -  Yes
+He is open to exploring new apps to find a better fit for his needs. Specifically, he would like an app that can assist with trip planning while suggesting activities and places to visit. A key use case he mentioned is when driving to a new city - using a navigation app to display interesting attractions and sightseeing opportunities along the route.
 
 #### 1.2.4 Customer Requirements (poždavky uživatele)
 A summary:
