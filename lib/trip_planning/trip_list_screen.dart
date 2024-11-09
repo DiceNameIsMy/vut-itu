@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vut_itu/trip/trip.dart';
 import 'package:vut_itu/trip/trip_viewmodel.dart';
+import 'package:vut_itu/trip_planning/trip_screen.dart';
 
 class TripListScreen extends StatefulWidget {
   @override
@@ -39,24 +38,19 @@ class TripListScreenState extends State<TripListScreen> {
                 ? Theme.of(context).textTheme.bodyMedium?.color
                 : Theme.of(context).colorScheme.secondary;
 
-            return ChangeNotifierProvider(
-              create: (context) => trip,
-              child: Consumer<TripViewmodel>(
-                builder: (context, _, child) {
-                  var trip = context.read<TripViewmodel>();
-                  return ListTile(
-                    title: Text(
-                      trip.title ?? "Unset",
-                      style: TextStyle(
-                        color: titleColor,
-                      ),
-                    ),
-                    onTap: () {
-                      context.go('/trips/${trip.id}', extra: trip);
-                    },
-                  );
-                },
+            return ListTile(
+              title: Text(
+                trip.title ?? "Unset",
+                style: TextStyle(
+                  color: titleColor,
+                ),
               ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TripScreen(trip)),
+                );
+              },
             );
           },
           itemCount: trips.length),

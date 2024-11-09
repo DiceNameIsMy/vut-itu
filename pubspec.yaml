@@ -35,9 +35,7 @@ dependencies:
 
   flutter_map:
   flutter_map_cancellable_tile_provider:
-  go_router: ^14.4.1
   latlong2:
-  provider: ^6.1.2
   url_launcher: ^6.2.6
   uuid: ^4.5.1
 

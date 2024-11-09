@@ -1,50 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/settings/settings_controller.dart';
-import 'package:vut_itu/trip/trip_viewmodel.dart';
 import 'package:vut_itu/trip_planning/trip_list_screen.dart';
-import 'package:vut_itu/trip_planning/trip_screen.dart';
-
-/// The route configuration.
-final GoRouter _router = GoRouter(
-  routes: <RouteBase>[
-    GoRoute(
-      path: '/',
-      builder: (BuildContext context, GoRouterState state) =>
-          const MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: <RouteBase>[
-        GoRoute(
-          path: 'trips',
-          builder: (BuildContext context, GoRouterState state) =>
-              TripListScreen(),
-          routes: [
-            GoRoute(
-              path: ':tripId',
-              builder: (BuildContext context, GoRouterState state) =>
-                  ChangeNotifierProvider(
-                create: (context) => state.extra as TripViewmodel?,
-                child: TripScreen(),
-              ),
-              routes: [
-                GoRoute(
-                  path: 'map',
-                  builder: (BuildContext context, GoRouterState state) =>
-                      MapScreen(),
-                ),
-              ],
-            ),
-          ],
-        ),
-        GoRoute(
-          path: 'map',
-          builder: (BuildContext context, GoRouterState state) => MapScreen(),
-        ),
-      ],
-    ),
-  ],
-);
 
 class MyApp extends StatelessWidget {
   const MyApp({
@@ -66,7 +23,7 @@ class MyApp extends StatelessWidget {
     return ListenableBuilder(
         listenable: settingsController,
         builder: (BuildContext context, Widget? child) {
-          return MaterialApp.router(
+          return MaterialApp(
             title: 'Flutter Demo',
 
             // Theme
@@ -80,7 +37,7 @@ class MyApp extends StatelessWidget {
             themeMode: settingsController.themeMode,
 
             // Routing
-            routerConfig: _router,
+            home: MyHomePage(title: 'Flutter Demo Home Page'),
           );
         });
   }
@@ -164,12 +121,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  context.go('/trips');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TripListScreen()),
+                  );
                 },
                 child: const Text("TRIPS")),
             ElevatedButton(
                 onPressed: () {
-                  context.go('/map');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
                 },
                 child: const Text("OPEN MAP")),
           ],

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/trip/trip_viewmodel.dart';
 
 class TripScreen extends StatelessWidget {
-  TripScreen({super.key});
+  TripScreen(this.tripViewmodel, {super.key});
+
+  final TripViewmodel tripViewmodel;
 
   static final List<String> places = [
     'Prague',
@@ -14,16 +15,7 @@ class TripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var trip = context.watch<TripViewmodel?>();
-    if (trip == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text("Places List")),
-        body: Center(
-          child: Text('Trip not found'),
-        ),
-      );
-    }
-    return _build(context, trip);
+    return _build(context, tripViewmodel);
   }
 
   Widget _build(BuildContext context, TripViewmodel trip) {
@@ -38,7 +30,10 @@ class TripScreen extends StatelessWidget {
             title: Text(places[index]),
             trailing: IconButton(
                 onPressed: () {
-                  context.go('/trips/${trip.id}/map', extra: trip);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
                 },
                 icon: Icon(Icons.map)),
           );
