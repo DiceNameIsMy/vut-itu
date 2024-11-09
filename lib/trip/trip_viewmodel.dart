@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:vut_itu/trip/trip.dart';
 
 class TripViewmodel extends ChangeNotifier {
-  TripViewmodel({required this.id, String? title}) : _title = title;
+  TripViewmodel(this.tripModel);
 
-  final String id;
+  TripModel tripModel;
 
-  String? _title;
-
-  String? get title => _title;
+  String get id => tripModel.id;
+  String? get title => tripModel.title;
 
   set title(String? newTitle) {
-    if (_title != newTitle) {
-      _title = newTitle;
+    if (tripModel.title != newTitle) {
+      tripModel.title = newTitle;
       notifyListeners();
     }
   }

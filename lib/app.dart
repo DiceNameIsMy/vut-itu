@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/settings/settings_controller.dart';
+import 'package:vut_itu/trip/trip_viewmodel.dart';
 import 'package:vut_itu/trip_planning/trip_list_screen.dart';
 import 'package:vut_itu/trip_planning/trip_screen.dart';
 
@@ -10,27 +12,26 @@ final GoRouter _router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
-      builder: (BuildContext context, GoRouterState state) {
-        return const MyHomePage(title: 'Flutter Demo Home Page');
-      },
+      builder: (BuildContext context, GoRouterState state) =>
+          const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <RouteBase>[
         GoRoute(
           path: 'trips',
-          builder: (BuildContext context, GoRouterState state) {
-            return TripListScreen();
-          },
+          builder: (BuildContext context, GoRouterState state) =>
+              TripListScreen(),
           routes: [
             GoRoute(
               path: ':tripId',
-              builder: (BuildContext context, GoRouterState state) {
-                return TripScreen();
-              },
+              builder: (BuildContext context, GoRouterState state) =>
+                  ChangeNotifierProvider(
+                create: (context) => state.extra as TripViewmodel?,
+                child: TripScreen(),
+              ),
               routes: [
                 GoRoute(
                   path: 'map',
-                  builder: (BuildContext context, GoRouterState state) {
-                    return MapScreen();
-                  },
+                  builder: (BuildContext context, GoRouterState state) =>
+                      MapScreen(),
                 ),
               ],
             ),
@@ -38,9 +39,7 @@ final GoRouter _router = GoRouter(
         ),
         GoRoute(
           path: 'map',
-          builder: (BuildContext context, GoRouterState state) {
-            return MapScreen();
-          },
+          builder: (BuildContext context, GoRouterState state) => MapScreen(),
         ),
       ],
     ),
