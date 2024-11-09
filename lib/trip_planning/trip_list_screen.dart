@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
-import 'package:vut_itu/trip/trip.dart';
-import 'package:vut_itu/trip/trip_viewmodel.dart';
+import 'package:vut_itu/trip/trip_list_view_model.dart';
+import 'package:vut_itu/trip/trip_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_screen.dart';
 
 class TripListScreen extends StatefulWidget {
@@ -10,19 +9,11 @@ class TripListScreen extends StatefulWidget {
 }
 
 class TripListScreenState extends State<TripListScreen> {
-  late List<TripViewmodel> trips;
+  final TripListViewModel tripsList = TripListViewModel();
 
   @override
   void initState() {
     super.initState();
-
-    // TODO: Load from somewhere
-    trips = [
-      TripViewmodel(TripModel(id: Uuid().v7(), title: 'Trip to Europe')),
-      TripViewmodel(TripModel(id: Uuid().v7(), title: 'Trip to Europe2')),
-      TripViewmodel(TripModel(id: Uuid().v7(), title: 'Trip to Tokyo')),
-      TripViewmodel(TripModel(id: Uuid().v7(), title: null)),
-    ];
   }
 
   @override
@@ -31,29 +22,62 @@ class TripListScreenState extends State<TripListScreen> {
       appBar: AppBar(
         title: Text('Trips'),
       ),
-      body: ListView.builder(
-          itemBuilder: (context, index) {
-            var trip = trips[index];
-            var titleColor = trip.title != null
-                ? Theme.of(context).textTheme.bodyMedium?.color
-                : Theme.of(context).colorScheme.secondary;
+      body: FutureBuilder(
+        future: tripsList.loadTrips(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return LoadingIndicator();
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return ListView.builder(
+                itemCount: tripsList.trips.length,
+                itemBuilder: (context, index) =>
+                    TripListItem(tripsList.trips[index]));
+          }
+        },
+      ),
+    );
+  }
+}
 
-            return ListTile(
-              title: Text(
-                trip.title ?? "Unset",
-                style: TextStyle(
-                  color: titleColor,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TripScreen(trip)),
-                );
-              },
-            );
-          },
-          itemCount: trips.length),
+class LoadingIndicator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+class TripListItem extends StatelessWidget {
+  final TripViewModel trip;
+
+  TripListItem(this.trip);
+
+  @override
+  Widget build(BuildContext context) {
+    var titleColor = trip.title != null
+        ? Theme.of(context).textTheme.bodyMedium?.color
+        : Theme.of(context).colorScheme.secondary;
+
+    return ListTile(
+      title: Text(
+        trip.title ?? "Unset",
+        style: TextStyle(
+          color: titleColor,
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TripScreen(trip)),
+        );
+      },
     );
   }
 }

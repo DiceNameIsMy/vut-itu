@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/trip/trip.dart';
 
-class TripViewmodel extends ChangeNotifier {
-  TripViewmodel(this.tripModel);
+class TripViewModel extends ChangeNotifier {
+  TripViewModel(this.tripModel);
 
   TripModel tripModel;
 
