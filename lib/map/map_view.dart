@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vut_itu/map/tile_providers.dart';
 
 class MapView extends StatefulWidget {
@@ -14,6 +13,15 @@ class MapView extends StatefulWidget {
 class _MapView extends State<MapView> {
   @override
   Widget build(BuildContext context) {
+    var searchBar = Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: SearchBar(
+            leading: Icon(Icons.search),
+            hintText: 'Search for a place',
+          ),
+        ));
     return FlutterMap(
         options: MapOptions(
           initialCenter: const LatLng(51.5, -0.09),
@@ -27,26 +35,7 @@ class _MapView extends State<MapView> {
         ),
         children: [
           openStreetMapTileLayer,
-          TextButton.icon(
-            label: Text("Button"),
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              launchUrl(Uri.parse("https://duckduckgo.com/"));
-            },
-            style: ButtonStyle(
-              iconColor: WidgetStateProperty.all<Color>(
-                Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-              backgroundColor: WidgetStateProperty.all<Color>(
-                Theme.of(context).colorScheme.primaryContainer,
-              ),
-              shape: WidgetStateProperty.all<OutlinedBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          )
+          searchBar,
         ]);
   }
 }
