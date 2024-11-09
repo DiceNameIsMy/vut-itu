@@ -3,7 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vut_itu/map/tile_providers.dart';
-import 'package:vut_itu/search_button.dart';
 
 class MapView extends StatefulWidget {
   const MapView({super.key});
@@ -28,11 +27,26 @@ class _MapView extends State<MapView> {
         ),
         children: [
           openStreetMapTileLayer,
-          SearchButton(
-              onPressed: () {
-                launchUrl(Uri.parse("https://duckduckgo.com/"));
-              },
-              label: "Search")
+          TextButton.icon(
+            label: Text("Button"),
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              launchUrl(Uri.parse("https://duckduckgo.com/"));
+            },
+            style: ButtonStyle(
+              iconColor: WidgetStateProperty.all<Color>(
+                Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              backgroundColor: WidgetStateProperty.all<Color>(
+                Theme.of(context).colorScheme.primaryContainer,
+              ),
+              shape: WidgetStateProperty.all<OutlinedBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          )
         ]);
   }
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/map/map_view.dart';
 
-class SecondRoute extends StatefulWidget {
-  const SecondRoute({super.key});
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
 
   @override
-  State<SecondRoute> createState() => _SecondRoute();
+  State<MapScreen> createState() => _MapScreen();
 }
 
-class _SecondRoute extends State<SecondRoute> {
+class _MapScreen extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vut_itu/second_route.dart';
+import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/settings/settings_controller.dart';
 import 'package:vut_itu/trip_planning/trip_list_screen.dart';
 import 'package:vut_itu/trip_planning/trip_screen.dart';
@@ -29,7 +29,7 @@ final GoRouter _router = GoRouter(
                 GoRoute(
                   path: 'map',
                   builder: (BuildContext context, GoRouterState state) {
-                    return SecondRoute();
+                    return MapScreen();
                   },
                 ),
               ],
@@ -39,7 +39,7 @@ final GoRouter _router = GoRouter(
         GoRoute(
           path: 'map',
           builder: (BuildContext context, GoRouterState state) {
-            return SecondRoute();
+            return MapScreen();
           },
         ),
       ],
