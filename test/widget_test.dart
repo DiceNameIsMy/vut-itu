@@ -8,12 +8,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:vut_itu/main.dart';
+import 'package:vut_itu/app.dart';
+import 'package:vut_itu/settings/settings_controller.dart';
+import 'package:vut_itu/settings/settings_service.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final settingsController = SettingsController(SettingsService());
+    await settingsController.loadSettings();
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp(settingsController: settingsController));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
