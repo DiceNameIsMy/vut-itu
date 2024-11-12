@@ -1,15 +1,18 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:vut_itu/trip/place_model.dart';
 
 class SelectedPlacesViewModel extends ChangeNotifier {
-  List<String> _selectedPlaces = [];
+  List<PlaceModel> _selectedPlaces = [];
 
-  List<String> get all => List.unmodifiable(_selectedPlaces);
+  List<PlaceModel> get all => List.unmodifiable(_selectedPlaces);
 
   bool hasAny() {
     return _selectedPlaces.isNotEmpty;
   }
 
-  void addPlace(String place) {
+  void addPlace(PlaceModel place) {
     if (_selectedPlaces.contains(place)) {
       return;
     }
@@ -18,7 +21,7 @@ class SelectedPlacesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removePlace(String place) {
+  void removePlace(PlaceModel place) {
     _selectedPlaces.remove(place);
     notifyListeners();
   }

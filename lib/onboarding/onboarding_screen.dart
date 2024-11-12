@@ -17,6 +17,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: create a trip if none exists
     return ListenableBuilder(
         listenable: selectedPlaces,
         builder: (BuildContext context, Widget? child) {
@@ -37,18 +38,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             );
           }
 
+          var topText = Text("Where to?",
+              style: Theme.of(context).textTheme.headlineLarge);
+          var bottomText = Text("Help me decide",
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    decoration: TextDecoration.underline,
+                  ));
           return Scaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Where to?",
-                      style: Theme.of(context).textTheme.headlineLarge),
+                  topText,
                   SearchPlacesView(selectedPlaces),
-                  Text("Help me decide",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            decoration: TextDecoration.underline,
-                          )),
+                  bottomText,
                 ],
               ),
             ),
