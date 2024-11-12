@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../backend/settings_backend.dart';
+import 'package:vut_itu/backend/settings_backend.dart';
 
 class SettingsViewModel with ChangeNotifier {
   SettingsViewModel(this._settingsService);
