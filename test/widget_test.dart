@@ -10,11 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:vut_itu/app.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/settings/settings_service.dart';
+import 'package:vut_itu/backend/settings_backend.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    final settingsController = SettingsViewModel(SettingsService());
+    final settingsController = SettingsViewModel(SettingsBackend());
     await settingsController.loadSettings();
 
     // Build our app and trigger a frame.

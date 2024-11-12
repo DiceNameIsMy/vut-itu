@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/app.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/settings/settings_service.dart';
+import 'package:vut_itu/backend/settings_backend.dart';
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
-  final settingsController = SettingsViewModel(SettingsService());
+  final settingsController = SettingsViewModel(SettingsBackend());
 
   WidgetsFlutterBinding.ensureInitialized();
 

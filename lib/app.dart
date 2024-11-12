@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/onboarding/onboarding_screen.dart';
+import 'package:vut_itu/settings/settings_view.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_list_screen.dart';
 
@@ -46,6 +47,8 @@ class MyApp extends StatelessWidget {
               '/onboarding': (context) =>
                   OnboardingScreen(settingsController: settingsController),
               '/map': (context) => const MapScreen(),
+              '/settings': (context) =>
+                  SettingsView(settingsController: settingsController),
             },
             initialRoute: initialRoute,
           );

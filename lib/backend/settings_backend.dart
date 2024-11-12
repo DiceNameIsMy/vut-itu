@@ -6,10 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// By default, this class does not persist user settings. If you'd like to
 /// persist the user settings locally, use the shared_preferences package. If
 /// you'd like to store settings on a web server, use the http package.
-class SettingsService {
+class SettingsBackend {
   late SharedPreferencesAsync _prefs;
 
-  SettingsService() {
+  SettingsBackend() {
     _prefs = SharedPreferencesAsync();
   }
 

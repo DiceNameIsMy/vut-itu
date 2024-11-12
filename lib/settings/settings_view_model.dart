@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'settings_service.dart';
+import '../backend/settings_backend.dart';
 
 class SettingsViewModel with ChangeNotifier {
   SettingsViewModel(this._settingsService);
 
   // Make SettingsService a private variable so it is not used directly.
-  final SettingsService _settingsService;
+  final SettingsBackend _settingsService;
 
   // Make ThemeMode a private variable so it is not updated directly without
   // also persisting the changes with the SettingsService.
