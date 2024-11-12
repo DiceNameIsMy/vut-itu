@@ -74,7 +74,8 @@ class TripDetailedView extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  // Add New City Section
+                   //TODO add searchbar
+                   //TODO add goto mapView
                   Row(
                     children: [
                       Expanded(
