@@ -10,17 +10,6 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // TODO: Open map with first place selected
-          // TODO: Save selected places to a new trip
-          // TODO: Complete onboarding? So that next time app is opened it does to home screen
-          settingsController.completeOnboarding();
-          Navigator.pushNamed(context, '/map');
-        },
-        icon: Icon(Icons.arrow_forward),
-        label: Text("Start planning"),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -33,6 +22,17 @@ class OnboardingScreen extends StatelessWidget {
                     )),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // TODO: Open map with first place selected
+          // TODO: Save selected places to a new trip
+          // TODO: Complete onboarding? So that next time app is opened it does to home screen
+          settingsController.completeOnboarding();
+          Navigator.pushNamed(context, '/map');
+        },
+        icon: Icon(Icons.arrow_forward),
+        label: Text("Start planning"),
       ),
     );
   }
