@@ -13,6 +13,7 @@ import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/backend/settings_backend.dart';
 
 void main() {
+  // TODO: Creating SettingsBackend is resulting in errors. To fix it, mock the SharedPreferencesAsync class
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     final settingsController = SettingsViewModel(SettingsBackend());
     await settingsController.loadSettings();

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 
-class SearchPlacesView extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _SeachPlacesViewState();
-}
+class SearchPlacesView extends StatelessWidget {
+  final SelectedPlacesViewModel selectedPlaces;
 
-class _SeachPlacesViewState extends State<SearchPlacesView> {
+  const SearchPlacesView(this.selectedPlaces, {super.key});
+
   static final List<String> places = [
     "Prague",
     "Berlin",
@@ -13,8 +13,6 @@ class _SeachPlacesViewState extends State<SearchPlacesView> {
     "London",
     "Tokyo"
   ];
-
-  List<String> selectedPlaces = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,30 +37,28 @@ class _SeachPlacesViewState extends State<SearchPlacesView> {
               .map((p) => ListTile(
                     title: Text(p),
                     onTap: () {
-                      if (!selectedPlaces.contains(p)) {
-                        selectedPlaces.add(p);
-                        setState(() {});
-                      }
+                      selectedPlaces.addPlace(p);
                       controller.closeView("");
                     },
                   )),
         );
       },
     );
+
     var selectedPlacesWidget = Column(
-      children: selectedPlaces
+      children: selectedPlaces.all
           .map((p) => ListTile(
                 title: Text(p),
                 trailing: IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
-                    selectedPlaces.remove(p);
-                    setState(() {});
+                    selectedPlaces.removePlace(p);
                   },
                 ),
               ))
           .toList(),
     );
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
