@@ -9,6 +9,7 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Show floating action button only when there are selected places
     return Scaffold(
       body: Center(
         child: Column(
