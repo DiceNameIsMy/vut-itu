@@ -15,6 +15,8 @@ class SettingsBackend {
 
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<ThemeMode> themeMode() async {
+    await _prefs.clear();
+
     var themeMode = await _prefs.getInt('themeMode');
     themeMode ??= ThemeMode.system.index;
 
