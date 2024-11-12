@@ -11,15 +11,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vut_itu/app.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/backend/settings_backend.dart';
+import 'package:vut_itu/trip/trip_list_view_model.dart';
 
 void main() {
   // TODO: Creating SettingsBackend is resulting in errors. To fix it, mock the SharedPreferencesAsync class
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     final settingsController = SettingsViewModel(SettingsBackend());
     await settingsController.loadSettings();
+    final tripListViewModel = TripListViewModel();
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(settingsController: settingsController));
+    await tester.pumpWidget(MyApp(settingsController: settingsController, tripListViewModel: tripListViewModel));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

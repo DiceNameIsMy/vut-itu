@@ -5,14 +5,17 @@ import 'package:vut_itu/onboarding/onboarding_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_list_screen.dart';
+import 'package:vut_itu/trip/trip_list_view_model.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
     required this.settingsController,
+    required this.tripListViewModel
   });
 
   final SettingsViewModel settingsController;
+  final TripListViewModel tripListViewModel;
 
   // This widget is the root of your application.
   @override
@@ -46,7 +49,7 @@ class MyApp extends StatelessWidget {
             routes: {
               '/': (context) => MyHomePage(title: 'Flutter Demo Home Page'),
               '/onboarding': (context) =>
-                  OnboardingScreen(settingsController: settingsController),
+                  OnboardingScreen(settingsController: settingsController, tripListViewModel: tripListViewModel),
               '/settings': (context) =>
                   SettingsView(settingsController: settingsController),
             },

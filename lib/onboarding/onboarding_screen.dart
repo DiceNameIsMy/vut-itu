@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/map/map_screen.dart';
+//import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/onboarding/search_places_view.dart';
 import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
+import 'package:vut_itu/trip/trip_list_view_model.dart';
+import 'package:vut_itu/trip_planning/trip_detailed_view.dart';
+
 
 class OnboardingScreen extends StatefulWidget {
   final SettingsViewModel settingsController;
+  final TripListViewModel tripListViewModel;
 
-  const OnboardingScreen({super.key, required this.settingsController});
+  const OnboardingScreen({super.key, required this.settingsController, required this.tripListViewModel});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -27,15 +31,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
           if (selectedPlaces.hasAny()) {
             actionButton = FloatingActionButton.extended(
-              onPressed: () {
-                // TODO: Save selected places to a new trip
-                // TODO: Complete onboarding? So that next time app is opened it does to home screen
+              onPressed: ()  async {
+          
+                var newTrip = await widget.tripListViewModel.createTripFromSelectedPlaces(selectedPlaces);
                 widget.settingsController.completeOnboarding();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => MapScreen(
-                            centerAt: selectedPlaces.first.coordinates,
+                      builder: (context) => TripDetailedView( tripViewModel: newTrip,
+                            
                           )),
                 );
               },

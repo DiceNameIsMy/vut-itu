@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:vut_itu/app.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/backend/settings_backend.dart';
+import 'package:vut_itu/trip/trip_list_view_model.dart';
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsViewModel(SettingsBackend());
+  final tripListViewModel = TripListViewModel();
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -17,5 +19,5 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(MyApp(settingsController: settingsController));
+  runApp(MyApp(settingsController: settingsController, tripListViewModel: tripListViewModel));
 }

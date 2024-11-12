@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/trip/trip.dart';
+import 'package:vut_itu/trip/place_model.dart';
 
 class TripViewModel extends ChangeNotifier {
   TripViewModel(this.tripModel);
@@ -9,7 +10,7 @@ class TripViewModel extends ChangeNotifier {
   String get id => tripModel.id;
   String? get title => tripModel.title;
   DateTime? get date => tripModel.date;
-  List<String> get cities => tripModel.cities;
+  List<PlaceModel> get places => tripModel.places;
 
   // Set or update the title
   set title(String? newTitle) {
@@ -28,24 +29,24 @@ class TripViewModel extends ChangeNotifier {
   }
 
   // Add a city to the trip
-  void addCity(String city) {
-    if (!tripModel.cities.contains(city)) {
-      tripModel.cities.add(city);
+  void addCity(PlaceModel city) {
+    if (!tripModel.places.contains(city)) {
+      tripModel.places.add(city);
       notifyListeners();
     }
   }
 
   // Remove a city from the trip
-  void removeCity(String city) {
-    if (tripModel.cities.contains(city)) {
-      tripModel.cities.remove(city);
+  void removeCity(PlaceModel city) {
+    if (tripModel.places.contains(city)) {
+      tripModel.places.remove(city);
       notifyListeners();
     }
   }
 
   // Get the list of cities
-  List<String> getCities() {
-    return tripModel.cities;
+  List<PlaceModel> getCities() {
+    return tripModel.places;
   }
 }
 

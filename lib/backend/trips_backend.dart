@@ -1,13 +1,39 @@
 import 'package:uuid/uuid.dart';
 import 'package:vut_itu/trip/trip.dart';
+import 'package:vut_itu/trip/place_model.dart';
+import 'package:latlong2/latlong.dart';
 
 class TripsBackend {
   static final TripsBackend _instance = TripsBackend._internal();
 
   final List<TripModel> _trips = [
-    TripModel(id: Uuid().v7(), title: 'Destination 1', cities: ['Paris']),
-    TripModel(id: Uuid().v7(), title: 'Destination 2', cities: ['Tokyo']),
-  ];
+  TripModel(
+    id: Uuid().v7(),
+    title: 'Destination 1',
+    places: [
+      PlaceModel(
+        id: 'place1',
+        title: 'Paris',
+        description: 'Capital city of France',
+        coordinates: LatLng(48.8566, 2.3522), // Example coordinates for Paris
+        imageUrl: 'https://example.com/paris.jpg',
+      ),
+    ],
+  ),
+  TripModel(
+    id: Uuid().v7(),
+    title: 'Destination 2',
+    places: [
+      PlaceModel(
+        id: 'place2',
+        title: 'Tokyo',
+        description: 'Capital city of Japan',
+        coordinates: LatLng(35.6762, 139.6503), // Example coordinates for Tokyo
+        imageUrl: 'https://example.com/tokyo.jpg',
+      ),
+    ],
+  ),
+];
 
   factory TripsBackend() {
     return _instance;
@@ -28,11 +54,11 @@ class TripsBackend {
   Future<bool> tryCreateTrip({
     String? title,
     DateTime? date,
-    required List<String> cities,
+    required List<PlaceModel> places,
   }) async {
     await Future.delayed(Duration(milliseconds: 300)); // Mock delay
 
-    if (cities.isEmpty) {
+    if (places.isEmpty) {
       return false; // Ensure cities list is not empty
     }
 
@@ -40,7 +66,7 @@ class TripsBackend {
       id: Uuid().v7(),
       title: title,
       date: date,
-      cities: cities,
+      places: places,
     );
     _trips.add(newTrip);
 
@@ -69,11 +95,11 @@ class TripsBackend {
   }
 
   // Add a city to a specific trip
-  Future<bool> addCity(String id, String city) async {
+  Future<bool> addCity(String id, PlaceModel city) async {
     final trip = await getTrip(id);
     if (trip != null) {
-      if (!trip.cities.contains(city)) {
-        trip.cities.add(city);
+      if (!trip.places.contains(city)) {
+        trip.places.add(city);
         return true;
       }
     }
@@ -81,11 +107,11 @@ class TripsBackend {
   }
 
   // Remove a city from a specific trip
-  Future<bool> removeCity(String id, String city) async {
+  Future<bool> removeCity(String id, PlaceModel city) async {
     final trip = await getTrip(id);
     if (trip != null) {
-      if (trip.cities.contains(city)) {
-        trip.cities.remove(city);
+      if (trip.places.contains(city)) {
+        trip.places.remove(city);
         return true;
       }
     }
@@ -103,10 +129,10 @@ class TripsBackend {
   }
 
   // Get the list of cities for a specific trip
-  Future<List<String>?> getCities(String id) async {
+  Future<List<PlaceModel>?> getCities(String id) async {
     final trip = await getTrip(id);
     if (trip != null) {
-      return trip.cities;
+      return trip.places;
     }
     return null;
   }
