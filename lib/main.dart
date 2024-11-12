@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/app.dart';
-import 'package:vut_itu/settings/settings_controller.dart';
+import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/settings/settings_service.dart';
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
-  final settingsController = SettingsController(SettingsService());
+  final settingsController = SettingsViewModel(SettingsService());
 
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.

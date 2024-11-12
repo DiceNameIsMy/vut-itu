@@ -37,6 +37,8 @@ dependencies:
   flutter_map_cancellable_tile_provider:
   latlong2:
   provider: ^6.1.2
+  # receive_sharing_intent: ^1.8.1
+  shared_preferences: ^2.3.3
   url_launcher: ^6.2.6
   uuid: ^4.5.1
 

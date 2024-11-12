@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/map/map_screen.dart';
-import 'package:vut_itu/settings/settings_controller.dart';
+import 'package:vut_itu/onboarding/onboarding_screen.dart';
+import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_list_screen.dart';
 
 class MyApp extends StatelessWidget {
@@ -9,12 +10,15 @@ class MyApp extends StatelessWidget {
     required this.settingsController,
   });
 
-  final SettingsController settingsController;
+  final SettingsViewModel settingsController;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     var themeSeedColor = Colors.deepPurple;
+
+    var initialRoute =
+        settingsController.completedOnboarding ? '/' : '/onboarding';
 
     // Glue the SettingsController to the MaterialApp.
     //
@@ -37,7 +41,13 @@ class MyApp extends StatelessWidget {
             themeMode: settingsController.themeMode,
 
             // Routing
-            home: MyHomePage(title: 'Flutter Demo Home Page'),
+            routes: {
+              '/': (context) => MyHomePage(title: 'Flutter Demo Home Page'),
+              '/onboarding': (context) =>
+                  OnboardingScreen(settingsController: settingsController),
+              '/map': (context) => const MapScreen(),
+            },
+            initialRoute: initialRoute,
           );
         });
   }
