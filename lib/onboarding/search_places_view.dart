@@ -31,16 +31,13 @@ class _SearchPlacesViewState extends State<SearchPlacesView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildPlaceSearchWidget(),
-          SizedBox(height: 16.0),
-          _buildSelectedPlacesList(context),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildPlaceSearchWidget(),
+        SizedBox(height: 16.0),
+        _buildSelectedPlacesList(context),
+      ],
     );
   }
 
@@ -50,6 +47,7 @@ class _SearchPlacesViewState extends State<SearchPlacesView> {
       builder: (BuildContext context, SearchController controller) {
         return SearchBar(
           controller: controller,
+          hintText: 'City or place name',
           onTap: () => controller.openView(),
           onChanged: (String newTitle) {
             if (controller.isOpen) {

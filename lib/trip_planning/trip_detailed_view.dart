@@ -6,7 +6,7 @@ class TripDetailedView extends StatelessWidget {
   final TripViewModel tripViewModel;
 
   // Constructor
-  const TripDetailedView({Key? key, required this.tripViewModel}) : super(key: key);
+  const TripDetailedView({super.key, required this.tripViewModel});
 
   @override
   Widget build(BuildContext context) {

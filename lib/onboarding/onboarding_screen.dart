@@ -50,14 +50,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     decoration: TextDecoration.underline,
                   ));
+
+          var screenHeight = MediaQuery.of(context).size.height;
+          var screenWidth = MediaQuery.of(context).size.width;
           return Scaffold(
             body: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  Image(
+                    image: AssetImage('assets/images/triphub.png'),
+                    width: screenWidth * 0.8,
+                  ),
+                  SizedBox(height: screenHeight * 0.1),
                   topText,
-                  SearchPlacesView(selectedPlaces),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 32.0, right: 32.0, top: 16.0, bottom: 16.0),
+                    child: SearchPlacesView(selectedPlaces),
+                  ),
                   bottomText,
+                  SizedBox(height: screenHeight * 0.15),
                 ],
               ),
             ),
