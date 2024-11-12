@@ -7,6 +7,7 @@ class SelectedPlacesViewModel extends ChangeNotifier {
   List<PlaceModel> _selectedPlaces = [];
 
   List<PlaceModel> get all => List.unmodifiable(_selectedPlaces);
+  PlaceModel get first => _selectedPlaces.first;
 
   bool hasAny() {
     return _selectedPlaces.isNotEmpty;

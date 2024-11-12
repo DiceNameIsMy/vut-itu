@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/onboarding/search_places_view.dart';
 import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
@@ -27,11 +28,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           if (selectedPlaces.hasAny()) {
             actionButton = FloatingActionButton.extended(
               onPressed: () {
-                // TODO: Open map with first place selected
                 // TODO: Save selected places to a new trip
                 // TODO: Complete onboarding? So that next time app is opened it does to home screen
                 widget.settingsController.completeOnboarding();
-                Navigator.pushNamed(context, '/map');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                            centerAt: selectedPlaces.first.coordinates,
+                          )),
+                );
               },
               icon: Icon(Icons.arrow_forward),
               label: Text("Start planning"),

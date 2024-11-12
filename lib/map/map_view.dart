@@ -4,7 +4,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/map/tile_providers.dart';
 
 class MapView extends StatefulWidget {
-  const MapView({super.key});
+  final LatLng centerAt;
+
+  const MapView({super.key, required this.centerAt});
 
   @override
   State<MapView> createState() => _MapView();
@@ -24,8 +26,8 @@ class _MapView extends State<MapView> {
         ));
     return FlutterMap(
         options: MapOptions(
-          initialCenter: const LatLng(51.5, -0.09),
-          initialZoom: 5,
+          initialCenter: widget.centerAt,
+          initialZoom: 9,
           cameraConstraint: CameraConstraint.contain(
             bounds: LatLngBounds(
               const LatLng(-90, -180),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/trip/trip_view_model.dart';
@@ -33,7 +34,9 @@ class TripScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MapScreen()),
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MapScreen(centerAt: LatLng(51.5, -0.09))),
                         );
                       },
                       icon: Icon(Icons.map)),

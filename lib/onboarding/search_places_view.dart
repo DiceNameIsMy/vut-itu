@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';
+import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 import 'package:vut_itu/trip/place_card_view.dart';
 import 'package:vut_itu/trip/place_model.dart';
@@ -84,11 +85,20 @@ class SearchPlacesView extends StatelessWidget {
           .map((p) => PlaceCardView(
                 p,
                 trailingWidget: IconButton(
-                    onPressed: () {
-                      selectedPlaces.removePlace(p);
-                    },
-                    icon: const Icon(Icons.remove_circle)),
-                onTap: () {}, // TODO: Open map with place
+                  onPressed: () {
+                    selectedPlaces.removePlace(p);
+                  },
+                  icon: const Icon(Icons.remove_circle),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MapScreen(
+                              centerAt: p.coordinates,
+                            )),
+                  );
+                },
               ))
           .toList(),
     );

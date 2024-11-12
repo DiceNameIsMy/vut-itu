@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/onboarding/onboarding_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
@@ -46,7 +47,6 @@ class MyApp extends StatelessWidget {
               '/': (context) => MyHomePage(title: 'Flutter Demo Home Page'),
               '/onboarding': (context) =>
                   OnboardingScreen(settingsController: settingsController),
-              '/map': (context) => const MapScreen(),
               '/settings': (context) =>
                   SettingsView(settingsController: settingsController),
             },
@@ -144,7 +144,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MapScreen()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MapScreen(centerAt: const LatLng(51.5, -0.09))),
                   );
                 },
                 child: const Text("OPEN MAP")),
