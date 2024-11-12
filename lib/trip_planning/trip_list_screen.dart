@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/trip/trip_list_view_model.dart';
 import 'package:vut_itu/trip/trip_view_model.dart';
-import 'package:vut_itu/trip_planning/trip_screen.dart';
+//import 'package:vut_itu/trip_planning/trip_screen.dart';
+import 'package:vut_itu/trip_planning/trip_detailed_view.dart';
 
 class TripListScreen extends StatefulWidget {
   @override
@@ -12,8 +13,9 @@ class TripListScreenState extends State<TripListScreen> {
   final TripListViewModel tripsList = TripListViewModel();
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    tripsList.loadTrips();
   }
 
   @override
@@ -54,20 +56,25 @@ class LoadingIndicator extends StatelessWidget {
   }
 }
 
-class TripListItem extends StatelessWidget {
+class TripListItem extends StatefulWidget {
   final TripViewModel trip;
 
   TripListItem(this.trip);
 
   @override
+  State<TripListItem> createState() => _TripListItemState();
+}
+
+class _TripListItemState extends State<TripListItem> {
+  @override
   Widget build(BuildContext context) {
-    var titleColor = trip.title != null
+    var titleColor = widget.trip.title != null
         ? Theme.of(context).textTheme.bodyMedium?.color
         : Theme.of(context).colorScheme.secondary;
 
     return ListTile(
       title: Text(
-        trip.title ?? "Unset",
+        widget.trip.title ?? "Unset",
         style: TextStyle(
           color: titleColor,
         ),
@@ -75,7 +82,7 @@ class TripListItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TripScreen(trip)),
+          MaterialPageRoute(builder: (context) => TripDetailedView(tripViewModel: widget.trip)),
         );
       },
     );

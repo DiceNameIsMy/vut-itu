@@ -29,7 +29,7 @@ class TripDetailedView extends StatelessWidget {
                     controller: TextEditingController(text: model.title),
                     decoration: InputDecoration(hintText: 'Enter Trip Title'),
                     onSubmitted: (newTitle) {
-                      model.title = newTitle; // Automatically updates backend
+                      model.title = newTitle; 
                     },
                   ),
                   const SizedBox(height: 20),
