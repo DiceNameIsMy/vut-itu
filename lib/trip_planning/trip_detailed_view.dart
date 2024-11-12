@@ -5,7 +5,8 @@ import 'package:vut_itu/trip/trip_view_model.dart';
 class TripDetailedView extends StatelessWidget {
   final TripViewModel tripViewModel;
 
-  const TripDetailedView({Key? key, required this.tripViewModel}) : super(key: key);
+  // Constructor
+  const TripDetailedView({super.key, required this.tripViewModel});
 
   @override
   Widget build(BuildContext context) {
