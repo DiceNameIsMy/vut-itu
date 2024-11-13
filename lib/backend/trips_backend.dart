@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 class TripsBackend {
   static final TripsBackend _instance = TripsBackend._internal();
 
-  final List<TripModel> _trips = [
+  List<TripModel> _trips = [
   TripModel(
     id: Uuid().v7(),
     title: 'Destination 1',
@@ -51,27 +51,30 @@ class TripsBackend {
     return _trips.where((trip) => trip.id == id).firstOrNull;
   }
 
-  Future<bool> tryCreateTrip({
-    String? title,
-    DateTime? date,
-    required List<PlaceModel> places,
-  }) async {
-    await Future.delayed(Duration(milliseconds: 300)); // Mock delay
+  Future<TripModel> tryCreateTrip({
+  required String title,
+  required DateTime date,
+  required List<PlaceModel> places,
+}) async {
+  await Future.delayed(Duration(milliseconds: 300)); // Mock delay
 
-    if (places.isEmpty) {
-      return false; // Ensure cities list is not empty
-    }
-
-    final newTrip = TripModel(
-      id: Uuid().v7(),
-      title: title,
-      date: date,
-      places: places,
-    );
-    _trips.add(newTrip);
-
-    return true;
+  if (places.isEmpty) {
+    throw Exception("Places list cannot be empty");
   }
+
+  // Generate a single trip model with a consistent ID
+  final newTrip = TripModel(
+    id: Uuid().v7(),
+    title: title,
+    date: date,
+    places: places,
+  );
+
+  _trips.add(newTrip); // Add to the backend's trip list
+
+  return newTrip; // Return the complete trip model instead of just a success boolean
+}
+
 
   Future<bool> tryDeleteTrip(String? id) async {
     await Future.delayed(Duration(milliseconds: 300)); // Mock delay

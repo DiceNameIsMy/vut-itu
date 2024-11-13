@@ -7,6 +7,7 @@ import 'package:vut_itu/trip/trip_list_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_detailed_view.dart';
 
 
+
 class OnboardingScreen extends StatefulWidget {
   final SettingsViewModel settingsController;
   final TripListViewModel tripListViewModel;
@@ -34,12 +35,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onPressed: ()  async {
           
                 var newTrip = await widget.tripListViewModel.createTripFromSelectedPlaces(selectedPlaces);
+
                 widget.settingsController.completeOnboarding();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => TripDetailedView( tripViewModel: newTrip,
-                            
+                      builder: (context) => TripDetailedView( tripViewModel: newTrip,      
                           )),
                 );
               },

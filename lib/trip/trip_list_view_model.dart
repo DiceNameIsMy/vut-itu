@@ -15,55 +15,50 @@ class TripListViewModel extends ChangeNotifier {
 
   List<TripViewModel> get trips => _trips;
 
-  Future<void> addTrip(TripViewModel trip) async {
-    // Get the list of cities from the trip ViewModel
-    List<PlaceModel> places = trip.places;
+  // Future<void> addTrip(TripViewModel trip) async {
+  //   // Get the list of cities from the trip ViewModel
+  //   List<PlaceModel> places = trip.places;
 
-    // Create the trip in the backend with cities and title
-    bool success = await _tripsBackend.tryCreateTrip(places: places);
+  //   // Create the trip in the backend with cities and title
+  //   TripModel success = await _tripsBackend.tryCreateTrip(places: places);
 
-    if (success) {
-      // If trip creation was successful, add it to the local list
-      _trips.add(trip);
-      notifyListeners();
-    } else {
-      // Handle error (optional)
-      print("Failed to add trip");
-    }
-  }
+  //   if (success) {
+  //     // If trip creation was successful, add it to the local list
+  //     _trips.add(trip);
+  //     notifyListeners();
+  //   } else {
+  //     // Handle error (optional)
+  //     print("Failed to add trip");
+  //   }
+  // }
 
-   Future<TripViewModel> createTripFromSelectedPlaces(SelectedPlacesViewModel selectedPlaces) async {
+  Future<TripViewModel> createTripFromSelectedPlaces(SelectedPlacesViewModel selectedPlaces) async {
   // Check if there are selected places
   if (selectedPlaces.hasAny()) {
-    // Create a new trip from selected places (cities)
-    final newTrip = TripViewModel(
-      TripModel(
-        id: Uuid().v7(),
-        title: "New Trip", // Can be customized if needed
-        date: DateTime.now(), // Can be customized
-        places: selectedPlaces.all.map((place) => place).toList(),
-      ),
+    // Set initial trip details
+    final title = "New Trip";
+    final date = DateTime.now();
+    final places = selectedPlaces.all.map((place) => place).toList();
+
+    // Call backend to create the trip and get the TripModel with ID
+    final tripModel = await _tripsBackend.tryCreateTrip(
+      title: title,
+      date: date,
+      places: places,
     );
 
-    // Add the trip to the backend and the local list
-    bool success = await _tripsBackend.tryCreateTrip(
-      title: newTrip.title,
-      date: newTrip.date,
-      places: newTrip.places,
-    );
+    // Create a TripViewModel using the complete TripModel returned by the backend
+    final newTrip = TripViewModel(tripModel);
 
-    if (success) {
-      _trips.add(newTrip);
-      notifyListeners();
-      return newTrip; // Return the id of the newly created trip
-    } else {
-      print("Failed to create trip");
-      throw Exception("Failed to create trip");
-    }
+    _trips.add(newTrip); // Add the new TripViewModel to the local list
+    notifyListeners();
+
+    return newTrip; // Return the new TripViewModel with a consistent ID
   }
 
-    throw Exception("Failed to create trip");
+  throw Exception("Failed to create trip: No selected places.");
 }
+
 
 
   Future<void> removeTrip(TripViewModel trip) async {
@@ -87,4 +82,43 @@ class TripListViewModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  // Function to update the title of a specific trip
+  // Future<void> updateTripTitle(String tripId, String newTitle) async {
+    
+  //   final trip = _trips.firstWhere((trip) => trip.id == tripId, orElse:  () => TripViewModel(TripModel(id: '', title: '', date: DateTime.now(), places: [])));
+
+  //     bool success = await _tripsBackend.setTitle(tripId, newTitle);
+  //     if (success) {
+  //       // Update the title locally
+  //       trip. = newTitle;
+  //       notifyListeners();
+  //     } else {
+  //       print("Failed to update trip title");
+  //     }
+ 
+  // }
+
+//     Future<void> updateTripDate(String tripId, DateTime newDate) async {
+//   // Find the trip by ID
+//   final trip = _trips.firstWhere(
+//     (trip) => trip.id == tripId,
+//     orElse: () => TripViewModel(TripModel(id: '', title: '', date: DateTime.now(), places: [])), // Default/fallback
+//   );
+
+//   if (trip.id.isNotEmpty) { // Ensure it is a valid trip before proceeding
+//     // Update the date in the backend
+//     bool success = await _tripsBackend.setDate(tripId, newDate);
+//     if (success) {
+//       // Update the date locally
+//       trip.date = newDate;
+//       notifyListeners();
+//     } else {
+//       print("Failed to update trip date");
+//     }
+//   } else {
+//     print("Trip not found");
+//   }
+// }
+
 }

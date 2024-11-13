@@ -29,7 +29,8 @@ class TripDetailedView extends StatelessWidget {
                     controller: TextEditingController(text: model.title),
                     decoration: InputDecoration(hintText: 'Enter Trip Title'),
                     onSubmitted: (newTitle) {
-                      model.title = newTitle; 
+                      model.setTitle(newTitle); 
+                
                     },
                   ),
                   const SizedBox(height: 20),
@@ -47,7 +48,7 @@ class TripDetailedView extends StatelessWidget {
                         lastDate: DateTime(2100),
                       );
                       if (selectedDate != null) {
-                        model.date = selectedDate; // Automatically updates backend
+                        model.setDate(selectedDate);
                       }
                     },
                   ),
@@ -65,7 +66,7 @@ class TripDetailedView extends StatelessWidget {
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
-                              model.removeCity(city); // Automatically updates backend
+                              model.removePlace(city); // Automatically updates backend
                             },
                           ),
                         );

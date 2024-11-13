@@ -1,52 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/trip/trip.dart';
-import 'package:vut_itu/trip/place_model.dart';
+import 'package:vut_itu/trip/trip.dart';  
+import 'package:vut_itu/trip/place_model.dart';  
+import 'package:vut_itu/backend/trips_backend.dart';
 
 class TripViewModel extends ChangeNotifier {
-  TripViewModel(this.tripModel);
+  final TripModel _tripModel;
+  final TripsBackend _tripsBackend = TripsBackend();
 
-  TripModel tripModel;
+  // Constructor
+  TripViewModel(this._tripModel);
 
-  String get id => tripModel.id;
-  String? get title => tripModel.title;
-  DateTime? get date => tripModel.date;
-  List<PlaceModel> get places => tripModel.places;
+  // Getters for trip properties
+  String get id => _tripModel.id;
+  String? get title => _tripModel.title;
+  DateTime? get date => _tripModel.date;
+  List<PlaceModel> get places => _tripModel.places;
 
-  // Set or update the title
-  set title(String? newTitle) {
-    if (tripModel.title != newTitle) {
-      tripModel.title = newTitle;
+   
+
+  Future<void> setTitle(String newTitle) async {
+    bool success = await _tripsBackend.setTitle(id, newTitle);
+
+    if (success) {
+      _tripModel.title = newTitle;
       notifyListeners();
+    } else {
+      // Handle error (optional)
+      print("Failed to remove trip");
     }
   }
 
-  // Set or reset the date
-  set date(DateTime? newDate) {
-    if (tripModel.date != newDate) {
-      tripModel.date = newDate;
+
+  Future<void> setDate(DateTime newDate) async {
+    bool success = await _tripsBackend.setDate(id, newDate);
+
+    if (success) {
+      _tripModel.date = newDate;
       notifyListeners();
+    } else {
+      // Handle error (optional)
+      print("Failed to remove trip");
     }
   }
 
-  // Add a city to the trip
-  void addCity(PlaceModel city) {
-    if (!tripModel.places.contains(city)) {
-      tripModel.places.add(city);
-      notifyListeners();
-    }
+  // Method to add a place to the trip
+  void addPlace(PlaceModel place) {
+    _tripModel.places.add(place);
+    notifyListeners(); // Notify listeners to update UI
   }
 
-  // Remove a city from the trip
-  void removeCity(PlaceModel city) {
-    if (tripModel.places.contains(city)) {
-      tripModel.places.remove(city);
-      notifyListeners();
-    }
+  // Method to remove a place from the trip
+  void removePlace(PlaceModel place) {
+    _tripModel.places.remove(place);
+    notifyListeners(); // Notify listeners to update UI
   }
 
-  // Get the list of cities
-  List<PlaceModel> getCities() {
-    return tripModel.places;
+  // Method to clear all places (e.g., if the user wants to start fresh)
+  void clearPlaces() {
+    _tripModel.places.clear();
+    notifyListeners(); // Notify listeners to update UI
   }
+  
+  // Method to get a specific place by index
+  PlaceModel getPlace(int index) {
+    return _tripModel.places[index];
+  }
+  
+  // Method to set a specific place by index
+  void setPlace(int index, PlaceModel place) {
+    _tripModel.places[index] = place;
+    notifyListeners(); // Notify listeners to update UI
+  }
+
+  // Method to return the total number of places
+  int get placesCount => _tripModel.places.length;
+
+  // Method to update the trip model directly (useful for syncing with backend)
+  void updateTripModel(TripModel updatedTripModel) {
+    _tripModel.title = updatedTripModel.title;
+    _tripModel.date = updatedTripModel.date;
+    notifyListeners(); // Notify listeners to update UI
+  }
+
+  // Method to get the trip model for backend operations (e.g., saving or deleting)
+  TripModel get tripModel => _tripModel;
 }
-
