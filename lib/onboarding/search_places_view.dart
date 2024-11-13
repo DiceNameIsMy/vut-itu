@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/map/map_screen.dart';
 import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 import 'package:vut_itu/places/places_view_model.dart';
@@ -57,6 +58,18 @@ class _SearchPlacesViewState extends State<SearchPlacesView> {
             }
           },
           leading: const Icon(Icons.search),
+          trailing: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    var centerAt = LatLng(50.0755, 14.4378);
+                    var initZoomLevel = 6.0;
+                    return MapScreen(
+                        centerAt: centerAt, initZoomLevel: initZoomLevel);
+                  }));
+                },
+                icon: Icon(Icons.map)),
+          ],
         );
       },
       suggestionsBuilder: (context, SearchController controller) async {
