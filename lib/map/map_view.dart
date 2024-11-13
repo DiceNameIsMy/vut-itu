@@ -5,8 +5,9 @@ import 'package:vut_itu/map/tile_providers.dart';
 
 class MapView extends StatefulWidget {
   final LatLng centerAt;
+  final double initZoomLevel;
 
-  const MapView({super.key, required this.centerAt});
+  const MapView({super.key, required this.centerAt, this.initZoomLevel = 9});
 
   @override
   State<MapView> createState() => _MapView();
@@ -27,7 +28,7 @@ class _MapView extends State<MapView> {
     return FlutterMap(
         options: MapOptions(
           initialCenter: widget.centerAt,
-          initialZoom: 9,
+          initialZoom: widget.initZoomLevel,
           cameraConstraint: CameraConstraint.contain(
             bounds: LatLngBounds(
               const LatLng(-90, -180),
