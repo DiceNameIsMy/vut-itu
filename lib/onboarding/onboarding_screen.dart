@@ -5,7 +5,7 @@ import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/trip/trip_list_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_detailed_view.dart';
-
+import 'package:vut_itu/active_trip/active_trip_screen.dart';
 
 
 class OnboardingScreen extends StatefulWidget {
@@ -48,7 +48,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               label: Text("Start planning"),
             );
           }
-
+          else {
+            actionButton = FloatingActionButton.extended(
+              onPressed: ()  async {
+          
+                widget.settingsController.completeOnboarding();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ActiveTripScreen(      
+                          )),
+                );
+              },
+              icon: Icon(Icons.arrow_forward),
+              label: Text("Active Trip"),
+            );
+          }
           var topText = Text("Where to?",
               style: Theme.of(context).textTheme.headlineLarge);
           var bottomText = Text("Help me decide",
