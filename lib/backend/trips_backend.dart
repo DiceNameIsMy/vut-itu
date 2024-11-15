@@ -1,40 +1,12 @@
 import 'package:uuid/uuid.dart';
+import 'package:vut_itu/backend/mocks.dart';
 import 'package:vut_itu/backend/trip_model.dart';
 import 'package:vut_itu/backend/place_model.dart';
-import 'package:latlong2/latlong.dart';
 
 class TripsBackend {
   static final TripsBackend _instance = TripsBackend._internal();
 
-  List<TripModel> _trips = [
-    TripModel(
-      id: Uuid().v7(),
-      title: 'Destination 1',
-      places: [
-        PlaceModel(
-          id: 'place1',
-          title: 'Paris',
-          description: 'Capital city of France',
-          coordinates: LatLng(48.8566, 2.3522), // Example coordinates for Paris
-          imageUrl: 'https://example.com/paris.jpg',
-        ),
-      ],
-    ),
-    TripModel(
-      id: Uuid().v7(),
-      title: 'Destination 2',
-      places: [
-        PlaceModel(
-          id: 'place2',
-          title: 'Tokyo',
-          description: 'Capital city of Japan',
-          coordinates:
-              LatLng(35.6762, 139.6503), // Example coordinates for Tokyo
-          imageUrl: 'https://example.com/tokyo.jpg',
-        ),
-      ],
-    ),
-  ];
+  List<TripModel> _trips = mockTrips.toList();
 
   factory TripsBackend() {
     return _instance;
