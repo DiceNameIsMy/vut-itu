@@ -1,0 +1,4 @@
+enum GuiModeEnum {
+  defaultMode,
+  alternativeMode,
+}
