@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vut_itu/backend/gui_mode_enum.dart';
 
 import 'settings_view_model.dart';
 
@@ -6,10 +7,8 @@ import 'settings_view_model.dart';
 ///
 /// When a user changes a setting, the SettingsController is updated and
 /// Widgets that listen to the SettingsController are rebuilt.
-class SettingsView extends StatelessWidget {
-  const SettingsView({super.key, required this.settingsController});
-
-  static const routeName = '/settings';
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key, required this.settingsController});
 
   final SettingsViewModel settingsController;
 
@@ -25,24 +24,44 @@ class SettingsView extends StatelessWidget {
         //
         // When a user selects a theme from the dropdown list, the
         // SettingsController is updated, which rebuilds the MaterialApp.
-        child: DropdownButton<ThemeMode>(
-          // Read the selected themeMode from the controller
-          value: settingsController.themeMode,
-          // Call the updateThemeMode method any time the user selects a theme.
-          onChanged: settingsController.updateThemeMode,
-          items: const [
-            DropdownMenuItem(
-              value: ThemeMode.system,
-              child: Text('System Theme'),
+        child: Column(
+          children: [
+            DropdownButton<ThemeMode>(
+              // Read the selected themeMode from the controller
+              value: settingsController.themeMode,
+              // Call the updateThemeMode method any time the user selects a theme.
+              onChanged: settingsController.updateThemeMode,
+              items: const [
+                DropdownMenuItem(
+                  value: ThemeMode.system,
+                  child: Text('System Theme'),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.light,
+                  child: Text('Light Theme'),
+                ),
+                DropdownMenuItem(
+                  value: ThemeMode.dark,
+                  child: Text('Dark Theme'),
+                )
+              ],
             ),
-            DropdownMenuItem(
-              value: ThemeMode.light,
-              child: Text('Light Theme'),
+            DropdownButton<GuiModeEnum>(
+              // Read the selected themeMode from the controller
+              value: settingsController.guiMode,
+              // Call the updateThemeMode method any time the user selects a theme.
+              onChanged: settingsController.updateGuiMode,
+              items: const [
+                DropdownMenuItem(
+                  value: GuiModeEnum.defaultMode,
+                  child: Text('Default'),
+                ),
+                DropdownMenuItem(
+                  value: GuiModeEnum.alternativeMode,
+                  child: Text('Alternative'),
+                )
+              ],
             ),
-            DropdownMenuItem(
-              value: ThemeMode.dark,
-              child: Text('Dark Theme'),
-            )
           ],
         ),
       ),
