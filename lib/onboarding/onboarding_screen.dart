@@ -7,12 +7,14 @@ import 'package:vut_itu/trip/trip_list_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_detailed_view.dart';
 import 'package:vut_itu/active_trip/active_trip_screen.dart';
 
-
 class OnboardingScreen extends StatefulWidget {
   final SettingsViewModel settingsController;
   final TripListViewModel tripListViewModel;
 
-  const OnboardingScreen({super.key, required this.settingsController, required this.tripListViewModel});
+  const OnboardingScreen(
+      {super.key,
+      required this.settingsController,
+      required this.tripListViewModel});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -32,32 +34,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
           if (selectedPlaces.hasAny()) {
             actionButton = FloatingActionButton.extended(
-              onPressed: ()  async {
-          
-                var newTrip = await widget.tripListViewModel.createTripFromSelectedPlaces(selectedPlaces);
+              onPressed: () async {
+                var newTrip = await widget.tripListViewModel
+                    .createTripFromSelectedPlaces(selectedPlaces);
 
                 widget.settingsController.completeOnboarding();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TripDetailedView( tripViewModel: newTrip,      
-                          )),
-                );
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TripDetailedView(
+                              tripViewModel: newTrip,
+                            )),
+                  );
+                }
               },
               icon: Icon(Icons.arrow_forward),
               label: Text("Start planning"),
             );
-          }
-          else {
+          } else {
             actionButton = FloatingActionButton.extended(
-              onPressed: ()  async {
-          
+              onPressed: () async {
                 widget.settingsController.completeOnboarding();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ActiveTripScreen(      
-                          )),
+                  MaterialPageRoute(builder: (context) => ActiveTripScreen()),
                 );
               },
               icon: Icon(Icons.arrow_forward),

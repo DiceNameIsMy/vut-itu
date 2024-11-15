@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:vut_itu/backend/trips_backend.dart';
 import 'package:vut_itu/trip/trip_view_model.dart';
 import 'package:vut_itu/onboarding/selected_places_view_model.dart';
-import 'package:vut_itu/trip/trip.dart';
-import 'package:uuid/uuid.dart';
-import 'package:vut_itu/trip/place_model.dart';
 
 class TripListViewModel extends ChangeNotifier {
   TripListViewModel();
