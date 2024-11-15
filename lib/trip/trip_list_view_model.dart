@@ -32,34 +32,33 @@ class TripListViewModel extends ChangeNotifier {
   //   }
   // }
 
-  Future<TripViewModel> createTripFromSelectedPlaces(SelectedPlacesViewModel selectedPlaces) async {
-  // Check if there are selected places
-  if (selectedPlaces.hasAny()) {
-    // Set initial trip details
-    final title = "New Trip";
-    final date = DateTime.now();
-    final places = selectedPlaces.all.map((place) => place).toList();
+  Future<TripViewModel> createTripFromSelectedPlaces(
+      SelectedPlacesViewModel selectedPlaces) async {
+    // Check if there are selected places
+    if (selectedPlaces.hasAny()) {
+      // Set initial trip details
+      final title = "New Trip";
+      final date = DateTime.now();
+      final places = selectedPlaces.all.map((place) => place).toList();
 
-    // Call backend to create the trip and get the TripModel with ID
-    final tripModel = await _tripsBackend.tryCreateTrip(
-      title: title,
-      date: date,
-      places: places,
-    );
+      // Call backend to create the trip and get the TripModel with ID
+      final tripModel = await _tripsBackend.tryCreateTrip(
+        title: title,
+        date: date,
+        places: places,
+      );
 
-    // Create a TripViewModel using the complete TripModel returned by the backend
-    final newTrip = TripViewModel(tripModel);
+      // Create a TripViewModel using the complete TripModel returned by the backend
+      final newTrip = TripViewModel(tripModel);
 
-    _trips.add(newTrip); // Add the new TripViewModel to the local list
-    notifyListeners();
+      _trips.add(newTrip); // Add the new TripViewModel to the local list
+      notifyListeners();
 
-    return newTrip; // Return the new TripViewModel with a consistent ID
+      return newTrip; // Return the new TripViewModel with a consistent ID
+    }
+
+    throw Exception("Failed to create trip: No selected places.");
   }
-
-  throw Exception("Failed to create trip: No selected places.");
-}
-
-
 
   Future<void> removeTrip(TripViewModel trip) async {
     bool success = await _tripsBackend.tryDeleteTrip(trip.id);
@@ -74,7 +73,6 @@ class TripListViewModel extends ChangeNotifier {
     }
   }
 
-
   Future<void> loadTrips() async {
     var models = await (_tripsBackend.getTrips());
 
@@ -85,7 +83,7 @@ class TripListViewModel extends ChangeNotifier {
 
   // Function to update the title of a specific trip
   // Future<void> updateTripTitle(String tripId, String newTitle) async {
-    
+
   //   final trip = _trips.firstWhere((trip) => trip.id == tripId, orElse:  () => TripViewModel(TripModel(id: '', title: '', date: DateTime.now(), places: [])));
 
   //     bool success = await _tripsBackend.setTitle(tripId, newTitle);
@@ -96,7 +94,7 @@ class TripListViewModel extends ChangeNotifier {
   //     } else {
   //       print("Failed to update trip title");
   //     }
- 
+
   // }
 
 //     Future<void> updateTripDate(String tripId, DateTime newDate) async {
@@ -120,5 +118,4 @@ class TripListViewModel extends ChangeNotifier {
 //     print("Trip not found");
 //   }
 // }
-
 }
