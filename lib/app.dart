@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
                   settingsController: settingsController,
                   tripListViewModel: tripListViewModel),
               '/settings': (context) =>
-                  SettingsView(settingsController: settingsController),
+                  SettingsScreen(settingsController: settingsController),
             },
             initialRoute: initialRoute,
           );
