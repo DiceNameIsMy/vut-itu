@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';
-import 'package:vut_itu/trip/place_model.dart';
+import 'package:vut_itu/backend/place_model.dart';
 
 class PlacesBackend {
   static final List<PlaceModel> _places = [

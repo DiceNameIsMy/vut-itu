@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/trip/trip.dart';  
-import 'package:vut_itu/trip/place_model.dart';  
+import 'package:vut_itu/backend/trip_model.dart';
+import 'package:vut_itu/backend/place_model.dart';
 import 'package:vut_itu/backend/trips_backend.dart';
 
 class TripViewModel extends ChangeNotifier {
@@ -13,10 +13,8 @@ class TripViewModel extends ChangeNotifier {
   // Getters for trip properties
   String get id => _tripModel.id;
   String? get title => _tripModel.title;
-  DateTime? get date => _tripModel.date;
+  DateTime? get date => _tripModel.arriveAt;
   List<PlaceModel> get places => _tripModel.places;
-
-   
 
   Future<void> setTitle(String newTitle) async {
     bool success = await _tripsBackend.setTitle(id, newTitle);
@@ -30,12 +28,11 @@ class TripViewModel extends ChangeNotifier {
     }
   }
 
-
   Future<void> setDate(DateTime newDate) async {
     bool success = await _tripsBackend.setDate(id, newDate);
 
     if (success) {
-      _tripModel.date = newDate;
+      _tripModel.arriveAt = newDate;
       notifyListeners();
     } else {
       // Handle error (optional)
@@ -60,12 +57,12 @@ class TripViewModel extends ChangeNotifier {
     _tripModel.places.clear();
     notifyListeners(); // Notify listeners to update UI
   }
-  
+
   // Method to get a specific place by index
   PlaceModel getPlace(int index) {
     return _tripModel.places[index];
   }
-  
+
   // Method to set a specific place by index
   void setPlace(int index, PlaceModel place) {
     _tripModel.places[index] = place;
@@ -78,7 +75,7 @@ class TripViewModel extends ChangeNotifier {
   // Method to update the trip model directly (useful for syncing with backend)
   void updateTripModel(TripModel updatedTripModel) {
     _tripModel.title = updatedTripModel.title;
-    _tripModel.date = updatedTripModel.date;
+    _tripModel.arriveAt = updatedTripModel.arriveAt;
     notifyListeners(); // Notify listeners to update UI
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vut_itu/backend/places_backend.dart';
-import 'package:vut_itu/trip/place_model.dart';
+import 'package:vut_itu/backend/place_model.dart';
 
 class SearchViewModel extends ChangeNotifier {
   String? _searchTerm;

@@ -1,39 +1,40 @@
 import 'package:uuid/uuid.dart';
-import 'package:vut_itu/trip/trip.dart';
-import 'package:vut_itu/trip/place_model.dart';
+import 'package:vut_itu/backend/trip_model.dart';
+import 'package:vut_itu/backend/place_model.dart';
 import 'package:latlong2/latlong.dart';
 
 class TripsBackend {
   static final TripsBackend _instance = TripsBackend._internal();
 
   List<TripModel> _trips = [
-  TripModel(
-    id: Uuid().v7(),
-    title: 'Destination 1',
-    places: [
-      PlaceModel(
-        id: 'place1',
-        title: 'Paris',
-        description: 'Capital city of France',
-        coordinates: LatLng(48.8566, 2.3522), // Example coordinates for Paris
-        imageUrl: 'https://example.com/paris.jpg',
-      ),
-    ],
-  ),
-  TripModel(
-    id: Uuid().v7(),
-    title: 'Destination 2',
-    places: [
-      PlaceModel(
-        id: 'place2',
-        title: 'Tokyo',
-        description: 'Capital city of Japan',
-        coordinates: LatLng(35.6762, 139.6503), // Example coordinates for Tokyo
-        imageUrl: 'https://example.com/tokyo.jpg',
-      ),
-    ],
-  ),
-];
+    TripModel(
+      id: Uuid().v7(),
+      title: 'Destination 1',
+      places: [
+        PlaceModel(
+          id: 'place1',
+          title: 'Paris',
+          description: 'Capital city of France',
+          coordinates: LatLng(48.8566, 2.3522), // Example coordinates for Paris
+          imageUrl: 'https://example.com/paris.jpg',
+        ),
+      ],
+    ),
+    TripModel(
+      id: Uuid().v7(),
+      title: 'Destination 2',
+      places: [
+        PlaceModel(
+          id: 'place2',
+          title: 'Tokyo',
+          description: 'Capital city of Japan',
+          coordinates:
+              LatLng(35.6762, 139.6503), // Example coordinates for Tokyo
+          imageUrl: 'https://example.com/tokyo.jpg',
+        ),
+      ],
+    ),
+  ];
 
   factory TripsBackend() {
     return _instance;
@@ -52,29 +53,28 @@ class TripsBackend {
   }
 
   Future<TripModel> tryCreateTrip({
-  required String title,
-  required DateTime date,
-  required List<PlaceModel> places,
-}) async {
-  await Future.delayed(Duration(milliseconds: 300)); // Mock delay
+    required String title,
+    required DateTime date,
+    required List<PlaceModel> places,
+  }) async {
+    await Future.delayed(Duration(milliseconds: 300)); // Mock delay
 
-  if (places.isEmpty) {
-    throw Exception("Places list cannot be empty");
+    if (places.isEmpty) {
+      throw Exception("Places list cannot be empty");
+    }
+
+    // Generate a single trip model with a consistent ID
+    final newTrip = TripModel(
+      id: Uuid().v7(),
+      title: title,
+      arriveAt: date,
+      places: places,
+    );
+
+    _trips.add(newTrip); // Add to the backend's trip list
+
+    return newTrip; // Return the complete trip model instead of just a success boolean
   }
-
-  // Generate a single trip model with a consistent ID
-  final newTrip = TripModel(
-    id: Uuid().v7(),
-    title: title,
-    date: date,
-    places: places,
-  );
-
-  _trips.add(newTrip); // Add to the backend's trip list
-
-  return newTrip; // Return the complete trip model instead of just a success boolean
-}
-
 
   Future<bool> tryDeleteTrip(String? id) async {
     await Future.delayed(Duration(milliseconds: 300)); // Mock delay
@@ -125,7 +125,7 @@ class TripsBackend {
   Future<bool> setDate(String id, DateTime? date) async {
     final trip = await getTrip(id);
     if (trip != null) {
-      trip.date = date;
+      trip.arriveAt = date;
       return true;
     }
     return false;

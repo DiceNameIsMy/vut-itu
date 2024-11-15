@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:vut_itu/trip/place_model.dart';
+import 'package:vut_itu/backend/place_model.dart';
 
 class SelectedPlacesViewModel extends ChangeNotifier {
   List<PlaceModel> _selectedPlaces = [];

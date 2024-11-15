@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/trip/place_model.dart';
+import 'package:vut_itu/backend/place_model.dart';
 
 class PlaceCardView extends StatelessWidget {
   final PlaceModel p;
