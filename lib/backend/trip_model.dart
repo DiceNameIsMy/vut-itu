@@ -5,8 +5,8 @@ class TripModel {
     required this.id,
     this.title,
     this.arriveAt,
-    required this.places,
-  }) : assert(places.isNotEmpty, 'Places list cannot be empty.');
+    this.places = const [],
+  });
 
   final String id;
   String? title;
