@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:vut_itu/backend/gui_mode_enum.dart';
 import 'package:vut_itu/onboarding/onboarding_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
+import 'package:vut_itu/trip_alternative/alt_trip_list_screen.dart';
 import 'package:vut_itu/trip_planning/trip_list_screen.dart';
 import 'package:vut_itu/trip/trip_list_view_model.dart';
 
@@ -21,6 +23,11 @@ class MyApp extends StatelessWidget {
 
     var initialRoute =
         settingsController.completedOnboarding ? '/' : '/onboarding';
+
+    Widget homeScreen = TripListScreen();
+    if (settingsController.guiMode == GuiModeEnum.alternativeMode) {
+      homeScreen = AltTripListScreen(settingsController: settingsController);
+    }
 
     // Glue the SettingsController to the MaterialApp.
     //
@@ -44,7 +51,7 @@ class MyApp extends StatelessWidget {
 
             // Routing
             routes: {
-              '/': (context) => TripListScreen(),
+              '/': (context) => homeScreen,
               '/onboarding': (context) => OnboardingScreen(
                   settingsController: settingsController,
                   tripListViewModel: tripListViewModel),

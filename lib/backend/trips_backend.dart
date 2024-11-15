@@ -4,13 +4,12 @@ import 'package:vut_itu/backend/trip_model.dart';
 import 'package:vut_itu/backend/place_model.dart';
 
 class TripsBackend {
+  /// Make this class a singleton object
   static final TripsBackend _instance = TripsBackend._internal();
 
   List<TripModel> _trips = mockTrips.toList();
 
-  factory TripsBackend() {
-    return _instance;
-  }
+  factory TripsBackend() => _instance;
 
   TripsBackend._internal();
 
@@ -46,6 +45,18 @@ class TripsBackend {
     _trips.add(newTrip); // Add to the backend's trip list
 
     return newTrip; // Return the complete trip model instead of just a success boolean
+  }
+
+  Future<void> saveTrip(TripModel trip) async {
+    await Future.delayed(Duration(milliseconds: 300)); // Mock delay
+    final existingTrip =
+        _trips.where((existingTrip) => existingTrip.id == trip.id).firstOrNull;
+
+    if (existingTrip == null) {
+      _trips.add(trip);
+    } else {
+      _trips[_trips.indexOf(existingTrip)] = trip;
+    }
   }
 
   Future<bool> tryDeleteTrip(String? id) async {
