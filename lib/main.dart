@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vut_itu/alt/app.dart';
+import 'package:vut_itu/alt/trip_list/cubit/bloc_change_observer.dart';
 import 'package:vut_itu/app.dart';
+import 'package:vut_itu/backend/gui_mode_enum.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/backend/settings_backend.dart';
 import 'package:vut_itu/trip/trip_list_view_model.dart';
 
 void main() async {
-  // Set up the SettingsController, which will glue user settings to multiple
-  // Flutter Widgets.
-  final settingsController = SettingsViewModel(SettingsBackend());
+  Bloc.observer = const BlocChangeObserver();
+
+  final settingsBackend = SettingsBackend();
+  final settingsController = SettingsViewModel(settingsBackend);
   final tripListViewModel = TripListViewModel();
 
+  // Before using the SettingsBackend, WidgetsFlutterBinding must be initialized.
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load the user's preferred theme while the splash screen is displayed.
-  // This prevents a sudden theme change when the app is first displayed.
+  // TEMPORARY: For debugging the applicaiton
+  await settingsBackend.setOnboardingCompleted(false);
+  await settingsBackend.setGuiMode(GuiModeEnum.alternativeMode);
+
   await settingsController.loadSettings();
 
-  // Run the app and pass in the SettingsController. The app listens to the
-  // SettingsController for changes, then passes it further down to the
-  // SettingsView.
-  runApp(MyApp(settingsController: settingsController, tripListViewModel: tripListViewModel));
+  // Run the app
+  if (settingsController.guiMode == GuiModeEnum.defaultMode) {
+    runApp(MyApp(
+        settingsController: settingsController,
+        tripListViewModel: tripListViewModel));
+  } else {
+    runApp(AltApp(settingsController: settingsController));
+  }
 }

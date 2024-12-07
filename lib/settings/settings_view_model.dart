@@ -24,7 +24,7 @@ class SettingsViewModel with ChangeNotifier {
   /// settings from the service.
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
-    _completedOnboarding = await _settingsService.isOnboardingCompleted();
+    _completedOnboarding = await _settingsService.onboardingCompleted();
     _guiMode = await _settingsService.guiMode();
 
     // Important! Inform listeners a change has occurred.
@@ -39,7 +39,7 @@ class SettingsViewModel with ChangeNotifier {
     _themeMode = newThemeMode;
     notifyListeners();
 
-    await _settingsService.updateThemeMode(newThemeMode);
+    await _settingsService.setThemeMode(newThemeMode);
   }
 
   /// Update and persist the completed onboarding status.
@@ -49,7 +49,7 @@ class SettingsViewModel with ChangeNotifier {
     _completedOnboarding = true;
     notifyListeners();
 
-    await _settingsService.completeOnboarding();
+    await _settingsService.setOnboardingCompleted(true);
   }
 
   Future<void> updateGuiMode(GuiModeEnum? newGuiMode) async {
@@ -59,6 +59,6 @@ class SettingsViewModel with ChangeNotifier {
     _guiMode = newGuiMode;
     notifyListeners();
 
-    await _settingsService.updateGuiMode(newGuiMode);
+    await _settingsService.setGuiMode(newGuiMode);
   }
 }

@@ -67,4 +67,16 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
+
+  static Widget navigateToUsingIcon(
+      BuildContext context, SettingsViewModel settingsController) {
+    return IconButton(
+      icon: const Icon(Icons.settings),
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return SettingsScreen(settingsController: settingsController);
+        }));
+      },
+    );
+  }
 }

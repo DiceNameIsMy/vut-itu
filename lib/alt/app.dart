@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/onboarding/onboarding_screen.dart';
+import 'package:vut_itu/alt/onboarding_screen.dart';
+import 'package:vut_itu/alt/trip_list/trips_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/trip_planning/trip_list_screen.dart';
-import 'package:vut_itu/trip/trip_list_view_model.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp(
-      {super.key,
-      required this.settingsController,
-      required this.tripListViewModel});
+class AltApp extends StatelessWidget {
+  const AltApp({super.key, required this.settingsController});
 
   final SettingsViewModel settingsController;
-  final TripListViewModel tripListViewModel;
 
   // This widget is the root of your application.
   @override
@@ -30,7 +25,7 @@ class MyApp extends StatelessWidget {
         listenable: settingsController,
         builder: (BuildContext context, Widget? child) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'TripHub',
 
             // Theme
             theme: ThemeData(
@@ -44,10 +39,9 @@ class MyApp extends StatelessWidget {
 
             // Routing
             routes: {
-              '/': (context) => TripListScreen(),
-              '/onboarding': (context) => OnboardingScreen(
-                  settingsController: settingsController,
-                  tripListViewModel: tripListViewModel),
+              '/': (context) => TripsScreen(settingsController),
+              '/onboarding': (context) =>
+                  OnboardingScreen(settingsController: settingsController),
               '/settings': (context) =>
                   SettingsScreen(settingsController: settingsController),
             },

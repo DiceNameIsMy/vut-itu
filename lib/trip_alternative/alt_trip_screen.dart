@@ -41,16 +41,8 @@ class _AltTripScreenState extends State<AltTripScreen> {
                     onPressed: () => Navigator.of(context).pop(),
                     icon: Icon(Icons.arrow_back)),
                 actions: [
-                  IconButton(
-                    icon: Icon(Icons.settings),
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return SettingsScreen(
-                            settingsController: widget.settingsController);
-                      }));
-                    },
-                  ),
+                  SettingsScreen.navigateToUsingIcon(
+                      context, widget.settingsController)
                 ],
               ),
               body: Column(

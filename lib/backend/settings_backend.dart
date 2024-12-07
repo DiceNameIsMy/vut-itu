@@ -16,8 +16,6 @@ class SettingsBackend {
 
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<ThemeMode> themeMode() async {
-    await _prefs.clear();
-
     var themeMode = await _prefs.getInt('themeMode');
     themeMode ??= ThemeMode.system.index;
 
@@ -25,41 +23,31 @@ class SettingsBackend {
   }
 
   /// Persists the user's preferred ThemeMode to local or remote storage.
-  Future<void> updateThemeMode(ThemeMode theme) async {
+  Future<void> setThemeMode(ThemeMode theme) async {
     // Use the shared_preferences package to persist settings locally or the
     // http package to persist settings over the network.
     await _prefs.setInt('themeMode', theme.index);
   }
 
-  Future<bool> isOnboardingCompleted() async {
-    // TEMPORARY CRUTCH: Clear the shared preferences to reset the onboarding status.
+  Future<bool> onboardingCompleted() async {
     var completed = await _prefs.getBool('onboardingCompleted');
     completed ??= false;
 
     return completed;
   }
 
-  Future<void> completeOnboarding() async {
-    await _prefs.setBool('onboardingCompleted', true);
+  Future<void> setOnboardingCompleted(bool completed) async {
+    await _prefs.setBool('onboardingCompleted', completed);
   }
 
   Future<GuiModeEnum> guiMode() async {
     var guiMode = await _prefs.getInt('guiMode');
+    guiMode ??= GuiModeEnum.defaultMode.index;
 
-    return GuiModeEnum.values
-            .where((element) => element.index == guiMode)
-            .firstOrNull ??
-        GuiModeEnum.defaultMode;
+    return GuiModeEnum.values[guiMode];
   }
 
-  Future<void> setGuiMode(String newMode) async {
-    await _prefs.setString('guiMode', newMode);
-  }
-
-  /// Persists the user's preferred ThemeMode to local or remote storage.
-  Future<void> updateGuiMode(GuiModeEnum newGuiMode) async {
-    // Use the shared_preferences package to persist settings locally or the
-    // http package to persist settings over the network.
-    await _prefs.setInt('themeMode', newGuiMode.index);
+  Future<void> setGuiMode(GuiModeEnum newGuiMode) async {
+    await _prefs.setInt('guiMode', newGuiMode.index);
   }
 }

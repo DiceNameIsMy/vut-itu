@@ -47,4 +47,10 @@ class PlacesBackend {
       return km <= radius;
     }).toList();
   }
+
+  Future<PlaceModel?> findById(String id) async {
+    await Future.delayed(Duration(milliseconds: 300)); // Mock delay
+
+    return _places.where((place) => place.id == id).firstOrNull;
+  }
 }
