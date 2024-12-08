@@ -7,7 +7,8 @@ import 'package:vut_itu/backend/visiting_place_model.dart';
 final List<TripModel> mockTrips = [
   TripModel(
     id: Uuid().v7(),
-    title: 'Destination 1',
+    title: 'My First Trip',
+    arriveAt: DateTime(2025, 1, 22),
     places: [
       PlaceModel(
         id: 'place1',
@@ -21,7 +22,7 @@ final List<TripModel> mockTrips = [
   ),
   TripModel(
     id: Uuid().v7(),
-    title: 'Destination 2',
+    title: 'Rome-Paris-London',
     places: [
       PlaceModel(
         id: 'place2',
