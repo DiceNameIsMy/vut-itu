@@ -1,68 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:vut_itu/backend/trip_model.dart';
+import 'package:vut_itu/backend/visiting_place_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/trip_alternative/alt_trip_view_model.dart';
 
-class AltTripScreen extends StatefulWidget {
+class AltTripScreen extends StatelessWidget {
   final SettingsViewModel settingsController;
-  final String tripId;
+  final TripModel trip;
+  final List<VisitingPlaceModel> visitingPlaces;
 
   const AltTripScreen(
-      {super.key, required this.tripId, required this.settingsController});
-
-  @override
-  State<AltTripScreen> createState() => _AltTripScreenState();
-}
-
-class _AltTripScreenState extends State<AltTripScreen> {
-  late AltTripViewModel trip = AltTripViewModel(widget.tripId);
+      {super.key,
+      required this.trip,
+      required this.visitingPlaces,
+      required this.settingsController});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: trip.loadTrip(),
-        builder: (context, snapshot) {
-          var loaded = false;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data != null && snapshot.data == false) {
-              return Center(child: Text('No data available'));
-            } else {
-              loaded = true;
-            }
-          }
-
-          return Scaffold(
-              appBar: AppBar(
-                title: Text(loaded ? trip.title : 'Loading...'),
-                leading: IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.arrow_back)),
-                actions: [
-                  SettingsScreen.navigateToUsingIcon(
-                      context, widget.settingsController)
-                ],
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(trip.title ?? 'Unnamed trip'),
+          leading: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.arrow_back)),
+          actions: [
+            SettingsScreen.navigateToUsingIcon(context, settingsController)
+          ],
+        ),
+        body: Column(
+          children: [
+            Text('Places:'),
+            Expanded(
+              child: ListView.builder(
+                itemCount: visitingPlaces.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(visitingPlaces[index].title),
+                    subtitle: Text(visitingPlaces[index].description),
+                  );
+                },
               ),
-              body: Column(
-                children: [
-                  Text('Places:'),
-                  loaded
-                      ? Expanded(
-                          child: ListView.builder(
-                            itemCount: trip.places.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(trip.places[index].title),
-                                subtitle: Text(trip.places[index].description),
-                              );
-                            },
-                          ),
-                        )
-                      : Text('Loading...'),
-                ],
-              ));
-        });
+            )
+          ],
+        ));
   }
 }

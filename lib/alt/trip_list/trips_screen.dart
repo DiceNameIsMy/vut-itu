@@ -51,14 +51,14 @@ class TripsScreen extends StatelessWidget {
   ListTile _tripItem(TripModel trip, List<VisitingPlaceModel> visitingPlaces,
       BuildContext context) {
     var subtitle = trip.arriveAt != null
-        ? DateFormat('yyyy-MM-dd').format(trip.arriveAt!)
+        ? DateFormat('dd MMM, yyyy').format(trip.arriveAt!)
         : 'No dates';
 
     IconButton openMapButton;
     if (visitingPlaces.isEmpty) {
       openMapButton = IconButton(
         icon: Icon(Icons.map_rounded, color: Theme.of(context).disabledColor),
-        onPressed: null,
+        onPressed: () {},
       );
     } else {
       openMapButton = IconButton(
@@ -67,6 +67,7 @@ class TripsScreen extends StatelessWidget {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => MapScreen(
                   trip: trip,
+                  visitingPlaces: visitingPlaces,
                   centerAt: trip.places.first.coordinates,
                   initZoomLevel: 7)));
         },
@@ -81,7 +82,9 @@ class TripsScreen extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => AltTripScreen(
-                tripId: trip.id, settingsController: settingsViewModel)));
+                trip: trip,
+                visitingPlaces: visitingPlaces,
+                settingsController: settingsViewModel)));
       },
     );
   }

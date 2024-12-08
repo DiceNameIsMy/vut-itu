@@ -9,7 +9,7 @@ import 'package:vut_itu/backend/visiting_place_model.dart';
 
 class Map extends StatelessWidget {
   final TripModel trip;
-  final VisitingPlaceModel? visitingPlace;
+  final VisitingPlaceModel visitingPlace;
   final LatLng centerAt;
   final double initZoomLevel;
 
@@ -25,7 +25,7 @@ class Map extends StatelessWidget {
   Map(
       {super.key,
       required this.trip,
-      this.visitingPlace,
+      required this.visitingPlace,
       required this.centerAt,
       required this.initZoomLevel});
 
@@ -92,7 +92,8 @@ class Map extends StatelessWidget {
     ]);
 
     return BlocProvider(
-      create: (context) => MapCubit(trip, centerAt, initZoomLevel),
+      create: (context) =>
+          MapCubit(trip, visitingPlace, centerAt, initZoomLevel),
       child: FlutterMap(
           options: MapOptions(
             initialCenter: centerAt,
