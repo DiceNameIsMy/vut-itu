@@ -5,16 +5,11 @@ import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/trip/trip_view_model.dart';
 import 'package:vut_itu/trip_planning/trip_detailed_view.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends StatelessWidget {
   final SettingsViewModel settingsController;
 
   const OnboardingScreen({required this.settingsController});
 
-  @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     var topText =
@@ -71,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           FloatingActionButton.extended(
             onPressed: () async {
               // Complete onboarding and navigate to the trip details view.
-              widget.settingsController.completeOnboarding();
+              settingsController.completeOnboarding();
               if (context.mounted) {
                 Navigator.pop(context);
                 Navigator.push(
