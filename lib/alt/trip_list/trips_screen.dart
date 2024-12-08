@@ -7,7 +7,7 @@ import 'package:vut_itu/backend/trip_model.dart';
 import 'package:vut_itu/backend/visiting_place_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/trip_alternative/alt_trip_screen.dart';
+import 'package:vut_itu/alt/trip/trip_screen.dart';
 
 class TripsScreen extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
@@ -81,7 +81,7 @@ class TripsScreen extends StatelessWidget {
       trailing: openMapButton,
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AltTripScreen(
+            builder: (context) => TripScreen(
                 trip: trip,
                 visitingPlaces: visitingPlaces,
                 settingsController: settingsViewModel)));

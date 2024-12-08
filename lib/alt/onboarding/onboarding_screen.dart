@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/alt/onboarding/cubit/onboarding_cubit.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/trip_alternative/alt_trip_screen.dart';
+import 'package:vut_itu/alt/trip/trip_screen.dart';
 
 class OnboaringScreen extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
@@ -29,7 +29,7 @@ class OnboaringScreen extends StatelessWidget {
             settingsViewModel.completeOnboarding();
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (context) {
-              return AltTripScreen(
+              return TripScreen(
                   trip: state.trip,
                   visitingPlaces: state.places,
                   settingsController: settingsViewModel);

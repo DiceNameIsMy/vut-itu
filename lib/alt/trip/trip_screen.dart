@@ -4,12 +4,12 @@ import 'package:vut_itu/backend/visiting_place_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
-class AltTripScreen extends StatelessWidget {
+class TripScreen extends StatelessWidget {
   final SettingsViewModel settingsController;
   final TripModel trip;
   final List<VisitingPlaceModel> visitingPlaces;
 
-  const AltTripScreen(
+  const TripScreen(
       {super.key,
       required this.trip,
       required this.visitingPlaces,
@@ -26,6 +26,11 @@ class AltTripScreen extends StatelessWidget {
           actions: [
             SettingsScreen.navigateToUsingIcon(context, settingsController)
           ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {},
+          icon: Icon(Icons.add),
+          label: const Text('Add next destination'),
         ),
         body: Column(
           children: [
