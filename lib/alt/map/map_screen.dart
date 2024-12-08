@@ -42,7 +42,7 @@ class _MapScreen extends State<MapScreen> {
       );
     }
     return Scaffold(
-        appBar: AppBar(title: const Text("App bar 2")),
+        appBar: AppBar(title: Text(_selectedPlace.title)),
         floatingActionButton: goToNextDestinationButton,
         body: Stack(
           children: [
