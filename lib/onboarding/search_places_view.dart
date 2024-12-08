@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vut_itu/map/map_screen.dart';
+import 'package:vut_itu/alt/map/map_screen.dart';
 import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 import 'package:vut_itu/places/places_view_model.dart';
 import 'package:vut_itu/trip/place_card_view.dart';

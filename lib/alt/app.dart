@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/alt/onboarding_screen.dart';
+import 'package:vut_itu/alt/onboarding/onboarding_screen.dart';
 import 'package:vut_itu/alt/trip_list/trips_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';

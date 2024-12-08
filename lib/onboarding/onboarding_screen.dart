@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:vut_itu/map/map_screen.dart';
-import 'package:vut_itu/onboarding/search_places_view.dart';
 import 'package:vut_itu/onboarding/selected_places_view_model.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/trip/trip_list_view_model.dart';
@@ -89,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 32.0, right: 32.0, top: 16.0, bottom: 16.0),
-                    child: SearchPlacesView(selectedPlaces),
+                    child: Container(),
                   ),
                   bottomText,
                   SizedBox(height: screenHeight * 0.15),
