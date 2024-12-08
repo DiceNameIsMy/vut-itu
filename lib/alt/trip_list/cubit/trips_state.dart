@@ -2,7 +2,7 @@ part of 'trips_cubit.dart';
 
 @immutable
 sealed class TripsState {
-  final List<TripModel> trips;
+  final List<(TripModel, List<VisitingPlaceModel>)> trips;
   final bool loading;
 
   TripsState(this.trips, {this.loading = false});
