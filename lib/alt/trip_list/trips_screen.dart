@@ -16,25 +16,22 @@ class TripsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => TripsCubit()..fetchTrips(),
-      child: BlocBuilder<TripsCubit, TripsState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('My Trips'),
-              actions: [
-                SettingsScreen.navigateToUsingIcon(context, settingsViewModel)
-              ],
-            ),
-            body: RefreshIndicator(
-                onRefresh: () async {
-                  await BlocProvider.of<TripsCubit>(context).fetchTrips();
-                },
-                child: _tripsList(state, context)),
-          );
-        },
-      ),
+    return BlocBuilder<TripsCubit, TripsState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('My Trips'),
+            actions: [
+              SettingsScreen.navigateToUsingIcon(context, settingsViewModel)
+            ],
+          ),
+          body: RefreshIndicator(
+              onRefresh: () async {
+                await BlocProvider.of<TripsCubit>(context).invalidateTrips();
+              },
+              child: _tripsList(state, context)),
+        );
+      },
     );
   }
 

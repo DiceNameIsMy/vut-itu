@@ -12,7 +12,9 @@ class OnboaringScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OnboardingCubit()..createFirstTrip(),
+      create: (context) =>
+          OnboardingCubit.fromContext(context, settingsViewModel)
+            ..createFirstTrip(),
       child: BlocBuilder<OnboardingCubit, OnboardingState>(
         builder: (context, state) {
           return _build(state, context);
