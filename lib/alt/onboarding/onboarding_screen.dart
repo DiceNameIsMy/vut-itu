@@ -2,87 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/alt/onboarding/cubit/onboarding_cubit.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/trip/trip_view_model.dart';
-import 'package:vut_itu/trip_planning/trip_detailed_view.dart';
+import 'package:vut_itu/trip_alternative/alt_trip_screen.dart';
 
-class OnboardingScreen extends StatelessWidget {
-  final SettingsViewModel settingsController;
+class OnboaringScreen extends StatelessWidget {
+  final SettingsViewModel settingsViewModel;
 
-  const OnboardingScreen({required this.settingsController});
+  const OnboaringScreen({super.key, required this.settingsViewModel});
 
   @override
   Widget build(BuildContext context) {
-    var topText =
-        Text("Where to?", style: Theme.of(context).textTheme.headlineLarge);
-
-    var searchPlacesButton = Padding(
-      padding: const EdgeInsets.only(
-          left: 32.0, right: 32.0, top: 16.0, bottom: 16.0),
-      child: const Text('TODO'),
-      // child: SearchPlacesView(selectedPlaces),
-    );
-
-    var bottomText = Text("Help me decide",
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              decoration: TextDecoration.underline,
-            ));
-
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
-    var logo = Image(
-      image: AssetImage('assets/images/triphub.png'),
-      width: screenWidth * 0.8,
-    );
-
     return BlocProvider(
-      create: (context) => OnboardingCubit(),
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              logo,
-              SizedBox(height: screenHeight * 0.1),
-              topText,
-              searchPlacesButton,
-              bottomText,
-              SizedBox(height: screenHeight * 0.15),
-            ],
-          ),
-        ),
-        floatingActionButton: _startPlanningFAB(),
+      create: (context) => OnboardingCubit()..createFirstTrip(),
+      child: BlocBuilder<OnboardingCubit, OnboardingState>(
+        builder: (context, state) {
+          return _build(state, context);
+        },
       ),
     );
   }
 
-  Widget? _startPlanningFAB() {
-    return BlocBuilder<OnboardingCubit, OnboardingState>(
-        builder: (context, state) {
-      if (state.trip == null) {
-        return Column();
-      }
-      return Column(
-        children: [
-          FloatingActionButton.extended(
-            onPressed: () async {
-              // Complete onboarding and navigate to the trip details view.
-              settingsController.completeOnboarding();
-              if (context.mounted) {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TripDetailedView(
-                            tripViewModel: TripViewModel(state.trip!),
-                          )),
-                );
-              }
-            },
-            icon: Icon(Icons.arrow_forward),
-            label: Text("Start planning"),
-          ),
-        ],
-      );
-    });
+  Scaffold _build(OnboardingState state, BuildContext context) {
+    FloatingActionButton? fab;
+    if (state is OnboardingCanStartPlanning) {
+      fab = FloatingActionButton.extended(
+          onPressed: () {
+            settingsViewModel.completeOnboarding();
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (context) {
+              return AltTripScreen(
+                  trip: state.trip,
+                  visitingPlaces: state.places,
+                  settingsController: settingsViewModel);
+            }));
+          },
+          label: Text('Let\'s go'));
+    }
+
+    return Scaffold(
+      body: Center(
+        child: Center(child: Text('Onboarding Screen')),
+      ),
+      floatingActionButton: fab,
+    );
   }
 }

@@ -41,7 +41,7 @@ class AltApp extends StatelessWidget {
             routes: {
               '/': (context) => TripsScreen(settingsController),
               '/onboarding': (context) =>
-                  OnboardingScreen(settingsController: settingsController),
+                  OnboaringScreen(settingsViewModel: settingsController),
               '/settings': (context) =>
                   SettingsScreen(settingsController: settingsController),
             },

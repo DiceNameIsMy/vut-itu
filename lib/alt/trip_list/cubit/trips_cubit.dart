@@ -11,35 +11,40 @@ part 'trips_state.dart';
 class TripsCubit extends Cubit<TripsState> {
   static final _backend = TripsBackend();
   static final _vistingPlaces = VisitingPlaceBackend();
-  List<(TripModel, List<VisitingPlaceModel>)> _trips = [];
 
   TripsCubit() : super(TripsInitial([]));
 
   Future<void> fetchTrips() async {
+    if (state is TripsLoading) return;
+
     // Set state as loading
-    emit(TripsLoading(_trips));
+    emit(TripsLoading(state.trips));
 
     // Fetch trips from the backend
     var trips = await _backend.getTrips();
+    state.trips.clear();
 
+    // TODO: Indexing might be off. Sort them.
     var futures = <Future>[];
     for (var trip in trips) {
       futures.add(_vistingPlaces
           .getVisitingPlaces(trip.id)
-          .then((places) => _trips.add((trip, places))));
+          .then((places) => state.trips.add((trip, places))));
     }
     await Future.wait(futures);
 
-    emit(TripsShown(_trips));
+    emit(TripsLoaded(state.trips));
   }
 
   Future<void> createTrip(String title) async {
+    emit(TripsLoading(state.trips));
+
     // Create a new trip
     final newTrip =
         TripModel(id: Uuid().v7(), title: title, arriveAt: null, places: []);
 
     await _backend.saveTrip(newTrip);
-    _trips.add((newTrip, []));
+    state.trips.add((newTrip, []));
 
     // Fetch the updated list of trips
     await fetchTrips();

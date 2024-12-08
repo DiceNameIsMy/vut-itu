@@ -16,6 +16,6 @@ final class TripsLoading extends TripsState {
   TripsLoading(super.trips) : super(loading: true);
 }
 
-final class TripsShown extends TripsState {
-  TripsShown(super.trips) : super(loading: false);
+final class TripsLoaded extends TripsState {
+  TripsLoaded(super.trips) : super(loading: false);
 }

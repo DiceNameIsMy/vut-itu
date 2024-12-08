@@ -27,24 +27,24 @@ class TripsScreen extends StatelessWidget {
                 SettingsScreen.navigateToUsingIcon(context, settingsViewModel)
               ],
             ),
-            body: _tripsList(state, context),
+            body: RefreshIndicator(
+                onRefresh: () async {
+                  await BlocProvider.of<TripsCubit>(context).fetchTrips();
+                },
+                child: _tripsList(state, context)),
           );
         },
       ),
     );
   }
 
-  Center _tripsList(TripsState state, BuildContext context) {
-    if (state.loading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    return Center(
-      child: Column(
-        children: state.trips
-            .map((tripPlacePair) =>
-                _tripItem(tripPlacePair.$1, tripPlacePair.$2, context))
-            .toList(),
-      ),
+  Widget _tripsList(TripsState state, BuildContext context) {
+    return ListView.builder(
+      itemCount: state.trips.length,
+      itemBuilder: (context, index) {
+        var (trip, places) = state.trips[index];
+        return _tripItem(trip, places, context);
+      },
     );
   }
 
