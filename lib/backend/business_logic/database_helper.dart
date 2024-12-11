@@ -115,6 +115,7 @@ class DatabaseHelper {
 
     var paris = CityModel(
       name: 'Paris',
+      country: 'France',
       description: 'City of Light',
       coordinates: LatLng(48.8566, 2.3522),
       imageUrl: 'https://example.com/paris.jpg',
@@ -123,6 +124,7 @@ class DatabaseHelper {
 
     var newYork = CityModel(
       name: 'New York',
+      country: 'USA',
       description: 'The Big Apple',
       coordinates: LatLng(40.7128, -74.0060),
       imageUrl: 'https://example.com/newyork.jpg',
@@ -131,6 +133,7 @@ class DatabaseHelper {
     await insertCity(newYork);
     var tokyo = CityModel(
       name: 'Tokyo',
+      country: 'Japan',
       description: 'The bustling capital of Japan',
       coordinates: LatLng(35.6895, 139.6917),
       imageUrl: 'https://example.com/tokyo.jpg',
