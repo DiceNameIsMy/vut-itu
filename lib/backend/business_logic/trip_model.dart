@@ -1,5 +1,5 @@
 class TripModel {
-  final int id;
+  int id;
   final String name;
   final DateTime? startDate;
   final DateTime? endDate;

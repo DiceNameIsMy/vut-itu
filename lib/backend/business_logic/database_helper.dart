@@ -1,6 +1,7 @@
 import 'package:latlong2/latlong.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 
 class DatabaseHelper {
@@ -36,7 +37,8 @@ class DatabaseHelper {
         name TEXT NOT NULL,
         country TEXT NOT NULL,
         description TEXT,
-        coordinates TEXT,
+        coordinates_lat REAL,
+        coordinates_lng REAL,
         image_url TEXT
       )
     ''');
@@ -114,7 +116,7 @@ class DatabaseHelper {
       coordinates: LatLng(48.8566, 2.3522),
       imageUrl: 'https://example.com/paris.jpg',
     );
-    paris.id = await db.insert('Cities', paris.toMap()..remove('id'));
+    paris.id = await insertCity(paris.toMap()..remove('id'));
 
     var newYork = CityModel(
       name: 'New York',
@@ -123,65 +125,79 @@ class DatabaseHelper {
       imageUrl: 'https://example.com/newyork.jpg',
     );
 
-    newYork.id = await db.insert('Cities', newYork.toMap()..remove('id'));
+    newYork.id = await insertCity(newYork.toMap()..remove('id'));
     var tokyo = CityModel(
       name: 'Tokyo',
       description: 'The bustling capital of Japan',
       coordinates: LatLng(35.6895, 139.6917),
       imageUrl: 'https://example.com/tokyo.jpg',
     );
-    tokyo.id = await db.insert('Cities', tokyo.toMap()..remove('id'));
+    tokyo.id = await insertCity(tokyo.toMap()..remove('id'));
 
     // Attractions
-    await db.insert('Attractions', {
-      'name': 'Eiffel Tower',
-      'description': 'Iconic landmark in Paris',
-      'city_id': paris.id,
-      'coordinates_lat': 48.8584,
-      'coordinates_lng': 2.2945,
-      'category': 'Landmark',
-      'average_time': 2.0,
-      'cost': 25.0,
-    });
+    var eiffelTower = AttractionModel(
+      name: 'Eiffel Tower',
+      description: 'Iconic landmark in Paris',
+      cityId: paris.id,
+      coordinates: LatLng(48.8584, 2.2945),
+      category: 'Landmark',
+      averageTime: 2.0,
+      cost: 25.0,
+    );
+    eiffelTower.id = await insertAttraction(eiffelTower.toMap()..remove('id'));
 
-    await db.insert('Attractions', {
-      'name': 'Louvre Museum',
-      'description': 'Famous museum with art collections',
-      'city_id': paris.id,
-      'coordinates_lat': 48.8606,
-      'coordinates_lng': 2.3376,
-      'category': 'Museum',
-      'average_time': 4.0,
-      'cost': 17.0,
-    });
+    var louvreMuseum = AttractionModel(
+      name: 'Louvre Museum',
+      description: 'Famous museum with art collections',
+      cityId: paris.id,
+      coordinates: LatLng(48.8606, 2.3376),
+      category: 'Museum',
+      averageTime: 4.0,
+      cost: 17.0,
+    );
+    louvreMuseum.id =
+        await insertAttraction(louvreMuseum.toMap()..remove('id'));
 
-    await db.insert('Attractions', {
-      'name': 'Statue of Liberty',
-      'description': 'A symbol of freedom in New York',
-      'city_id': newYork.id,
-      'coordinates_lat': 40.6892,
-      'coordinates_lng': -74.0445,
-      'category': 'Landmark',
-      'average_time': 3.0,
-      'cost': 20.0,
-    });
+    var statueOfLiberty = AttractionModel(
+      name: 'Statue of Liberty',
+      description: 'A symbol of freedom in New York',
+      cityId: newYork.id,
+      coordinates: LatLng(40.6892, -74.0445),
+      category: 'Landmark',
+      averageTime: 3.0,
+      cost: 20.0,
+    );
+    statueOfLiberty.id =
+        await insertAttraction(statueOfLiberty.toMap()..remove('id'));
 
-    await db.insert('Attractions', {
-      'name': 'Shinjuku Gyoen',
-      'description': 'Beautiful park in Tokyo',
-      'city_id': tokyo.id,
-      'coordinates_lat': 35.6852,
-      'coordinates_lng': 139.7070,
-      'category': 'Park',
-      'average_time': 2.5,
-      'cost': 5.0,
-    });
+    var centralPark = AttractionModel(
+      name: 'Central Park',
+      description: 'Large park in New York',
+      cityId: newYork.id,
+      coordinates: LatLng(40.785091, -73.968285),
+      category: 'Park',
+      averageTime: 2.5,
+      cost: 0.0,
+    );
+    centralPark.id = await insertAttraction(centralPark.toMap()..remove('id'));
+
+    var shinjukuGyoen = AttractionModel(
+      name: 'Shinjuku Gyoen',
+      description: 'Beautiful park in Tokyo',
+      cityId: tokyo.id,
+      coordinates: LatLng(35.6852, 139.7070),
+      category: 'Park',
+      averageTime: 2.5,
+      cost: 5.0,
+    );
+    shinjukuGyoen.id =
+        await insertAttraction(shinjukuGyoen.toMap()..remove('id'));
   }
 
   // Cities
   Future<int> insertCity(Map<String, dynamic> city) async {
     final db = await database;
-    return await db.insert('Cities', city);
+    return await db.insert('Cities', city..remove('id'));
   }
 
   Future<List<Map<String, dynamic>>> getCities() async {
@@ -207,7 +223,7 @@ class DatabaseHelper {
   //  Attractions
   Future<int> insertAttraction(Map<String, dynamic> attraction) async {
     final db = await database;
-    return await db.insert('Attractions', attraction);
+    return await db.insert('Attractions', attraction..remove('id'));
   }
 
   Future<List<Map<String, dynamic>>> getAttractions(int cityId) async {
@@ -230,7 +246,7 @@ class DatabaseHelper {
   // Users
   Future<int> insertUser(Map<String, dynamic> user) async {
     final db = await database;
-    return await db.insert('Users', user);
+    return await db.insert('Users', user..remove('id'));
   }
 
   Future<Map<String, dynamic>?> getUserByEmail(String email) async {
@@ -254,7 +270,7 @@ class DatabaseHelper {
   Future<int> insertTrip(Map<String, dynamic> trip, int userId) async {
     final db = await database;
     trip['user_id'] = userId; // Associate trip with the user
-    return await db.insert('Trips', trip);
+    return await db.insert('Trips', trip..remove('id'));
   }
 
   Future<List<Map<String, dynamic>>> getTripsForUser(int userId) async {
@@ -280,7 +296,7 @@ class DatabaseHelper {
   // TripCities
   Future<int> insertTripCity(Map<String, dynamic> tripCity) async {
     final db = await database;
-    return await db.insert('TripCities', tripCity);
+    return await db.insert('TripCities', tripCity..remove('id'));
   }
 
   Future<List<Map<String, dynamic>>> getTripCities() async {
@@ -302,7 +318,7 @@ class DatabaseHelper {
   // TripAttractions
   Future<int> insertTripAttraction(Map<String, dynamic> tripAttraction) async {
     final db = await database;
-    return await db.insert('TripAttractions', tripAttraction);
+    return await db.insert('TripAttractions', tripAttraction..remove('id'));
   }
 
   Future<List<Map<String, dynamic>>> getTripAttractions() async {

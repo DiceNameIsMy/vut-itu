@@ -1,5 +1,5 @@
 class TripAttractionModel {
-  final int id;
+  int id;
   final int tripCityId;
   final int attractionId;
   final DateTime? selectedDate;
