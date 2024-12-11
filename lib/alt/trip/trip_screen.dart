@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/backend/trip_model.dart';
-import 'package:vut_itu/backend/visiting_place_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
 class TripScreen extends StatelessWidget {
   final SettingsViewModel settingsController;
   final TripModel trip;
-  final List<VisitingPlaceModel> visitingPlaces;
+  final List<TripCityModel> visitingPlaces;
 
   const TripScreen(
       {super.key,
@@ -19,7 +19,7 @@ class TripScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(trip.title ?? 'Unnamed trip'),
+          title: Text(trip.name),
           leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.arrow_back)),
@@ -40,8 +40,10 @@ class TripScreen extends StatelessWidget {
                 itemCount: visitingPlaces.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(visitingPlaces[index].title),
-                    subtitle: Text(visitingPlaces[index].description),
+                    title:
+                        Text("Unknown"), // TODO: Add visitingPlaces[index].name
+                    subtitle: Text(
+                        "Unknown"), // TODO: Add visitingPlaces[index].description
                   );
                 },
               ),

@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:meta/meta.dart';
-import 'package:vut_itu/backend/trip_model.dart';
-import 'package:vut_itu/backend/visiting_place_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_model.dart';
 
 part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
-  MapCubit(TripModel trip, VisitingPlaceModel selectedPlace, LatLng centerAt,
+  MapCubit(TripModel trip, TripCityModel selectedPlace, LatLng centerAt,
       double zoomLevel)
       : super(MapInitial(
             trip: trip,

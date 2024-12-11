@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map/map_screen.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
-import 'package:vut_itu/backend/trip_model.dart';
-import 'package:vut_itu/backend/visiting_place_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/alt/trip/trip_screen.dart';
@@ -45,10 +46,10 @@ class TripsScreen extends StatelessWidget {
     );
   }
 
-  ListTile _tripItem(TripModel trip, List<VisitingPlaceModel> visitingPlaces,
+  ListTile _tripItem(TripModel trip, List<TripCityModel> visitingPlaces,
       BuildContext context) {
-    var subtitle = trip.arriveAt != null
-        ? DateFormat('dd MMM, yyyy').format(trip.arriveAt!)
+    var subtitle = trip.startDate != null
+        ? DateFormat('dd MMM, yyyy').format(trip.startDate!)
         : 'No dates';
 
     IconButton openMapButton;
@@ -65,7 +66,8 @@ class TripsScreen extends StatelessWidget {
               builder: (context) => MapScreen(
                   trip: trip,
                   visitingPlaces: visitingPlaces,
-                  centerAt: trip.places.first.coordinates,
+                  centerAt: LatLng(
+                      0, 0), // TODO: Add visitingPlaces.first.coordinates,
                   initZoomLevel: 7)));
         },
       );
@@ -73,7 +75,7 @@ class TripsScreen extends StatelessWidget {
 
     return ListTile(
       leading: Icon(Icons.directions_car),
-      title: Text(trip.title ?? 'unset'),
+      title: Text(trip.name),
       subtitle: Text(subtitle),
       trailing: openMapButton,
       onTap: () {

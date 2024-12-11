@@ -35,7 +35,6 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-
     // Cities table
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Cities (
@@ -116,8 +115,8 @@ class DatabaseHelper {
       )
     ''');
 
-  //   // Insert some data
-  //   // Cities
+    //   // Insert some data
+    //   // Cities
     try {
       await db.insert(
         'Cities',
@@ -129,8 +128,7 @@ class DatabaseHelper {
           imageUrl: 'https://example.com/paris.jpg',
         ).toMap(),
       );
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -146,8 +144,7 @@ class DatabaseHelper {
         ).toMap(),
       );
       print('New York inserted');
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -163,8 +160,7 @@ class DatabaseHelper {
         ).toMap(),
       );
       print('Tokyo inserted');
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -182,8 +178,7 @@ class DatabaseHelper {
           cost: 10.0,
         ).toMap(),
       );
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -200,8 +195,7 @@ class DatabaseHelper {
           cost: 15.0,
         ).toMap(),
       );
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -218,8 +212,7 @@ class DatabaseHelper {
           cost: 10.0,
         ).toMap(),
       );
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -236,8 +229,7 @@ class DatabaseHelper {
           cost: 0.0,
         ).toMap(),
       );
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -254,8 +246,7 @@ class DatabaseHelper {
           cost: 10.0,
         ).toMap(),
       );
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
 
@@ -272,157 +263,147 @@ class DatabaseHelper {
           cost: 0.0,
         ).toMap(),
       );
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
-    
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-       try {
-      await db.insert(
-        'Cities',
-        CityModel(
-          name: 'New York',
-          country: 'USA',
-          description: 'The Big Apple',
-          coordinates: LatLng(40.7128, -74.0060),
-          imageUrl: 'https://example.com/newyork.jpg',
-        ).toMap(),
-      );
-      print('New York inserted');
-    }
-    catch (e) {
-      print(e);
-    }
+      try {
+        await db.insert(
+          'Cities',
+          CityModel(
+            name: 'New York',
+            country: 'USA',
+            description: 'The Big Apple',
+            coordinates: LatLng(40.7128, -74.0060),
+            imageUrl: 'https://example.com/newyork.jpg',
+          ).toMap(),
+        );
+        print('New York inserted');
+      } catch (e) {
+        print(e);
+      }
 
-    try {
-      await db.insert(
-        'Cities',
-        CityModel(
-          name: 'Tokyo',
-          country: 'Japan',
-          description: 'The Capital of Japan',
-          coordinates: LatLng(35.6895, 139.6917),
-          imageUrl: 'https://example.com/tokyo.jpg',
-        ).toMap(),
-      );
-      print('Tokyo inserted');
-    }
-    catch (e) {
-      print(e);
-    }
+      try {
+        await db.insert(
+          'Cities',
+          CityModel(
+            name: 'Tokyo',
+            country: 'Japan',
+            description: 'The Capital of Japan',
+            coordinates: LatLng(35.6895, 139.6917),
+            imageUrl: 'https://example.com/tokyo.jpg',
+          ).toMap(),
+        );
+        print('Tokyo inserted');
+      } catch (e) {
+        print(e);
+      }
 
-    // Attractions
-    try {
-      await db.insert(
-        'Attractions',
-        AttractionModel(
-          name: 'Eiffel Tower',
-          description: 'Iconic wrought-iron lattice tower',
-          cityId: 1,
-          coordinates: LatLng(48.8584, 2.2945),
-          category: 'Landmark',
-          averageTime: 120,
-          cost: 10.0,
-        ).toMap(),
-      );
-    }
-    catch (e) {
-      print(e);
-    }
+      // Attractions
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Eiffel Tower',
+            description: 'Iconic wrought-iron lattice tower',
+            cityId: 1,
+            coordinates: LatLng(48.8584, 2.2945),
+            category: 'Landmark',
+            averageTime: 120,
+            cost: 10.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
 
-    try {
-      await db.insert(
-        'Attractions',
-        AttractionModel(
-          name: 'Louvre Museum',
-          description: 'World\'s largest art museum',
-          cityId: 1,
-          coordinates: LatLng(48.8606, 2.3376),
-          category: 'Museum',
-          averageTime: 180,
-          cost: 15.0,
-        ).toMap(),
-      );
-    }
-    catch (e) {
-      print(e);
-    }
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Louvre Museum',
+            description: 'World\'s largest art museum',
+            cityId: 1,
+            coordinates: LatLng(48.8606, 2.3376),
+            category: 'Museum',
+            averageTime: 180,
+            cost: 15.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
 
-    try {
-      await db.insert(
-        'Attractions',
-        AttractionModel(
-          name: 'Statue of Liberty',
-          description: 'Iconic statue in New York Harbor',
-          cityId: 2,
-          coordinates: LatLng(40.6892, -74.0445),
-          category: 'Landmark',
-          averageTime: 120,
-          cost: 10.0,
-        ).toMap(),
-      );
-    }
-    catch (e) {
-      print(e);
-    }
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Statue of Liberty',
+            description: 'Iconic statue in New York Harbor',
+            cityId: 2,
+            coordinates: LatLng(40.6892, -74.0445),
+            category: 'Landmark',
+            averageTime: 120,
+            cost: 10.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
 
-    try {
-      await db.insert(
-        'Attractions',
-        AttractionModel(
-          name: 'Central Park',
-          description: 'Urban park in New York City',
-          cityId: 2,
-          coordinates: LatLng(40.785091, -73.968285),
-          category: 'Park',
-          averageTime: 180,
-          cost: 0.0,
-        ).toMap(),
-      );
-    }
-    catch (e) {
-      print(e);
-    }
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Central Park',
+            description: 'Urban park in New York City',
+            cityId: 2,
+            coordinates: LatLng(40.785091, -73.968285),
+            category: 'Park',
+            averageTime: 180,
+            cost: 0.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
 
-    try {
-      await db.insert(
-        'Attractions',
-        AttractionModel(
-          name: 'Tokyo Tower',
-          description: 'Iconic communications and observation tower',
-          cityId: 3,
-          coordinates: LatLng(35.6586, 139.7454),
-          category: 'Landmark',
-          averageTime: 120,
-          cost: 10.0,
-        ).toMap(),
-      );
-    }
-    catch (e) {
-      print(e);
-    }
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Tokyo Tower',
+            description: 'Iconic communications and observation tower',
+            cityId: 3,
+            coordinates: LatLng(35.6586, 139.7454),
+            category: 'Landmark',
+            averageTime: 120,
+            cost: 10.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
 
-    try {
-      await db.insert(
-        'Attractions',
-        AttractionModel(
-          name: 'Shibuya Crossing',
-          description: 'Busiest pedestrian crossing in the world',
-          cityId: 3,
-          coordinates: LatLng(35.6590, 139.7006),
-          category: 'Landmark',
-          averageTime: 60,
-          cost: 0.0,
-        ).toMap(),
-      );
-    }
-    catch (e) {
-      print(e);
-    }
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Shibuya Crossing',
+            description: 'Busiest pedestrian crossing in the world',
+            cityId: 3,
+            coordinates: LatLng(35.6590, 139.7006),
+            category: 'Landmark',
+            averageTime: 60,
+            cost: 0.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -514,8 +495,13 @@ class DatabaseHelper {
     return tripCity.id;
   }
 
-  Future<List<Map<String, dynamic>>> getTripCities() async {
+  Future<List<Map<String, dynamic>>> getTripCities({int? tripId}) async {
     final db = await database;
+    if (tripId != null) {
+      return await db
+          .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
+    }
+
     return await db.query('TripCities');
   }
 
@@ -555,4 +541,3 @@ class DatabaseHelper {
     return await db.delete('TripAttractions', where: 'id = ?', whereArgs: [id]);
   }
 }
-

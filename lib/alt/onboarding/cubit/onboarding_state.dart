@@ -1,13 +1,20 @@
 part of 'onboarding_cubit.dart';
 
 @immutable
-sealed class OnboardingState {}
+sealed class OnboardingState {
+  final List<String> interests;
 
-final class OnboardingInitial extends OnboardingState {}
+  OnboardingState({this.interests = const []});
+}
+
+final class OnboardingInitial extends OnboardingState {
+  OnboardingInitial();
+}
 
 final class OnboardingCanStartPlanning extends OnboardingState {
   final TripModel trip;
-  final List<VisitingPlaceModel> places;
+  final List<TripCityModel> places;
 
-  OnboardingCanStartPlanning(this.trip, this.places);
+  OnboardingCanStartPlanning(
+      {required this.trip, required this.places, super.interests});
 }

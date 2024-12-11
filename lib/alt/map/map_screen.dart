@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map/map.dart';
-import 'package:vut_itu/backend/trip_model.dart';
-import 'package:vut_itu/backend/visiting_place_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_model.dart';
 
 class MapScreen extends StatefulWidget {
   final TripModel trip;
-  final List<VisitingPlaceModel> visitingPlaces;
+  final List<TripCityModel> visitingPlaces;
   final LatLng centerAt;
   final double initZoomLevel;
 
@@ -22,8 +22,8 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreen extends State<MapScreen> {
-  late VisitingPlaceModel _selectedPlace;
-  late VisitingPlaceModel? _nextPlace;
+  late TripCityModel _selectedPlace;
+  late TripCityModel? _nextPlace;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _MapScreen extends State<MapScreen> {
     FloatingActionButton? goToNextDestinationButton;
     if (_nextPlace != null) {
       goToNextDestinationButton = FloatingActionButton.extended(
-        label: Text('Next: ${_nextPlace!.title}'),
+        label: Text('Next: Unknown'), // TODO: Add _nextPlace!.title
         icon: Icon(Icons.arrow_forward),
         onPressed: () {
           print('Go to next destination');
@@ -42,7 +42,7 @@ class _MapScreen extends State<MapScreen> {
       );
     }
     return Scaffold(
-        appBar: AppBar(title: Text(_selectedPlace.title)),
+        appBar: AppBar(title: Text('Next: Unknown')),
         floatingActionButton: goToNextDestinationButton,
         body: Stack(
           children: [

@@ -4,12 +4,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map/cubit/map_cubit.dart';
-import 'package:vut_itu/backend/trip_model.dart';
-import 'package:vut_itu/backend/visiting_place_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_model.dart';
 
 class Map extends StatelessWidget {
   final TripModel trip;
-  final VisitingPlaceModel visitingPlace;
+  final TripCityModel visitingPlace;
   final LatLng centerAt;
   final double initZoomLevel;
 

@@ -1,18 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
-import 'package:uuid/uuid.dart';
-import 'package:vut_itu/backend/trip_model.dart';
-import 'package:vut_itu/backend/trips_backend.dart';
-import 'package:vut_itu/backend/visiting_place_backend.dart';
-import 'package:vut_itu/backend/visiting_place_model.dart';
+import 'package:vut_itu/backend/business_logic/database_helper.dart';
+import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_model.dart';
 
 part 'trips_state.dart';
 
 class TripsCubit extends Cubit<TripsState> {
   static final _logger = Logger();
-  static final _backend = TripsBackend();
-  static final _vistingPlaces = VisitingPlaceBackend();
+  static final DatabaseHelper _db = DatabaseHelper();
 
   bool _dataIsInvalidated = false;
 
@@ -44,33 +41,33 @@ class TripsCubit extends Cubit<TripsState> {
     }
   }
 
-  Future<List<(TripModel, List<VisitingPlaceModel>)>> _fetchTrips() async {
-    List<(TripModel, List<VisitingPlaceModel>)> fetchedData = [];
+  Future<List<(TripModel, List<TripCityModel>)>> _fetchTrips() async {
+    List<(TripModel, List<TripCityModel>)> fetchedData = [];
 
     // Fetch trips from the backend
-    var trips = await _backend.getTrips();
+    var trips = (await _db.getTrips()).map(TripModel.fromMap);
     state.trips.clear();
 
     // TODO: Indexing might be off. Sort them.
     var futures = <Future>[];
     for (var trip in trips) {
-      futures.add(_vistingPlaces
-          .getVisitingPlaces(trip.id)
-          .then((places) => fetchedData.add((trip, places))));
+      futures.add(_db.getTripCities(tripId: trip.id).then((tripCitiesMap) {
+        var tripCities = tripCitiesMap.map(TripCityModel.fromMap).toList();
+        fetchedData.add((trip, tripCities));
+      }));
     }
     await Future.wait(futures);
 
     return fetchedData;
   }
 
-  Future<void> createTrip(String title) async {
+  Future<void> createTrip(String name) async {
     emit(TripsLoading(state.trips));
 
     // Create a new trip
-    final newTrip =
-        TripModel(id: Uuid().v7(), title: title, arriveAt: null, places: []);
+    final newTrip = TripModel(userId: 1, name: name, startDate: null);
+    await _db.insertTrip(newTrip);
 
-    await _backend.saveTrip(newTrip);
     state.trips.add((newTrip, []));
 
     // Fetch the updated list of trips
