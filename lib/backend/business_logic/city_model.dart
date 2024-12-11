@@ -1,7 +1,7 @@
 import 'package:latlong2/latlong.dart';
 
 class CityModel {
-  int id;
+  int? id;
   String name;
   String country;
   String? description;
@@ -9,7 +9,7 @@ class CityModel {
   String? imageUrl;
 
   CityModel({
-    this.id = 0,
+    this.id,
     required this.name,
     required this.country,
     this.description,

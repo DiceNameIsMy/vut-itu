@@ -8,7 +8,7 @@ class TripAttractionModel {
   final int order;
 
   TripAttractionModel({
-    this.id = 0,
+    this.id = 0,  //todo: check if this is correct
     required this.tripCityId,
     required this.attractionId,
     this.selectedDate,
@@ -28,7 +28,7 @@ class TripAttractionModel {
       expectedTimeToVisitInHours:
           map['expectedTimeToVisitInMinutes']?.toDouble(),
       expectedCost: map['expectedCost']?.toDouble(),
-      order: map['order'],
+      order: map['order_in_list'],
     );
   }
 
@@ -40,7 +40,7 @@ class TripAttractionModel {
       'selected_date': selectedDate?.toIso8601String(),
       'expected_time_to_visit_in_minutes': expectedTimeToVisitInHours,
       'expected_cost': expectedCost,
-      'order': order,
+      'order_in_list': order,
     };
   }
 }

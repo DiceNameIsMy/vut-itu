@@ -1,7 +1,7 @@
 import 'package:latlong2/latlong.dart';
 
 class AttractionModel {
-  int id;
+  int? id;
   final int cityId;
   final String name;
   final String description;
@@ -11,7 +11,7 @@ class AttractionModel {
   final double cost;
 
   AttractionModel({
-    this.id = 0,
+    this.id,
     required this.cityId,
     required this.name,
     required this.description,

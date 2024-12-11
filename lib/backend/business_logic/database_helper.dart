@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -23,19 +24,21 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     String dbPath = await getDatabasesPath();
-    String path = join(dbPath, 'trip_planner.db');
+    String path = join(dbPath, 'trip_planning.db');
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 3,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
   Future<void> _onCreate(Database db, int version) async {
+
     // Cities table
     await db.execute('''
-      CREATE TABLE Cities (
+      CREATE TABLE IF NOT EXISTS Cities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         country TEXT NOT NULL,
@@ -48,7 +51,7 @@ class DatabaseHelper {
 
     // Attractions table
     await db.execute('''
-      CREATE TABLE Attractions (
+      CREATE TABLE IF NOT EXISTS Attractions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         description TEXT,
@@ -63,7 +66,7 @@ class DatabaseHelper {
     ''');
 
     await db.execute('''
-      CREATE TABLE Users (
+      CREATE TABLE IF NOT EXISTS Users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
@@ -73,7 +76,7 @@ class DatabaseHelper {
 
     // Trips table
     await db.execute('''
-      CREATE TABLE Trips (
+      CREATE TABLE IF NOT EXISTS Trips (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           user_id INTEGER NOT NULL,
           name TEXT NOT NULL,
@@ -86,13 +89,13 @@ class DatabaseHelper {
 
     // TripCities table
     await db.execute('''
-      CREATE TABLE TripCities (
+     CREATE TABLE IF NOT EXISTS TripCities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         trip_id INTEGER NOT NULL,
         city_id INTEGER NOT NULL,
         start_date TEXT,
         end_date TEXT,
-        order INTEGER NOT NULL,
+        order_in_list INTEGER NOT NULL,
         FOREIGN KEY (trip_id) REFERENCES Trips(id),
         FOREIGN KEY (city_id) REFERENCES Cities(id)
       )
@@ -100,113 +103,342 @@ class DatabaseHelper {
 
     // TripAttractions table
     await db.execute('''
-      CREATE TABLE TripAttractions (
+      CREATE TABLE IF NOT EXISTS TripAttractions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         trip_city_id INTEGER NOT NULL,
         attraction_id INTEGER NOT NULL,
         selected_date TEXT,
         expected_time_to_visit_in_minutes REAL,
         expected_cost REAL,
-        order INTEGER NOT NULL,
+        order_in_list INTEGER NOT NULL,
         FOREIGN KEY (trip_city_id) REFERENCES TripCities(id),
         FOREIGN KEY (attraction_id) REFERENCES Attractions(id)
       )
     ''');
 
-    var paris = CityModel(
-      name: 'Paris',
-      country: 'France',
-      description: 'City of Light',
-      coordinates: LatLng(48.8566, 2.3522),
-      imageUrl: 'https://example.com/paris.jpg',
-    );
-    await insertCity(paris);
+  //   // Insert some data
+  //   // Cities
+    try {
+      await db.insert(
+        'Cities',
+        CityModel(
+          name: 'Paris',
+          country: 'France',
+          description: 'City of Light',
+          coordinates: LatLng(48.8566, 2.3522),
+          imageUrl: 'https://example.com/paris.jpg',
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
 
-    var newYork = CityModel(
-      name: 'New York',
-      country: 'USA',
-      description: 'The Big Apple',
-      coordinates: LatLng(40.7128, -74.0060),
-      imageUrl: 'https://example.com/newyork.jpg',
-    );
+    try {
+      await db.insert(
+        'Cities',
+        CityModel(
+          name: 'New York',
+          country: 'USA',
+          description: 'The Big Apple',
+          coordinates: LatLng(40.7128, -74.0060),
+          imageUrl: 'https://example.com/newyork.jpg',
+        ).toMap(),
+      );
+      print('New York inserted');
+    }
+    catch (e) {
+      print(e);
+    }
 
-    await insertCity(newYork);
-    var tokyo = CityModel(
-      name: 'Tokyo',
-      country: 'Japan',
-      description: 'The bustling capital of Japan',
-      coordinates: LatLng(35.6895, 139.6917),
-      imageUrl: 'https://example.com/tokyo.jpg',
-    );
-    await insertCity(tokyo);
+    try {
+      await db.insert(
+        'Cities',
+        CityModel(
+          name: 'Tokyo',
+          country: 'Japan',
+          description: 'The Capital of Japan',
+          coordinates: LatLng(35.6895, 139.6917),
+          imageUrl: 'https://example.com/tokyo.jpg',
+        ).toMap(),
+      );
+      print('Tokyo inserted');
+    }
+    catch (e) {
+      print(e);
+    }
 
     // Attractions
-    var eiffelTower = AttractionModel(
-      name: 'Eiffel Tower',
-      description: 'Iconic landmark in Paris',
-      cityId: paris.id,
-      coordinates: LatLng(48.8584, 2.2945),
-      category: 'Landmark',
-      averageTime: 2.0,
-      cost: 25.0,
-    );
-    await insertAttraction(eiffelTower);
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Eiffel Tower',
+          description: 'Iconic wrought-iron lattice tower',
+          cityId: 1,
+          coordinates: LatLng(48.8584, 2.2945),
+          category: 'Landmark',
+          averageTime: 120,
+          cost: 10.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
 
-    var louvreMuseum = AttractionModel(
-      name: 'Louvre Museum',
-      description: 'Famous museum with art collections',
-      cityId: paris.id,
-      coordinates: LatLng(48.8606, 2.3376),
-      category: 'Museum',
-      averageTime: 4.0,
-      cost: 17.0,
-    );
-    await insertAttraction(louvreMuseum);
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Louvre Museum',
+          description: 'World\'s largest art museum',
+          cityId: 1,
+          coordinates: LatLng(48.8606, 2.3376),
+          category: 'Museum',
+          averageTime: 180,
+          cost: 15.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
 
-    var statueOfLiberty = AttractionModel(
-      name: 'Statue of Liberty',
-      description: 'A symbol of freedom in New York',
-      cityId: newYork.id,
-      coordinates: LatLng(40.6892, -74.0445),
-      category: 'Landmark',
-      averageTime: 3.0,
-      cost: 20.0,
-    );
-    await insertAttraction(statueOfLiberty);
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Statue of Liberty',
+          description: 'Iconic statue in New York Harbor',
+          cityId: 2,
+          coordinates: LatLng(40.6892, -74.0445),
+          category: 'Landmark',
+          averageTime: 120,
+          cost: 10.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
 
-    var centralPark = AttractionModel(
-      name: 'Central Park',
-      description: 'Large park in New York',
-      cityId: newYork.id,
-      coordinates: LatLng(40.785091, -73.968285),
-      category: 'Park',
-      averageTime: 2.5,
-      cost: 0.0,
-    );
-    await insertAttraction(centralPark);
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Central Park',
+          description: 'Urban park in New York City',
+          cityId: 2,
+          coordinates: LatLng(40.785091, -73.968285),
+          category: 'Park',
+          averageTime: 180,
+          cost: 0.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
 
-    var shinjukuGyoen = AttractionModel(
-      name: 'Shinjuku Gyoen',
-      description: 'Beautiful park in Tokyo',
-      cityId: tokyo.id,
-      coordinates: LatLng(35.6852, 139.7070),
-      category: 'Park',
-      averageTime: 2.5,
-      cost: 5.0,
-    );
-    await insertAttraction(shinjukuGyoen);
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Tokyo Tower',
+          description: 'Iconic communications and observation tower',
+          cityId: 3,
+          coordinates: LatLng(35.6586, 139.7454),
+          category: 'Landmark',
+          averageTime: 120,
+          cost: 10.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Shibuya Crossing',
+          description: 'Busiest pedestrian crossing in the world',
+          cityId: 3,
+          coordinates: LatLng(35.6590, 139.7006),
+          category: 'Landmark',
+          averageTime: 60,
+          cost: 0.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+    
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+       try {
+      await db.insert(
+        'Cities',
+        CityModel(
+          name: 'New York',
+          country: 'USA',
+          description: 'The Big Apple',
+          coordinates: LatLng(40.7128, -74.0060),
+          imageUrl: 'https://example.com/newyork.jpg',
+        ).toMap(),
+      );
+      print('New York inserted');
+    }
+    catch (e) {
+      print(e);
+    }
+
+    try {
+      await db.insert(
+        'Cities',
+        CityModel(
+          name: 'Tokyo',
+          country: 'Japan',
+          description: 'The Capital of Japan',
+          coordinates: LatLng(35.6895, 139.6917),
+          imageUrl: 'https://example.com/tokyo.jpg',
+        ).toMap(),
+      );
+      print('Tokyo inserted');
+    }
+    catch (e) {
+      print(e);
+    }
+
+    // Attractions
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Eiffel Tower',
+          description: 'Iconic wrought-iron lattice tower',
+          cityId: 1,
+          coordinates: LatLng(48.8584, 2.2945),
+          category: 'Landmark',
+          averageTime: 120,
+          cost: 10.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Louvre Museum',
+          description: 'World\'s largest art museum',
+          cityId: 1,
+          coordinates: LatLng(48.8606, 2.3376),
+          category: 'Museum',
+          averageTime: 180,
+          cost: 15.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Statue of Liberty',
+          description: 'Iconic statue in New York Harbor',
+          cityId: 2,
+          coordinates: LatLng(40.6892, -74.0445),
+          category: 'Landmark',
+          averageTime: 120,
+          cost: 10.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Central Park',
+          description: 'Urban park in New York City',
+          cityId: 2,
+          coordinates: LatLng(40.785091, -73.968285),
+          category: 'Park',
+          averageTime: 180,
+          cost: 0.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Tokyo Tower',
+          description: 'Iconic communications and observation tower',
+          cityId: 3,
+          coordinates: LatLng(35.6586, 139.7454),
+          category: 'Landmark',
+          averageTime: 120,
+          cost: 10.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+
+    try {
+      await db.insert(
+        'Attractions',
+        AttractionModel(
+          name: 'Shibuya Crossing',
+          description: 'Busiest pedestrian crossing in the world',
+          cityId: 3,
+          coordinates: LatLng(35.6590, 139.7006),
+          category: 'Landmark',
+          averageTime: 60,
+          cost: 0.0,
+        ).toMap(),
+      );
+    }
+    catch (e) {
+      print(e);
+    }
+    }
   }
 
   // Cities
-  Future<int> insertCity(CityModel city) async {
+  Future<void> insertCity(CityModel city) async {
     final db = await database;
     city.id = await db.insert('Cities', city.toMap()..remove('id'));
-    return city.id;
   }
 
   Future<List<Map<String, dynamic>>> getCities() async {
     final db = await database;
-    return await db.query('Cities');
+    List<Map<String, dynamic>> Cities = await db.query('Cities');
+    print(Cities);
+    final result = await db.rawQuery('SELECT * FROM Cities');
+    print(result);
+    return Cities;
   }
 
   Future<List<Map<String, dynamic>>> getCitiesByCountry(String country) async {
@@ -225,11 +457,10 @@ class DatabaseHelper {
   }
 
   //  Attractions
-  Future<int> insertAttraction(AttractionModel attraction) async {
+  Future<void> insertAttraction(AttractionModel attraction) async {
     final db = await database;
     attraction.id =
         await db.insert('Attractions', attraction.toMap()..remove('id'));
-    return attraction.id;
   }
 
   Future<List<Map<String, dynamic>>> getAttractions(int cityId) async {
@@ -324,3 +555,4 @@ class DatabaseHelper {
     return await db.delete('TripAttractions', where: 'id = ?', whereArgs: [id]);
   }
 }
+

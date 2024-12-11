@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/create_trip_list_view/city_cubit.dart';
-import 'package:vut_itu/onboarding/onboarding_screen.dart';
-import 'package:vut_itu/settings/settings_screen.dart';
+import 'city_view_model.dart';
+import 'package:provider/provider.dart';
+import 'home_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/trip_planning/trip_list_screen.dart';
-import 'package:vut_itu/trip/trip_list_view_model.dart';
+import 'package:vut_itu/settings/settings_screen.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp(
-      {super.key,
-      required this.settingsController,
-      required this.tripListViewModel});
+class Napp extends StatelessWidget {
+  const Napp({Key? key, required this.settingsController}) : super(key: key);
 
   final SettingsViewModel settingsController;
-  final TripListViewModel tripListViewModel;
-
-  // This widget is the root of your application.
-  @override
+   @override
   Widget build(BuildContext context) {
     var themeSeedColor = Colors.deepPurple;
 
@@ -36,7 +30,7 @@ class MyApp extends StatelessWidget {
           listenable: settingsController,
           builder: (BuildContext context, Widget? child) {
             return MaterialApp(
-              title: 'Flutter Demo',
+              title: 'TripHub',
 
               // Theme
               theme: ThemeData(
@@ -50,10 +44,9 @@ class MyApp extends StatelessWidget {
 
               // Routing
               routes: {
-               '/': (context) => TripListScreen(),
-                '/onboarding': (context) => OnboardingScreen(
-                    settingsController: settingsController,
-                    tripListViewModel: tripListViewModel),
+                '/': (context) => MainScreen(),
+                '/onboarding': (context) =>
+                    MainScreen(),
                 '/settings': (context) =>
                     SettingsScreen(settingsController: settingsController),
               },
@@ -61,6 +54,7 @@ class MyApp extends StatelessWidget {
             );
           }),
     );
-
   }
 }
+
+

@@ -11,7 +11,7 @@ class TripCityModel {
   final List<TripAttractionModel> attractions;
 
   TripCityModel({
-    this.id = 0,
+    this.id = 0,  //todo: check if this is correct
     required this.tripId,
     required this.cityId,
     this.startDate,
@@ -29,7 +29,7 @@ class TripCityModel {
       startDate:
           map['start_date'] != null ? DateTime.parse(map['start_date']) : null,
       endDate: map['end_date'] != null ? DateTime.parse(map['end_date']) : null,
-      order: map['order'],
+      order: map['order_in_list'],
       attractions: attractions,
     );
   }
@@ -41,7 +41,7 @@ class TripCityModel {
       'city_id': cityId,
       'start_date': startDate?.toIso8601String(),
       'end_date': endDate?.toIso8601String(),
-      'order': order,
+      'order_in_list': order,
     };
   }
 }

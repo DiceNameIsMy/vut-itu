@@ -7,7 +7,7 @@ class TripModel {
   final double? budget;
 
   TripModel({
-    this.id = 0,
+    this.id = 0,  //todo: check if this is correct
     required this.userId,
     required this.name,
     this.startDate,
