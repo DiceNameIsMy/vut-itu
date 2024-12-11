@@ -6,7 +6,7 @@ class TripModel {
   final double? budget;
 
   TripModel({
-    required this.id,
+    this.id = 0,
     required this.name,
     this.startDate,
     this.endDate,

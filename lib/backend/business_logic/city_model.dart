@@ -8,7 +8,7 @@ class CityModel {
   String? imageUrl;
 
   CityModel({
-    required this.id,
+    this.id = 0,
     required this.name,
     this.description,
     this.coordinates,

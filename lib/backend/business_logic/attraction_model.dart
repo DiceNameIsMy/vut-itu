@@ -9,7 +9,7 @@ class AttractionModel {
   final double cost;
 
   AttractionModel({
-    required this.id,
+    this.id = 0,
     required this.cityId,
     required this.name,
     required this.description,

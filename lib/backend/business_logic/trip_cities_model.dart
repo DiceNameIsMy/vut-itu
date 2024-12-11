@@ -11,7 +11,7 @@ class TripCityModel {
   final List<TripAttractionModel> attractions;
 
   TripCityModel({
-    required this.id,
+    this.id = 0,
     required this.tripId,
     required this.cityId,
     this.startDate,

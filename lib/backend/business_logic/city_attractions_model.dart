@@ -8,7 +8,7 @@ class TripAttractionModel {
   final int order;
 
   TripAttractionModel({
-    required this.id,
+    this.id = 0,
     required this.tripCityId,
     required this.attractionId,
     this.selectedDate,

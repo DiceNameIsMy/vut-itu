@@ -109,7 +109,6 @@ class DatabaseHelper {
     ''');
 
     var paris = CityModel(
-      id: 0,
       name: 'Paris',
       description: 'City of Light',
       coordinates: LatLng(48.8566, 2.3522),
@@ -118,7 +117,6 @@ class DatabaseHelper {
     paris.id = await db.insert('Cities', paris.toMap()..remove('id'));
 
     var newYork = CityModel(
-      id: 0,
       name: 'New York',
       description: 'The Big Apple',
       coordinates: LatLng(40.7128, -74.0060),
@@ -127,7 +125,6 @@ class DatabaseHelper {
 
     newYork.id = await db.insert('Cities', newYork.toMap()..remove('id'));
     var tokyo = CityModel(
-      id: 0,
       name: 'Tokyo',
       description: 'The bustling capital of Japan',
       coordinates: LatLng(35.6895, 139.6917),
