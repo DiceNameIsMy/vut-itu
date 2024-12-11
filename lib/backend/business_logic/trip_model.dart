@@ -1,5 +1,6 @@
 class TripModel {
   int id;
+  final int userId;
   final String name;
   final DateTime? startDate;
   final DateTime? endDate;
@@ -7,6 +8,7 @@ class TripModel {
 
   TripModel({
     this.id = 0,
+    required this.userId,
     required this.name,
     this.startDate,
     this.endDate,
@@ -17,6 +19,7 @@ class TripModel {
   factory TripModel.fromMap(Map<String, dynamic> map) {
     return TripModel(
       id: map['id'],
+      userId: map['user_id'],
       name: map['name'],
       startDate:
           map['start_date'] != null ? DateTime.parse(map['start_date']) : null,
@@ -29,6 +32,7 @@ class TripModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'user_id': userId,
       'name': name,
       'start_date': startDate?.toIso8601String(),
       'end_date': endDate?.toIso8601String(),
