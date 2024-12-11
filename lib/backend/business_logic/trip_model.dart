@@ -1,12 +1,12 @@
 class TripModel {
-  final int? id;
+  final int id;
   final String name;
   final DateTime? startDate;
   final DateTime? endDate;
   final double? budget;
 
   TripModel({
-    this.id,
+    required this.id,
     required this.name,
     this.startDate,
     this.endDate,
@@ -18,7 +18,8 @@ class TripModel {
     return TripModel(
       id: map['id'],
       name: map['name'],
-      startDate: map['start_date'] != null ? DateTime.parse(map['start_date']) : null,
+      startDate:
+          map['start_date'] != null ? DateTime.parse(map['start_date']) : null,
       endDate: map['end_date'] != null ? DateTime.parse(map['end_date']) : null,
       budget: map['budget']?.toDouble(),
     );

@@ -1,8 +1,10 @@
+import 'package:latlong2/latlong.dart';
+
 class CityModel {
   int id;
   String name;
   String? description;
-  String? coordinates;
+  LatLng? coordinates;
   String? imageUrl;
 
   CityModel({
@@ -19,7 +21,8 @@ class CityModel {
       'id': id,
       'name': name,
       'description': description,
-      'coordinates': coordinates,
+      'coordinates_lat': coordinates?.latitude,
+      'coordinates_lng': coordinates?.longitude,
       'image_url': imageUrl,
     };
   }
@@ -30,9 +33,10 @@ class CityModel {
       id: map['id'],
       name: map['name'],
       description: map['description'],
-      coordinates: map['coordinates'],
+      coordinates: map['coordinates_lat'] != null
+          ? LatLng(map['coordinates_lat'], map['coordinates_lng'])
+          : null,
       imageUrl: map['image_url'],
     );
   }
-  
 }

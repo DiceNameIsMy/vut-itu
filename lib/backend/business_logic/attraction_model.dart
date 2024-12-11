@@ -1,8 +1,8 @@
 class AttractionModel {
   final int id;
+  final int cityId;
   final String name;
   final String description;
-  final int cityId;
   final String coordinates;
   final String category;
   final double averageTime;
@@ -10,9 +10,9 @@ class AttractionModel {
 
   AttractionModel({
     required this.id,
+    required this.cityId,
     required this.name,
     required this.description,
-    required this.cityId,
     required this.coordinates,
     required this.category,
     required this.averageTime,

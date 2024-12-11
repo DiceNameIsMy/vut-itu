@@ -1,30 +1,33 @@
-class CityAttractionsModel {
-  final int? id;
+class TripAttractionModel {
+  final int id;
   final int tripCityId;
   final int attractionId;
   final DateTime? selectedDate;
-  final double? modifiedTime; // Can override the default time of the attraction
-  final double? modifiedCost; // Can override the default cost of the attraction
+  final double? expectedTimeToVisitInHours;
+  final double? expectedCost;
   final int order;
 
-  CityAttractionsModel({
-    this.id,
+  TripAttractionModel({
+    required this.id,
     required this.tripCityId,
     required this.attractionId,
     this.selectedDate,
-    this.modifiedTime,
-    this.modifiedCost,
+    this.expectedTimeToVisitInHours,
+    this.expectedCost,
     required this.order,
   });
 
-  factory CityAttractionsModel.fromMap(Map<String, dynamic> map) {
-    return CityAttractionsModel(
+  factory TripAttractionModel.fromMap(Map<String, dynamic> map) {
+    return TripAttractionModel(
       id: map['id'],
       tripCityId: map['trip_city_id'],
       attractionId: map['attraction_id'],
-      selectedDate: map['selected_date'] != null ? DateTime.parse(map['selected_date']) : null,
-      modifiedTime: map['modified_time']?.toDouble(),
-      modifiedCost: map['modified_cost']?.toDouble(),
+      selectedDate: map['selected_date'] != null
+          ? DateTime.parse(map['selected_date'])
+          : null,
+      expectedTimeToVisitInHours:
+          map['expectedTimeToVisitInMinutes']?.toDouble(),
+      expectedCost: map['expectedCost']?.toDouble(),
       order: map['order'],
     );
   }
@@ -35,8 +38,8 @@ class CityAttractionsModel {
       'trip_city_id': tripCityId,
       'attraction_id': attractionId,
       'selected_date': selectedDate?.toIso8601String(),
-      'modified_time': modifiedTime,
-      'modified_cost': modifiedCost,
+      'expected_time_to_visit_in_minutes': expectedTimeToVisitInHours,
+      'expected_cost': expectedCost,
       'order': order,
     };
   }

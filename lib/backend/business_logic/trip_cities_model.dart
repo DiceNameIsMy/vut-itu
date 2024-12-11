@@ -1,16 +1,17 @@
 import 'package:vut_itu/backend/business_logic/city_attractions_model.dart';
 
+/// Represents a city to visit in a trip.
 class TripCityModel {
-  final int? id;
+  final int id;
   final int tripId;
   final int cityId;
   final DateTime? startDate;
   final DateTime? endDate;
   final int order;
-  final List<CityAttractionsModel> attractions;
+  final List<TripAttractionModel> attractions;
 
   TripCityModel({
-    this.id,
+    required this.id,
     required this.tripId,
     required this.cityId,
     this.startDate,
@@ -19,12 +20,14 @@ class TripCityModel {
     this.attractions = const [],
   });
 
-  factory TripCityModel.fromMap(Map<String, dynamic> map, {List<CityAttractionsModel> attractions = const []}) {
+  factory TripCityModel.fromMap(Map<String, dynamic> map,
+      {List<TripAttractionModel> attractions = const []}) {
     return TripCityModel(
       id: map['id'],
       tripId: map['trip_id'],
       cityId: map['city_id'],
-      startDate: map['start_date'] != null ? DateTime.parse(map['start_date']) : null,
+      startDate:
+          map['start_date'] != null ? DateTime.parse(map['start_date']) : null,
       endDate: map['end_date'] != null ? DateTime.parse(map['end_date']) : null,
       order: map['order'],
       attractions: attractions,
