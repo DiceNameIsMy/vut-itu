@@ -19,11 +19,12 @@ class TripsCubit extends Cubit<TripsState> {
 
     if (state is TripsLoading) {
       // If already fetching data, mark it invalid & exit
-      logger.i('Trips are already being fetched. Marking data as invalidated.');
+      logger.i('Trips are already being fetched. Marking data as invalidated');
       return;
     }
 
     // Set state as loading
+    logger.i('Invalidating trips');
     emit(TripsLoading(state.trips));
 
     // // Fetch data. If it was invalidated during the fetch, load it again.
@@ -35,7 +36,7 @@ class TripsCubit extends Cubit<TripsState> {
         logger.i('Trips were fetched.');
         return;
       }
-      logger.i('Data was invalidated during fetch. Fetching again.');
+      logger.i('Data was invalidated during fetch. Fetching again');
     }
   }
 

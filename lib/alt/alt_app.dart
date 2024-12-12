@@ -11,21 +11,19 @@ class AltApp extends StatelessWidget {
 
   final SettingsViewModel settingsController;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     var themeSeedColor = Colors.deepPurple;
 
-    var initialRoute =
-        settingsController.completedOnboarding ? '/' : '/onboarding';
+    var initialRoute = '/';
+    if (!settingsController.completedOnboarding) {
+      initialRoute = '/onboarding';
+    }
 
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The ListenableBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return MultiBlocProvider(
       providers: [
-        BlocProvider<TripsCubit>(create: (context) => TripsCubit()),
+        BlocProvider<TripsCubit>(
+            create: (context) => TripsCubit()..invalidateTrips()),
       ],
       child: ListenableBuilder(
           listenable: settingsController,

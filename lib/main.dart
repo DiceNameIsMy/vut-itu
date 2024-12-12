@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/alt/alt_app.dart';
-import 'package:vut_itu/alt/trip_list/cubit/bloc_change_observer.dart';
+import 'package:vut_itu/bloc_change_observer.dart';
 import 'package:vut_itu/app.dart';
 import 'package:vut_itu/backend/gui_mode_enum.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
