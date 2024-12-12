@@ -8,20 +8,22 @@ class TripCityModel {
   final DateTime? startDate;
   final DateTime? endDate;
   final int order;
-  final List<TripAttractionModel> attractions;
+
+  /// Optionally loaded from the database. If null then it was not loaded yet.
+  final List<TripAttractionModel>? attractions;
 
   TripCityModel({
-    this.id = 0,  //todo: check if this is correct
+    this.id = 0, // todo: check if this is correct
     required this.tripId,
     required this.cityId,
     this.startDate,
     this.endDate,
     required this.order,
-    this.attractions = const [],
+    this.attractions,
   });
 
   factory TripCityModel.fromMap(Map<String, dynamic> map,
-      {List<TripAttractionModel> attractions = const []}) {
+      {List<TripAttractionModel>? attractions}) {
     return TripCityModel(
       id: map['id'],
       tripId: map['trip_id'],

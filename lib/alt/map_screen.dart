@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vut_itu/alt/map/map.dart';
+import 'package:vut_itu/alt/map_view/map_view.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 
@@ -46,7 +46,7 @@ class _MapScreen extends State<MapScreen> {
         floatingActionButton: goToNextDestinationButton,
         body: Stack(
           children: [
-            Map(
+            MapView(
                 trip: widget.trip,
                 visitingPlace: widget.visitingPlaces.first,
                 centerAt: widget.centerAt,

@@ -7,7 +7,7 @@ import 'package:vut_itu/backend/business_logic/trip_model.dart';
 part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
-  MapCubit(TripModel trip, TripCityModel selectedPlace, LatLng centerAt,
+  MapCubit(TripModel trip, TripCityModel? selectedPlace, LatLng centerAt,
       double zoomLevel)
       : super(MapInitial(
             trip: trip,

@@ -3,7 +3,7 @@ part of 'map_cubit.dart';
 @immutable
 sealed class MapState {
   final TripModel trip;
-  final TripCityModel selectedPlace;
+  final TripCityModel? selectedPlace;
   final LatLng centerAt;
   final double zoomLevel;
 
