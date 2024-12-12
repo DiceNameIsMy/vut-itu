@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vut_itu/create_trip_list_view/city_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
 import 'package:vut_itu/onboarding/onboarding_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
 
               // Routing
               routes: {
-               '/': (context) => TripListScreen(),
+                '/': (context) => TripListScreen(),
                 '/onboarding': (context) => OnboardingScreen(
                     settingsController: settingsController,
                     tripListViewModel: tripListViewModel),
@@ -61,6 +61,5 @@ class MyApp extends StatelessWidget {
             );
           }),
     );
-
   }
 }

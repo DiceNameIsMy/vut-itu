@@ -1,14 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:vut_itu/backend/business_logic/database_helper.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/logger.dart';
 
 part 'trips_state.dart';
 
 class TripsCubit extends Cubit<TripsState> {
-  static final _logger = Logger();
   static final DatabaseHelper _db = DatabaseHelper();
 
   bool _dataIsInvalidated = false;
@@ -20,12 +19,12 @@ class TripsCubit extends Cubit<TripsState> {
 
     if (state is TripsLoading) {
       // If already fetching data, mark it invalid & exit
-      _logger
-          .i('Trips are already being fetched. Marking data as invalidated.');
+      logger.i('Trips are already being fetched. Marking data as invalidated');
       return;
     }
 
     // Set state as loading
+    logger.i('Invalidating trips');
     emit(TripsLoading(state.trips));
 
     // // Fetch data. If it was invalidated during the fetch, load it again.
@@ -34,21 +33,24 @@ class TripsCubit extends Cubit<TripsState> {
       var fetchedData = await _fetchTrips();
       if (!_dataIsInvalidated) {
         emit(TripsLoaded(fetchedData));
-        _logger.i('Trips were fetched.');
+        logger.i('Trips were fetched.');
         return;
       }
-      _logger.i('Data was invalidated during fetch. Fetching again.');
+      logger.i('Data was invalidated during fetch. Fetching again');
     }
   }
 
   Future<List<(TripModel, List<TripCityModel>)>> _fetchTrips() async {
-    List<(TripModel, List<TripCityModel>)> fetchedData = [];
+    var fetchedData =
+        List<(TripModel, List<TripCityModel>)>.empty(growable: true);
 
     // Fetch trips from the backend
-    var trips = (await _db.getTrips()).map(TripModel.fromMap);
-    state.trips.clear();
+    var trips =
+        (await _db.getTrips(orderByField: 'start_date', orderByAsc: true))
+            .map(TripModel.fromMap)
+            .toList();
 
-    // TODO: Indexing might be off. Sort them.
+    // Fetch the cities for each trip & pair them together
     var futures = <Future>[];
     for (var trip in trips) {
       futures.add(_db.getTripCities(tripId: trip.id).then((tripCitiesMap) {

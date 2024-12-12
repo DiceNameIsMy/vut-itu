@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vut_itu/create_trip_list_view/city_cubit.dart';
-import 'city_view_model.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
 import 'package:provider/provider.dart';
-import 'home_screen.dart';
+import 'views/home_screen_view.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
 
 class Napp extends StatelessWidget {
   const Napp({Key? key, required this.settingsController}) : super(key: key);
 
   final SettingsViewModel settingsController;
-   @override
+  @override
   Widget build(BuildContext context) {
     var themeSeedColor = Colors.deepPurple;
 
@@ -24,6 +28,14 @@ class Napp extends StatelessWidget {
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return MultiBlocProvider(
       providers: [
+        BlocProvider<CityCubit>(create: (context) => CityCubit()),
+        BlocProvider<SelectedPlacesCubit>(
+            create: (context) => SelectedPlacesCubit()),
+
+        //block provider for TripCubit
+        BlocProvider<TripCubit>(create: (context) => TripCubit()),
+        BlocProvider<TripsCubit>(create: (context) => TripsCubit()),
+        BlocProvider<TripCityCubit>(create: (context) => TripCityCubit()),
         BlocProvider<CityCubit>(create: (context) => CityCubit()),
       ],
       child: ListenableBuilder(
@@ -45,8 +57,7 @@ class Napp extends StatelessWidget {
               // Routing
               routes: {
                 '/': (context) => MainScreen(),
-                '/onboarding': (context) =>
-                    MainScreen(),
+                '/onboarding': (context) => MainScreen(),
                 '/settings': (context) =>
                     SettingsScreen(settingsController: settingsController),
               },
@@ -56,5 +67,3 @@ class Napp extends StatelessWidget {
     );
   }
 }
-
-

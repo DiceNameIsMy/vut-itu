@@ -1,14 +1,14 @@
 class TripAttractionModel {
-  int id;
+  int? id;
   final int tripCityId;
   final int attractionId;
-  final DateTime? selectedDate;
-  final double? expectedTimeToVisitInHours;
+  DateTime? selectedDate;
+  double? expectedTimeToVisitInHours;
   final double? expectedCost;
   final int order;
 
   TripAttractionModel({
-    this.id = 0,  //todo: check if this is correct
+    this.id, //todo: check if this is correct
     required this.tripCityId,
     required this.attractionId,
     this.selectedDate,

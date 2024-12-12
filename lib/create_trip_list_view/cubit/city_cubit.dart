@@ -23,4 +23,11 @@ class CityCubit extends Cubit<List<CityModel>> {
         .toList();
     emit(filtered);
   }
+
+  //remove city from the database and the list
+  void removeCity(CityModel city) async {
+    await DatabaseHelper().deleteCity(city.id!);
+    _cities.removeWhere((c) => c.id == city.id);
+    emit(List.from(_cities));
+  }
 }

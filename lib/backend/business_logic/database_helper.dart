@@ -3,7 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:vut_itu/backend/business_logic/attraction_model.dart';
-import 'package:vut_itu/backend/business_logic/city_attractions_model.dart';
+import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
@@ -26,6 +26,11 @@ class DatabaseHelper {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, 'trip_planning.db');
 
+    // var clearDatabase = true;
+    // if (clearDatabase) {
+    //   await deleteDatabase(path);
+    // }
+
     return await openDatabase(
       path,
       version: 3,
@@ -35,6 +40,7 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''PRAGMA foreign_keys = ON''');
     // Cities table
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Cities (
@@ -422,6 +428,14 @@ class DatabaseHelper {
     return Cities;
   }
 
+  //get city by id
+  Future<Map<String, dynamic>> getCity(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> city =
+        await db.query('Cities', where: 'id = ?', whereArgs: [id]);
+    return city.first;
+  }
+
   Future<List<Map<String, dynamic>>> getCitiesByCountry(String country) async {
     final db = await database;
     return await db.query('Cities', where: 'country = ?', whereArgs: [country]);
@@ -465,7 +479,7 @@ class DatabaseHelper {
   Future<int> insertTrip(TripModel trip) async {
     final db = await database;
     trip.id = await db.insert('Trips', trip.toMap()..remove('id'));
-    return trip.id;
+    return trip.id!;
   }
 
   Future<List<Map<String, dynamic>>> getTripsForUser(int userId) async {
@@ -473,9 +487,21 @@ class DatabaseHelper {
     return await db.query('Trips', where: 'user_id = ?', whereArgs: [userId]);
   }
 
-  Future<List<Map<String, dynamic>>> getTrips() async {
+  Future<List<Map<String, dynamic>>> getTrips({
+    String? orderByField,
+    bool orderByAsc = true,
+  }) async {
     final db = await database;
-    return await db.query('Trips');
+    var orderBy = orderByField == null
+        ? null
+        : '$orderByField ${orderByAsc ? 'ASC' : 'DESC'}';
+
+    return await db.query('Trips', orderBy: orderBy);
+  }
+
+  getTrip(int id) async {
+    final db = await database;
+    return await db.query('Trips', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<int> updateTrip(int id, Map<String, dynamic> trip) async {
@@ -489,20 +515,22 @@ class DatabaseHelper {
   }
 
   // TripCities
-  Future<int> insertTripCity(TripCityModel tripCity) async {
+  Future<void> insertTripCity(
+      int tripId, List<TripCityModel> tripCities) async {
     final db = await database;
-    tripCity.id = await db.insert('TripCities', tripCity.toMap()..remove('id'));
-    return tripCity.id;
+    for (var tripCity in tripCities) {
+      tripCity.id = await db.insert(
+          'TripCities',
+          tripCity.toMap()
+            ..remove('id')
+            ..addAll({'trip_id': tripId}));
+    }
   }
 
-  Future<List<Map<String, dynamic>>> getTripCities({int? tripId}) async {
+  Future<List<Map<String, dynamic>>> getTripCities({required tripId}) async {
     final db = await database;
-    if (tripId != null) {
-      return await db
-          .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
-    }
-
-    return await db.query('TripCities');
+    return await db
+        .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
   }
 
   Future<int> updateTripCity(int id, Map<String, dynamic> tripCity) async {
@@ -521,7 +549,7 @@ class DatabaseHelper {
     final db = await database;
     tripAttraction.id = await db.insert(
         'TripAttractions', tripAttraction.toMap()..remove('id'));
-    return tripAttraction.id;
+    return tripAttraction.id!;
   }
 
   Future<List<Map<String, dynamic>>> getTripAttractions() async {
