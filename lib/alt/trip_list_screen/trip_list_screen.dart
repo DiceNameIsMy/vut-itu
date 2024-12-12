@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vut_itu/alt/map/map_screen.dart';
+import 'package:vut_itu/alt/map_screen.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
 import 'package:vut_itu/alt/trip_list_screen/cubit/trip_list_screen_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
@@ -10,7 +10,7 @@ import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/alt/trip/trip_screen.dart';
+import 'package:vut_itu/alt/trip_screen.dart';
 
 class TripsScreen extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
@@ -118,9 +118,7 @@ class TripsScreen extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => TripScreen(
-                trip: trip,
-                visitingPlaces: visitingPlaces,
-                settingsController: settingsViewModel)));
+                tripId: trip.id, settingsController: settingsViewModel)));
       },
     );
   }

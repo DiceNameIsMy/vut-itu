@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vut_itu/alt/onboarding/onboarding_screen.dart';
+import 'package:vut_itu/alt/onboarding_screen/onboarding_screen.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
 import 'package:vut_itu/alt/trip_list_screen/trip_list_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';

@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
-import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
 class TripScreen extends StatelessWidget {
   final SettingsViewModel settingsController;
-  final TripModel trip;
-  final List<TripCityModel> visitingPlaces;
+  final int tripId;
 
   const TripScreen(
-      {super.key,
-      required this.trip,
-      required this.visitingPlaces,
-      required this.settingsController});
+      {super.key, required this.tripId, required this.settingsController});
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => TripCubit.fromContext(context, tripId),
+      child: BlocBuilder<TripCubit, TripState>(
+        builder: (context, state) {
+          return _build(context, state);
+        },
+      ),
+    );
+  }
+
+  Scaffold _build(BuildContext context, TripState state) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(trip.name),
+          title: Text(state.trip.name),
           leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.arrow_back)),
@@ -37,7 +44,7 @@ class TripScreen extends StatelessWidget {
             Text('Places:'),
             Expanded(
               child: ListView.builder(
-                itemCount: visitingPlaces.length,
+                itemCount: state.places.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     title:
