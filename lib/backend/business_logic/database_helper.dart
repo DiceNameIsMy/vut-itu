@@ -26,6 +26,11 @@ class DatabaseHelper {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, 'trip_planning.db');
 
+    // var clearDatabase = true;
+    // if (clearDatabase) {
+    //   await deleteDatabase(path);
+    // }
+
     return await openDatabase(
       path,
       version: 3,
