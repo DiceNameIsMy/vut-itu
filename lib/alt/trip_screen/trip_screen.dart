@@ -9,6 +9,8 @@ import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
 class TripScreen extends StatelessWidget {
+  static const maxBottomBarHeight = 500.0;
+
   final SettingsViewModel settingsController;
   final int tripId;
 
@@ -52,58 +54,7 @@ class TripScreen extends StatelessWidget {
       barrierColor: Colors.white.withOpacity(0.5),
 
       // Configure the bottom sheet
-      bottomSheet: DraggableBottomSheet(
-        gradientOpacity: false,
-        radius: 30,
-        animationDuration: Duration(milliseconds: 300),
-        header: Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30), topRight: Radius.circular(36))),
-          child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-              child: Column(
-                children: [
-                  Container(
-                    height: 4,
-                    width: 60,
-                    margin: const EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SearchBar(
-                      leading: Icon(Icons.search),
-                      hintText: 'Search for a place',
-                    ),
-                  ),
-                ],
-              )),
-        ),
-        body: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          height: 500,
-          width: double.infinity,
-          child: ReorderableListView.builder(
-            buildDefaultDragHandles: true,
-            itemCount: 15,
-            itemBuilder: (context, idx) {
-              return ListTile(
-                key: Key('$idx'),
-                title: Text("Unknown $idx"),
-                subtitle: Text("Unknown $idx"),
-              );
-            },
-            onReorder: (int oldIndex, int newIndex) {
-              // TODO: Implement reordering
-            },
-          ),
-        ),
-      ),
+      bottomSheet: _bottomSheet(context),
       onWillPop: (() async {
         if (BottomSheetPanel.isOpen) {
           BottomSheetPanel.close();
@@ -112,6 +63,74 @@ class TripScreen extends StatelessWidget {
           return true;
         }
       }),
+    );
+  }
+
+  DraggableBottomSheet _bottomSheet(BuildContext context) {
+    return DraggableBottomSheet(
+      maxHeight: maxBottomBarHeight,
+      gradientOpacity: false,
+      radius: 30,
+      animationDuration: Duration(milliseconds: 300),
+      header: _bottomSheetHeader(context),
+      body: _bottomSheetBody(context),
+    );
+  }
+
+  Container _bottomSheetHeader(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(36), topRight: Radius.circular(36))),
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Column(
+            children: [
+              // Drag handle
+              Container(
+                height: 4,
+                width: 60,
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).dividerColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              // Search bar
+              Align(
+                alignment: Alignment.center,
+                child: SearchBar(
+                  leading: Icon(Icons.search),
+                  hintText: 'Search for a place',
+                  onTap: () {
+                    // TODO: Change bottom sheet body?
+                  },
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Container _bottomSheetBody(BuildContext context) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      height: maxBottomBarHeight,
+      width: double.infinity,
+      child: ReorderableListView.builder(
+        itemCount: 15,
+        itemBuilder: (context, idx) {
+          return ListTile(
+            key: Key('$idx'),
+            title: Text("Unknown $idx"),
+            subtitle: Text("Unknown $idx"),
+          );
+        },
+        onReorder: (int oldIndex, int newIndex) {
+          // TODO: Implement reordering
+        },
+      ),
     );
   }
 }
