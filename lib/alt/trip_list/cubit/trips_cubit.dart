@@ -41,13 +41,24 @@ class TripsCubit extends Cubit<TripsState> {
   }
 
   Future<List<(TripModel, List<TripCityModel>)>> _fetchTrips() async {
-    List<(TripModel, List<TripCityModel>)> fetchedData = [];
+    var fetchedData =
+        List<(TripModel, List<TripCityModel>)>.empty(growable: true);
 
     // Fetch trips from the backend
-    var trips = (await _db.getTrips()).map(TripModel.fromMap);
-    state.trips.clear();
+    var trips = (await _db.getTrips()).map(TripModel.fromMap).toList();
 
-    // TODO: Indexing might be off. Sort them.
+    // Sort the trips by start date
+    trips.sort((a, b) {
+      if (b.startDate == null) {
+        return -1;
+      } else if (a.startDate == null) {
+        return 1;
+      } else {
+        return a.startDate!.compareTo(b.startDate!);
+      }
+    });
+
+    // Fetch the cities for each trip & pair them together
     var futures = <Future>[];
     for (var trip in trips) {
       futures.add(_db.getTripCities(tripId: trip.id).then((tripCitiesMap) {
