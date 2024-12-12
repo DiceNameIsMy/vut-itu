@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/map_view.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
+import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
@@ -19,8 +20,11 @@ class TripScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => TripCubit.fromContext(context, tripId),
       child: BlocBuilder<TripCubit, TripState>(
-        builder: (context, state) {
-          return _build(context, state);
+        builder: (context, tripState) {
+          return BlocProvider(
+            create: (context) => TripScreenCubit.fromContext(context),
+            child: _build(context, tripState),
+          );
         },
       ),
     );
@@ -41,7 +45,6 @@ class TripScreen extends StatelessWidget {
       ),
       body: MapView(
         trip: state.trip,
-        visitingPlace: state.places.firstOrNull,
         centerAt: LatLng(53, 44),
         initZoomLevel: 7,
       ),
@@ -54,16 +57,28 @@ class TripScreen extends StatelessWidget {
           radius: 30,
           animationDuration: Duration(milliseconds: 300),
           header: Container(
-            height: 80,
-            color: Colors.blue,
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SearchBar(
-                    leading: Icon(Icons.search),
-                    hintText: 'Search for a place',
-                  ),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 4,
+                      width: 60,
+                      margin: const EdgeInsets.only(bottom: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SearchBar(
+                        leading: Icon(Icons.search),
+                        hintText: 'Search for a place',
+                      ),
+                    ),
+                  ],
                 )),
           ),
           body: SizedBox(

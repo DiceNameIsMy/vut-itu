@@ -10,7 +10,7 @@ import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
-import 'package:vut_itu/alt/trip_screen.dart';
+import 'package:vut_itu/alt/trip_screen/trip_screen.dart';
 
 class TripsScreen extends StatelessWidget {
   final SettingsViewModel settingsViewModel;

@@ -4,12 +4,10 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/cubit/map_cubit.dart';
-import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 
 class MapView extends StatelessWidget {
   final TripModel trip;
-  final TripCityModel? visitingPlace;
   final LatLng centerAt;
   final double initZoomLevel;
 
@@ -25,7 +23,6 @@ class MapView extends StatelessWidget {
   MapView(
       {super.key,
       required this.trip,
-      this.visitingPlace,
       required this.centerAt,
       required this.initZoomLevel});
 
@@ -82,8 +79,7 @@ class MapView extends StatelessWidget {
     ]);
 
     return BlocProvider(
-      create: (context) =>
-          MapCubit(trip, visitingPlace, centerAt, initZoomLevel),
+      create: (context) => MapCubit(trip, centerAt, initZoomLevel),
       child: FlutterMap(
           options: MapOptions(
             initialCenter: centerAt,
