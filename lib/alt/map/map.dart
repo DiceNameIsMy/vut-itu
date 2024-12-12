@@ -15,8 +15,8 @@ class Map extends StatelessWidget {
 
   // Define how to query tiles that are used to show a map.
   final TileLayer tileProvider = TileLayer(
-    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+    urlTemplate:
+        'https://maps.geoapify.com/v1/tile/osm-carto/{z}/{x}/{y}.png?apiKey=e3ea74d99880486cb73bc554b25dfe84',
     // Use the recommended flutter_map_cancellable_tile_provider package to
     // support the cancellation of loading tiles.
     tileProvider: CancellableNetworkTileProvider(),
