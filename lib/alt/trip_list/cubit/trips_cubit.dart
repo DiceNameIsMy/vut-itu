@@ -1,14 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:vut_itu/backend/business_logic/database_helper.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/logger.dart';
 
 part 'trips_state.dart';
 
 class TripsCubit extends Cubit<TripsState> {
-  static final _logger = Logger();
   static final DatabaseHelper _db = DatabaseHelper();
 
   bool _dataIsInvalidated = false;
@@ -20,8 +19,7 @@ class TripsCubit extends Cubit<TripsState> {
 
     if (state is TripsLoading) {
       // If already fetching data, mark it invalid & exit
-      _logger
-          .i('Trips are already being fetched. Marking data as invalidated.');
+      logger.i('Trips are already being fetched. Marking data as invalidated.');
       return;
     }
 
@@ -34,10 +32,10 @@ class TripsCubit extends Cubit<TripsState> {
       var fetchedData = await _fetchTrips();
       if (!_dataIsInvalidated) {
         emit(TripsLoaded(fetchedData));
-        _logger.i('Trips were fetched.');
+        logger.i('Trips were fetched.');
         return;
       }
-      _logger.i('Data was invalidated during fetch. Fetching again.');
+      logger.i('Data was invalidated during fetch. Fetching again.');
     }
   }
 
