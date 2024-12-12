@@ -45,18 +45,10 @@ class TripsCubit extends Cubit<TripsState> {
         List<(TripModel, List<TripCityModel>)>.empty(growable: true);
 
     // Fetch trips from the backend
-    var trips = (await _db.getTrips()).map(TripModel.fromMap).toList();
-
-    // Sort the trips by start date
-    trips.sort((a, b) {
-      if (b.startDate == null) {
-        return -1;
-      } else if (a.startDate == null) {
-        return 1;
-      } else {
-        return a.startDate!.compareTo(b.startDate!);
-      }
-    });
+    var trips =
+        (await _db.getTrips(orderByField: 'start_date', orderByAsc: true))
+            .map(TripModel.fromMap)
+            .toList();
 
     // Fetch the cities for each trip & pair them together
     var futures = <Future>[];

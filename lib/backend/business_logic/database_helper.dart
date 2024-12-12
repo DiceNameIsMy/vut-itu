@@ -478,9 +478,16 @@ class DatabaseHelper {
     return await db.query('Trips', where: 'user_id = ?', whereArgs: [userId]);
   }
 
-  Future<List<Map<String, dynamic>>> getTrips() async {
+  Future<List<Map<String, dynamic>>> getTrips({
+    String? orderByField,
+    bool orderByAsc = true,
+  }) async {
     final db = await database;
-    return await db.query('Trips');
+    var orderBy = orderByField == null
+        ? null
+        : '$orderByField ${orderByAsc ? 'ASC' : 'DESC'}';
+
+    return await db.query('Trips', orderBy: orderBy);
   }
 
   Future<int> updateTrip(int id, Map<String, dynamic> trip) async {
