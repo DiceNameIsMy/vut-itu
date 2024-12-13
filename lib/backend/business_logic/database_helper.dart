@@ -416,9 +416,6 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getCities() async {
     final db = await database;
     List<Map<String, dynamic>> Cities = await db.query('Cities');
-    print(Cities);
-    final result = await db.rawQuery('SELECT * FROM Cities');
-    print(result);
     return Cities;
   }
 
@@ -614,5 +611,12 @@ class DatabaseHelper {
   Future<int> deleteTripAttraction(int id) async {
     final db = await database;
     return await db.delete('TripAttractions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  //delete all trip attractions from a trip city
+  Future<int> deleteAllTripAttractions(int tripCityId) async {
+    final db = await database;
+    return await db.delete('TripAttractions',
+        where: 'trip_city_id = ?', whereArgs: [tripCityId]);
   }
 }

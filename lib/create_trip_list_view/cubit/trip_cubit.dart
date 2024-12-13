@@ -81,6 +81,7 @@ class TripCubit extends Cubit<TripModel> {
   //remove a city from the trip
   Future<void> removeCityFromTrip(TripCityModel tripCity) async {
     await DatabaseHelper().deleteTripCity(tripCity.cityId);
+    await DatabaseHelper().deleteAllTripAttractions(tripCity.id!);
     _trip.cities.remove(tripCity);
     emit(_trip.copyWith(cities: _trip.cities));
   }

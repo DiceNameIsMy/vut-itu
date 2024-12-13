@@ -29,6 +29,16 @@
             "toolArgs": [
                 "--dart-define-from-file=.env"
             ],
-        }
+        },
+        {
+            "name": "vut-itu (debug mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "toolArgs": [
+                "--dart-define-from-file=.env"
+            ],
+        },
+
     ]
 }

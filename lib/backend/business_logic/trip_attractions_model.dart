@@ -26,8 +26,8 @@ class TripAttractionModel {
           ? DateTime.parse(map['selected_date'])
           : null,
       expectedTimeToVisitInHours:
-          map['expectedTimeToVisitInMinutes']?.toDouble(),
-      expectedCost: map['expectedCost']?.toDouble(),
+          map['expected_time_to_visit_in_minutes']?.toDouble(),
+      expectedCost: map['expected_cost']?.toDouble(),
       order: map['order_in_list'],
     );
   }
