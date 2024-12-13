@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
 import '../cubit/city_cubit.dart';
@@ -76,8 +77,11 @@ class _MainScreenState extends State<MainScreen> {
           ),
           if (_showSearchBar)
             Expanded(
-              child: BlocProvider(
-                create: (_) => SelectedPlacesCubit(),
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (_) => TripCubit()),
+                  BlocProvider(create: (_) => SelectedPlacesCubit()),
+                ],
                 child: CitySearchBar(key: _searchBarKey),
               ),
             ),

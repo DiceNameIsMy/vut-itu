@@ -12,6 +12,12 @@ class TripCubit extends Cubit<TripModel> {
 
   TripModel _trip = TripModel();
 
+  void resetTrip() {
+    _trip = TripModel();
+    emit(_trip);
+    emit(_trip.copyWith(cities: []));
+  }
+
   //fetch trip with cities from the database
   Future<void> fetchTrip(int id) async {
     final trip = await DatabaseHelper().getTrip(id);

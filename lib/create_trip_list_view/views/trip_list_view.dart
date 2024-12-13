@@ -51,10 +51,11 @@ class TripListView extends StatelessWidget {
                           // 3. After the trip and associated cities are fetched, navigate to the overview
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) {
-                                return TripCreationOverviewView(
-                                    tripCubit: tripCubit);
-                              },
+                              builder: (context) => BlocProvider.value(
+                                value: tripCubit, // Pass existing TripCubit
+                                child: TripCreationOverviewView(
+                                    tripCubit: tripCubit),
+                              ),
                             ),
                           );
                         },

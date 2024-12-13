@@ -20,8 +20,8 @@ class CitySearchBarState extends State<CitySearchBar> {
   void reset() {
     _searchController.clear();
     BlocProvider.of<CityCubit>(context).fetchCities();
-    //clear selected places
     BlocProvider.of<SelectedPlacesCubit>(context).clearPlaces();
+    context.read<TripCubit>().resetTrip();
   }
 
   @override

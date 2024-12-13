@@ -90,19 +90,18 @@ class TripCreationOverviewView extends StatelessWidget {
                     },
                     child: Text('Add New City'),
                   ),
-                  // Save button to save the trip and navigate to the home screen
+                  // navigate to the home screen
                   ElevatedButton(
                     onPressed: () {
-                      context.read<TripCubit>().updateTrip().then((_) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => MainScreen(),
-                          ),
-                        );
-                      });
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => MainScreen(),
+                        ),
+                      );
                     },
                     child: Text('Save'),
                   ),
+
                   // Budget, Start Date, End Date
                   Column(
                     children: [
