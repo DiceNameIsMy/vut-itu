@@ -1,8 +1,16 @@
 part of 'trip_screen_cubit.dart';
 
 @immutable
-sealed class TripScreenState {}
+sealed class TripScreenState {
+  final List<String> searchSuggestions;
 
-final class TripScreenInitial extends TripScreenState {}
+  TripScreenState({this.searchSuggestions = const []});
+}
 
-final class TripScreenSelectedMarker extends TripScreenState {}
+final class TripScreenInitial extends TripScreenState {
+  TripScreenInitial({super.searchSuggestions = const []});
+}
+
+final class TripScreenSelectedMarker extends TripScreenState {
+  TripScreenSelectedMarker({super.searchSuggestions = const []});
+}
