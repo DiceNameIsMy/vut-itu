@@ -7,7 +7,7 @@ class TripModel {
   DateTime? startDate;
   DateTime? endDate;
   double? budget;
-  List<TripCityModel> cities = [];
+  List<TripCityModel> cities;
 
   TripModel({
     this.id,
@@ -16,10 +16,10 @@ class TripModel {
     this.startDate,
     this.endDate,
     this.budget,
-    List<TripCityModel>? cities, // Make this nullable
+    List<TripCityModel>? cities,
   }) : cities = cities ?? [];
 
-  // Convert from Map (Database row) to Trip
+  // Factory constructor for converting a Map (from database) to TripModel
   factory TripModel.fromMap(Map<String, dynamic> map,
       {List<TripCityModel> cities = const []}) {
     return TripModel(
@@ -34,7 +34,7 @@ class TripModel {
     );
   }
 
-  // Convert Trip to Map (for Database)
+  // Method for converting TripModel to a Map (for database)
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -44,5 +44,26 @@ class TripModel {
       'end_date': endDate?.toIso8601String(),
       'budget': budget,
     };
+  }
+
+  // Optional: Add a method for updating cities separately
+  TripModel copyWith({
+    int? id,
+    int? userId,
+    String? name,
+    DateTime? startDate,
+    DateTime? endDate,
+    double? budget,
+    List<TripCityModel>? cities,
+  }) {
+    return TripModel(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      budget: budget ?? this.budget,
+      cities: cities ?? this.cities,
+    );
   }
 }

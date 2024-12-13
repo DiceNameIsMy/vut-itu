@@ -82,7 +82,7 @@ class CitySearchBar extends StatelessWidget {
                 final tripCubit = context.read<TripCubit>();
 
                 // Create a new trip
-                tripCubit.updateTripName('My New Trip');
+                //tripCubit.updateTripName('My New Trip');
                 await tripCubit.saveTrip();
                 selectedCities.forEach((city) {
                   tripCubit
@@ -90,7 +90,7 @@ class CitySearchBar extends StatelessWidget {
                 });
 
                 // Save the trip to the database
-                await tripCubit.saveTrip();
+                // await tripCubit.saveTrip();
 
                 // Navigate to the TripCreationOverviewView
                 Navigator.of(context).push(

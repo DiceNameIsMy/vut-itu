@@ -1,8 +1,3 @@
-/* Screen that displays the trip overview: at the top of the screen there is a trip name that could be modified as is set to Trip name by default
-beneath it there is the list of the cities that are already added to that trip, they could be removed from the trip
-beneath the list of the cities there is a add new city button that will display the search bar to search for another city
-at the bottom of the screen there is a widget that contains the budget section and the start date and the end day of the trip the default values are set for 0 dollars and today date */
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
@@ -25,24 +20,25 @@ class TripCreationOverviewView extends StatelessWidget {
         appBar: AppBar(
           title: Text('Trip Creation Overview'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              // Trip Name
-              TextField(
-                decoration: InputDecoration(
-                  labelText: context.read<TripCubit>().state.name,
-                ),
-                onChanged: (name) {
-                  context.read<TripCubit>().updateTripName(name);
-                },
-              ),
-              // List of cities
-              Expanded(
-                child: BlocBuilder<TripCubit, TripModel>(
-                  builder: (context, trip) {
-                    return ListView.builder(
+        body: BlocBuilder<TripCubit, TripModel>(
+          builder: (context, trip) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  // Trip Name
+                  TextField(
+                    controller: TextEditingController(text: trip.name),
+                    decoration: InputDecoration(
+                      labelText: 'Trip Name',
+                    ),
+                    onChanged: (name) {
+                      context.read<TripCubit>().updateTripName(name);
+                    },
+                  ),
+                  // List of cities
+                  Expanded(
+                    child: ListView.builder(
                       itemCount: trip.cities.length,
                       itemBuilder: (context, index) {
                         final city = trip.cities[index];
@@ -67,72 +63,78 @@ class TripCreationOverviewView extends StatelessWidget {
                             onPressed: () {
                               context
                                   .read<TripCubit>()
-                                  .removeCityFromTrip(city.cityId);
+                                  .removeCityFromTrip(city);
                             },
                           ),
                         );
                       },
-                    );
-                  },
-                ),
-              ),
-              // Add new city button
-              ElevatedButton(
-                onPressed: () {
-                  //add search bar
-                },
-                child: Text('Add New City'),
-              ),
-              //save button to save the trip and navigate to the home screen
-              ElevatedButton(
-                onPressed: () {
-                  //save the trip
-                  //navigate to the home screen
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => MainScreen(),
                     ),
-                  );
-                },
-                child: Text('Save'),
-              ),
-              // Budget, Start Date, End Date
-              Column(
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Budget',
-                    ),
-                    onChanged: (budget) {
-                      context
-                          .read<TripCubit>()
-                          .updateTripBudget(double.parse(budget));
-                    },
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Start Date',
-                    ),
-                    onChanged: (startDate) {
-                      context
-                          .read<TripCubit>()
-                          .updateTripStartDate(DateTime.parse(startDate));
+                  // Add new city button
+                  ElevatedButton(
+                    onPressed: () {
+                      // Add logic to display the search bar
                     },
+                    child: Text('Add New City'),
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'End Date',
-                    ),
-                    onChanged: (endDate) {
-                      context
-                          .read<TripCubit>()
-                          .updateTripEndDate(DateTime.parse(endDate));
+                  // Save button to save the trip and navigate to the home screen
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<TripCubit>().saveTrip().then((_) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => MainScreen(),
+                          ),
+                        );
+                      });
                     },
+                    child: Text('Save'),
+                  ),
+                  // Budget, Start Date, End Date
+                  Column(
+                    children: [
+                      TextField(
+                        controller: TextEditingController(
+                            text: trip.budget?.toString() ?? ''),
+                        decoration: InputDecoration(
+                          labelText: 'Budget',
+                        ),
+                        onChanged: (budget) {
+                          context
+                              .read<TripCubit>()
+                              .updateTripBudget(double.parse(budget));
+                        },
+                      ),
+                      TextField(
+                        controller: TextEditingController(
+                            text: trip.startDate?.toIso8601String() ?? ''),
+                        decoration: InputDecoration(
+                          labelText: 'Start Date',
+                        ),
+                        onChanged: (startDate) {
+                          context
+                              .read<TripCubit>()
+                              .updateTripStartDate(DateTime.parse(startDate));
+                        },
+                      ),
+                      TextField(
+                        controller: TextEditingController(
+                            text: trip.endDate?.toIso8601String() ?? ''),
+                        decoration: InputDecoration(
+                          labelText: 'End Date',
+                        ),
+                        onChanged: (endDate) {
+                          context
+                              .read<TripCubit>()
+                              .updateTripEndDate(DateTime.parse(endDate));
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

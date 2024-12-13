@@ -26,11 +26,6 @@ class DatabaseHelper {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, 'trip_planning.db');
 
-    // var clearDatabase = true;
-    // if (clearDatabase) {
-    //   await deleteDatabase(path);
-    // }
-
     return await openDatabase(
       path,
       version: 3,
@@ -40,7 +35,6 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''PRAGMA foreign_keys = ON''');
     // Cities table
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Cities (
@@ -476,10 +470,10 @@ class DatabaseHelper {
   }
 
   // Trips
-  Future<int> insertTrip(TripModel trip) async {
+  // Insert a trip into the database
+  Future<void> insertTrip(TripModel trip) async {
     final db = await database;
     trip.id = await db.insert('Trips', trip.toMap()..remove('id'));
-    return trip.id!;
   }
 
   Future<List<Map<String, dynamic>>> getTripsForUser(int userId) async {
@@ -501,7 +495,8 @@ class DatabaseHelper {
 
   getTrip(int id) async {
     final db = await database;
-    return await db.query('Trips', where: 'id = ?', whereArgs: [id]);
+    var trip = await db.query('Trips', where: 'id = ?', whereArgs: [id]);
+    return trip.first;
   }
 
   Future<int> updateTrip(int id, Map<String, dynamic> trip) async {
