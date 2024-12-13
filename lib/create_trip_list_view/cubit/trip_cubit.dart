@@ -33,15 +33,15 @@ class TripCubit extends Cubit<TripModel> {
   //update the trip with the new start date
   void updateTripStartDate(DateTime startDate) async {
     await DatabaseHelper()
-        .updateTrip(_trip.id!, {'startDate': startDate.toIso8601String()});
-    emit(_trip.copyWith(startDate: startDate));
+        .updateTrip(_trip.id!, {'start_date': startDate.toIso8601String()});
+    emit(state.copyWith(startDate: startDate));
   }
 
   //update the trip with the new end date
   void updateTripEndDate(DateTime endDate) async {
     await DatabaseHelper()
-        .updateTrip(_trip.id!, {'endDate': endDate.toIso8601String()});
-    emit(_trip.copyWith(endDate: endDate));
+        .updateTrip(_trip.id!, {'end_date': endDate.toIso8601String()});
+    emit(state.copyWith(endDate: endDate));
   }
 
   //add a city to the trip in the correct order
