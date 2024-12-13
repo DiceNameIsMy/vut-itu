@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
+import 'trip_creation_overview_view.dart';
 
 class TripListView extends StatelessWidget {
   @override
@@ -42,7 +43,7 @@ class TripListView extends StatelessWidget {
                           },
                         ),
                         onTap: () {
-                          // Handle trip click here
+                          //navigate to the trip creation overview view.
                         },
                       );
                     },

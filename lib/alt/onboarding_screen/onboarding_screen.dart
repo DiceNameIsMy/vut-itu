@@ -32,7 +32,8 @@ class OnboaringScreen extends StatelessWidget {
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (context) {
               return TripScreen(
-                  tripId: state.trip.id, settingsController: settingsViewModel);
+                  tripId: state.trip.id!,
+                  settingsController: settingsViewModel);
             }));
           },
           label: Text('Let\'s go'));

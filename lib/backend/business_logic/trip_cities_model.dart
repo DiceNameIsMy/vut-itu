@@ -8,10 +8,12 @@ class TripCityModel {
   DateTime? startDate;
   DateTime? endDate;
   final int order;
-  List<TripAttractionModel> attractions;
+
+  /// Optionally loaded from the database. If null then it was not loaded yet.
+  final List<TripAttractionModel>? attractions;
 
   TripCityModel({
-    this.id, //todo: check if this is correct
+    this.id = 0, // todo: check if this is correct
     required this.tripId,
     required this.cityId,
     this.startDate,
