@@ -1,3 +1,4 @@
+import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
 
 /// Represents a city to visit in a trip.
@@ -10,6 +11,7 @@ class TripCityModel {
   final int order;
 
   /// Optionally loaded from the database. If null then it was not loaded yet.
+  final CityModel? city;
   final List<TripAttractionModel>? attractions;
 
   TripCityModel({
@@ -19,11 +21,12 @@ class TripCityModel {
     this.startDate,
     this.endDate,
     required this.order,
+    this.city,
     this.attractions,
   });
 
   factory TripCityModel.fromMap(Map<String, dynamic> map,
-      {List<TripAttractionModel>? attractions}) {
+      {List<TripAttractionModel>? attractions, CityModel? city}) {
     return TripCityModel(
       id: map['id'],
       tripId: map['trip_id'],
@@ -33,6 +36,7 @@ class TripCityModel {
       endDate: map['end_date'] != null ? DateTime.parse(map['end_date']) : null,
       order: map['order_in_list'],
       attractions: attractions,
+      city: city,
     );
   }
 

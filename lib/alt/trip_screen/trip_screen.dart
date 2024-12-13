@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/map_view.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
+import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
@@ -20,7 +21,8 @@ class TripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TripCubit.fromContext(context, tripId),
+      create: (context) =>
+          TripCubit.fromContext(context, tripId)..invalidateVisitingPlaces(),
       child: BlocBuilder<TripCubit, TripState>(
         builder: (context, tripState) {
           return BlocProvider(
@@ -34,6 +36,7 @@ class TripScreen extends StatelessWidget {
 
   Widget _build(BuildContext context, TripState state) {
     return BottomSheetScaffold(
+      resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(state.trip.name),
@@ -47,14 +50,14 @@ class TripScreen extends StatelessWidget {
       ),
       body: MapView(
         trip: state.trip,
-        centerAt: LatLng(53, 44),
+        centerAt: LatLng(51.5074, -0.1278),
         initZoomLevel: 7,
       ),
       dismissOnClick: true,
       barrierColor: Colors.white.withOpacity(0.5),
 
       // Configure the bottom sheet
-      bottomSheet: _bottomSheet(context),
+      bottomSheet: _bottomSheet(context, state),
       onWillPop: (() async {
         if (BottomSheetPanel.isOpen) {
           BottomSheetPanel.close();
@@ -66,14 +69,14 @@ class TripScreen extends StatelessWidget {
     );
   }
 
-  DraggableBottomSheet _bottomSheet(BuildContext context) {
+  DraggableBottomSheet _bottomSheet(BuildContext context, TripState state) {
     return DraggableBottomSheet(
       maxHeight: maxBottomBarHeight,
       gradientOpacity: false,
       radius: 30,
       animationDuration: Duration(milliseconds: 300),
       header: _bottomSheetHeader(context),
-      body: _bottomSheetBody(context),
+      body: _bottomSheetBody(context, state),
     );
   }
 
@@ -113,18 +116,21 @@ class TripScreen extends StatelessWidget {
     );
   }
 
-  Container _bottomSheetBody(BuildContext context) {
+  Container _bottomSheetBody(BuildContext context, TripState state) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       height: maxBottomBarHeight,
       width: double.infinity,
       child: ReorderableListView.builder(
-        itemCount: 15,
+        itemCount: state.places.length,
         itemBuilder: (context, idx) {
+          if (state.places[idx].city == null) {
+            logger.e('City is null for place $idx');
+          }
           return ListTile(
             key: Key('$idx'),
-            title: Text("Unknown $idx"),
-            subtitle: Text("Unknown $idx"),
+            title: Text(state.places[idx].city?.name ?? 'Unknown city'),
+            trailing: Icon(Icons.drag_handle),
           );
         },
         onReorder: (int oldIndex, int newIndex) {

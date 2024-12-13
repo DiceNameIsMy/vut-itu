@@ -1,7 +1,7 @@
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 
 class TripModel {
-  int? id;
+  int id;
   final int userId;
   String name;
   DateTime? startDate;
@@ -10,7 +10,7 @@ class TripModel {
   List<TripCityModel> cities;
 
   TripModel({
-    this.id,
+    this.id = 0,
     this.userId = 1,
     this.name = '',
     this.startDate,
