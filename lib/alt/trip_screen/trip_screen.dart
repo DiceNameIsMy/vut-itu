@@ -131,7 +131,7 @@ class TripScreen extends StatelessWidget {
               logger.i('Loading suggestions for query: ${controller.text}');
               var suggestions =
                   await BlocProvider.of<SearchBarCubit>(contextWithCubit)
-                      .loadSuggestions(controller.text);
+                      .getSuggestions(controller.text);
 
               return suggestions.map((suggestion) {
                 return ListTile(
