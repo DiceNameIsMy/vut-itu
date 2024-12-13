@@ -493,9 +493,10 @@ class DatabaseHelper {
     return await db.query('Trips', orderBy: orderBy);
   }
 
-  getTrip(int id) async {
+  Future<Map<String, dynamic>> getTrip(int id) async {
     final db = await database;
-    var trip = await db.query('Trips', where: 'id = ?', whereArgs: [id]);
+    List<Map<String, dynamic>> trip =
+        await db.query('Trips', where: 'id = ?', whereArgs: [id]);
     return trip.first;
   }
 
@@ -510,16 +511,11 @@ class DatabaseHelper {
   }
 
   // TripCities
-  Future<void> insertTripCity(
-      int tripId, List<TripCityModel> tripCities) async {
+  Future<TripCityModel> insertSingleTripCity(TripCityModel tripCity) async {
     final db = await database;
-    for (var tripCity in tripCities) {
-      tripCity.id = await db.insert(
-          'TripCities',
-          tripCity.toMap()
-            ..remove('id')
-            ..addAll({'trip_id': tripId}));
-    }
+    final id = await db.insert('TripCities', tripCity.toMap()..remove('id'));
+    tripCity.id = id;
+    return tripCity;
   }
 
   Future<List<Map<String, dynamic>>> getTripCities({required tripId}) async {
@@ -540,16 +536,22 @@ class DatabaseHelper {
   }
 
   // TripAttractions
-  Future<int> insertTripAttraction(TripAttractionModel tripAttraction) async {
+// Insert a tripAttraction into the database to the provided TripCity
+  Future<void> insertTripAttraction(
+      TripAttractionModel tripAttraction, TripCityModel tripCity) async {
     final db = await database;
     tripAttraction.id = await db.insert(
-        'TripAttractions', tripAttraction.toMap()..remove('id'));
-    return tripAttraction.id!;
+        'TripAttractions',
+        tripAttraction.toMap()
+          ..remove('id')
+          ..addAll({'trip_city_id': tripCity.id}));
   }
 
-  Future<List<Map<String, dynamic>>> getTripAttractions() async {
+  Future<List<Map<String, dynamic>>> getTripAttractions(
+      TripCityModel TripCityModel) async {
     final db = await database;
-    return await db.query('TripAttractions');
+    return await db.query('TripAttractions',
+        where: 'trip_city_id = ?', whereArgs: [TripCityModel.id]);
   }
 
   Future<int> updateTripAttraction(

@@ -6,6 +6,7 @@ import 'package:vut_itu/create_trip_list_view/views/search_bar_city_view.dart';
 import 'package:vut_itu/create_trip_list_view/views/home_screen_view.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'search_bar_city_view.dart';
+import 'add_attractions_to_city.dart';
 
 class TripCreationOverviewView extends StatelessWidget {
   final TripCubit tripCubit;
@@ -66,6 +67,18 @@ class TripCreationOverviewView extends StatelessWidget {
                                   .removeCityFromTrip(city);
                             },
                           ),
+                          // Add onTap to navigate to the add attractions to city view
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CityScreen(
+                                    cityId: city.cityId,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
@@ -80,7 +93,7 @@ class TripCreationOverviewView extends StatelessWidget {
                   // Save button to save the trip and navigate to the home screen
                   ElevatedButton(
                     onPressed: () {
-                      context.read<TripCubit>().saveTrip().then((_) {
+                      context.read<TripCubit>().updateTrip().then((_) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => MainScreen(),

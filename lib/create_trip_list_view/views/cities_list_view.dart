@@ -32,6 +32,7 @@ class CitiesListView extends StatelessWidget {
                       final city = cities[index];
                       return ListTile(
                         title: Text(city.name),
+                        subtitle: Text('ID: ${city.id}'),
                         trailing: IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {

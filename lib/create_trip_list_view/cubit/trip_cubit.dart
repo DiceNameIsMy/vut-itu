@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
@@ -10,51 +12,67 @@ class TripCubit extends Cubit<TripModel> {
 
   TripModel _trip = TripModel();
 
-  //fetch the trip from the database
-  void fetchTrip(int id) async {
+  //fetch trip with cities from the database
+  Future<void> fetchTrip(int id) async {
     final trip = await DatabaseHelper().getTrip(id);
     _trip = TripModel.fromMap(trip);
+    final tripCities = await DatabaseHelper().getTripCities(tripId: id);
+    _trip.cities = tripCities
+        .map((e) => TripCityModel.fromMap(e))
+        .toList()
+        .cast<TripCityModel>();
     emit(_trip);
   }
   //TODO refactor update methods to use the emit method instead of the _trip variable
 
   //update the trip with the new name
-  void updateTripName(String name) async {
+  Future<void> updateTripName(String name) async {
     await DatabaseHelper().updateTrip(_trip.id!, {'name': name});
     emit(_trip.copyWith(name: name));
   }
 
   //update the trip with the new budget
-  void updateTripBudget(double budget) async {
+  Future<void> updateTripBudget(double budget) async {
     await DatabaseHelper().updateTrip(_trip.id!, {'budget': budget});
     emit(_trip.copyWith(budget: budget));
   }
 
   //update the trip with the new start date
-  void updateTripStartDate(DateTime startDate) async {
+  Future<void> updateTripStartDate(DateTime startDate) async {
     await DatabaseHelper()
         .updateTrip(_trip.id!, {'startDate': startDate.toIso8601String()});
     emit(_trip.copyWith(startDate: startDate));
   }
 
   //update the trip with the new end date
-  void updateTripEndDate(DateTime endDate) async {
+  Future<void> updateTripEndDate(DateTime endDate) async {
     await DatabaseHelper()
         .updateTrip(_trip.id!, {'endDate': endDate.toIso8601String()});
     emit(_trip.copyWith(endDate: endDate));
   }
 
   //add a city to the trip in the correct order
-  void addCityToTrip(CityModel city) async {
+  Future<void> addCityToTrip(CityModel city) async {
     final tripCity = TripCityModel(
-        cityId: city.id!, tripId: _trip.id!, order: _trip.cities.length + 1);
-    await DatabaseHelper().insertTripCity(tripCity.cityId, _trip.cities);
-    _trip.cities.add(tripCity);
-    emit(_trip.copyWith(cities: _trip.cities));
+      cityId: city.id!,
+      tripId: _trip.id!,
+      order: _trip.cities.length + 1,
+    );
+
+    // Insert the trip city into the database
+    final insertedTripCity =
+        await DatabaseHelper().insertSingleTripCity(tripCity);
+
+    // Update local _trip.cities list
+    _trip.cities.add(insertedTripCity);
+
+    // Emit the updated state
+    emit(
+        _trip.copyWith(cities: List.from(_trip.cities))); // Ensure immutability
   }
 
   //remove a city from the trip
-  void removeCityFromTrip(TripCityModel tripCity) async {
+  Future<void> removeCityFromTrip(TripCityModel tripCity) async {
     await DatabaseHelper().deleteTripCity(tripCity.cityId);
     _trip.cities.remove(tripCity);
     emit(_trip.copyWith(cities: _trip.cities));
@@ -70,6 +88,7 @@ class TripCubit extends Cubit<TripModel> {
   //insert the trip to the database
   Future<void> saveTrip() async {
     await DatabaseHelper().insertTrip(_trip);
+    emit(_trip);
   }
 
   //save the trip to the database

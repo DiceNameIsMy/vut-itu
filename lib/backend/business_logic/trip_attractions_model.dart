@@ -4,7 +4,7 @@ class TripAttractionModel {
   final int attractionId;
   DateTime? selectedDate;
   double? expectedTimeToVisitInHours;
-  final double? expectedCost;
+  double? expectedCost;
   final int order;
 
   TripAttractionModel({

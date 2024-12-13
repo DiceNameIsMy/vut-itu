@@ -41,13 +41,17 @@ class TripListView extends StatelessWidget {
                             context.read<TripsCubit>().removeTrip(trip);
                           },
                         ),
-                        onTap: () {
-                          //navigate to the trip creation trip overview view. Trip overview requires the TripCubit
+                        onTap: () async {
+                          // 1. Initialize the TripCubit and fetch the trip data
+                          final tripCubit = TripCubit();
+
+                          // 2. Fetch the trip data asynchronously
+                          await tripCubit.fetchTrip(trip.id!);
+
+                          // 3. After the trip and associated cities are fetched, navigate to the overview
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) {
-                                final tripCubit = TripCubit();
-                                tripCubit.fetchTrip(trip.id!);
                                 return TripCreationOverviewView(
                                     tripCubit: tripCubit);
                               },

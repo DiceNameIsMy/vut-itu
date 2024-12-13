@@ -30,6 +30,12 @@ class AttractionCubit extends Cubit<List<AttractionModel>> {
     emit(filtered);
   }
 
+  //hide the attraction from the list
+  void hideAttraction(AttractionModel attraction) {
+    _attractions.remove(attraction);
+    emit(_attractions);
+  }
+
   void addAttractionToCity(AttractionModel attraction) {
     _attractions.add(attraction);
     emit(_attractions);
