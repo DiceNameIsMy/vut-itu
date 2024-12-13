@@ -524,6 +524,47 @@ class DatabaseHelper {
         .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
   }
 
+  Future<List<TripCityModel>> getTripCitiesWithAll({required tripId}) async {
+    final db = await database;
+    var tripCitiesMapping =
+        await db.query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
+
+    var futures = <Future>[];
+
+    var attractions =
+        List<List<TripAttractionModel>?>.filled(tripCitiesMapping.length, null);
+    var cities = List<CityModel?>.filled(tripCitiesMapping.length, null);
+
+    tripCitiesMapping.asMap().forEach((idx, tripCity) {
+      // Add Future: Load attractions
+      futures.add(db.query('TripAttractions',
+          where: 'trip_city_id = ?',
+          whereArgs: [tripCity['id']]).then((mapping) async {
+        attractions[idx] =
+            mapping.map((e) => TripAttractionModel.fromMap(e)).toList();
+      }));
+
+      // Add Future: Load city
+      futures.add(db.query('Cities',
+          where: 'id = ?',
+          whereArgs: [tripCity['city_id']]).then((cityMapping) async {
+        if (cityMapping.isNotEmpty) {
+          cities[idx] = CityModel.fromMap(cityMapping.first);
+        }
+      }));
+    });
+
+    await Future.wait(futures);
+
+    var tripCities = <TripCityModel>[];
+    tripCitiesMapping.asMap().forEach((idx, tripCity) {
+      tripCities.add(TripCityModel.fromMap(tripCity,
+          attractions: attractions[idx], city: cities[idx]));
+    });
+
+    return tripCities;
+  }
+
   Future<int> updateTripCity(int id, Map<String, dynamic> tripCity) async {
     final db = await database;
     return await db

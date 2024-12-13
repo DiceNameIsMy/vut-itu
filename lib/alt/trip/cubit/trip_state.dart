@@ -11,3 +11,11 @@ sealed class TripState {
 final class TripInitial extends TripState {
   TripInitial(super.trip, super.places);
 }
+
+final class TripLoading extends TripState {
+  TripLoading(super.trip, super.places);
+}
+
+final class TripLoaded extends TripState {
+  TripLoaded(super.trip, super.places);
+}
