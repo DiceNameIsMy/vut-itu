@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:vut_itu/logger.dart';
 
+/// Visit and signup at https://apidocs.geoapify.com/ (for free) to get an API key.
+/// Put into the .env file at the root of the project like this:
+/// GEOAPIFY_API_KEY=your_api_key
 class GeoapifyClient {
   final String _apiKey;
 
