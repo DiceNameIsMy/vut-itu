@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
 import '../cubit/city_cubit.dart';
 import 'search_bar_city_view.dart';
 import 'trip_list_view.dart';
-import '../cubit/trips_cubit.dart';
 import 'cities_list_view.dart';
 
 class MainScreen extends StatefulWidget {
@@ -14,6 +15,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   bool _showSearchBar = false;
+  final GlobalKey<CitySearchBarState> _searchBarKey =
+      GlobalKey<CitySearchBarState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +34,17 @@ class _MainScreenState extends State<MainScreen> {
                   onPressed: () {
                     setState(() {
                       _showSearchBar = !_showSearchBar;
+                      if (_showSearchBar) {
+                        _searchBarKey.currentState
+                            ?.reset(); // Reset search state
+                        BlocProvider.of<CityCubit>(context).fetchCities();
+                      }
                     });
-                    if (_showSearchBar) {
-                      BlocProvider.of<CityCubit>(context).fetchCities();
-                    }
                   },
                   child: Text(
                       _showSearchBar ? 'Hide Search Bar' : 'Create New Trip'),
                 ),
                 SizedBox(height: 8),
-                //My trips button to navigate to the trip list view with trips cubit with all the trips
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(
@@ -54,8 +58,6 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   child: Text('My Trips'),
                 ),
-
-                //Cities button to navigate to the cities list view with city cubit with all the cities
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).push(
@@ -73,7 +75,12 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           if (_showSearchBar)
-            Expanded(child: CitySearchBar()), // Display the search bar
+            Expanded(
+              child: BlocProvider(
+                create: (_) => SelectedPlacesCubit(),
+                child: CitySearchBar(key: _searchBarKey),
+              ),
+            ),
         ],
       ),
     );

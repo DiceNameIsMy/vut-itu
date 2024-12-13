@@ -12,6 +12,7 @@ import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_attraction_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/attraction_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
 
 class Napp extends StatelessWidget {
   const Napp({Key? key, required this.settingsController}) : super(key: key);
@@ -42,6 +43,8 @@ class Napp extends StatelessWidget {
         BlocProvider<TripAttractionCubit>(
             create: (context) => TripAttractionCubit()),
         BlocProvider<AttractionCubit>(create: (context) => AttractionCubit()),
+        BlocProvider<SelectedPlacesCubit>(
+            create: (context) => SelectedPlacesCubit()),
       ],
       child: ListenableBuilder(
           listenable: settingsController,

@@ -6,14 +6,26 @@ import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/create_trip_list_view/views/trip_creation_overview_view.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
 
-class CitySearchBar extends StatelessWidget {
-  final _searchController = TextEditingController();
+class CitySearchBar extends StatefulWidget {
+  CitySearchBar({super.key});
+
+  @override
+  CitySearchBarState createState() => CitySearchBarState();
+}
+
+class CitySearchBarState extends State<CitySearchBar> {
+  final TextEditingController _searchController = TextEditingController();
+  bool _isLoading = false; // Add loading state
+
+  void reset() {
+    _searchController.clear();
+    BlocProvider.of<CityCubit>(context).fetchCities();
+    //clear selected places
+    BlocProvider.of<SelectedPlacesCubit>(context).clearPlaces();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Fetch all cities when the widget is first loaded
-    context.read<CityCubit>().fetchCities();
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -49,9 +61,14 @@ class CitySearchBar extends StatelessWidget {
         Expanded(
           child: BlocBuilder<CityCubit, List<CityModel>>(
             builder: (context, cities) {
-              if (cities.isEmpty) {
+              if (_isLoading) {
                 return Center(child: CircularProgressIndicator());
               }
+
+              if (cities.isEmpty) {
+                return Center(child: Text('No cities found.'));
+              }
+
               return ListView.builder(
                 itemCount: cities.length,
                 itemBuilder: (context, index) {
@@ -60,9 +77,7 @@ class CitySearchBar extends StatelessWidget {
                     title: Text(city.name),
                     subtitle: Text(city.country),
                     onTap: () {
-                      // Add the selected city to SelectedPlacesCubit
                       context.read<SelectedPlacesCubit>().addPlace(city);
-                      // Optionally, refine the search
                       context
                           .read<CityCubit>()
                           .searchCities(_searchController.text);
@@ -76,27 +91,33 @@ class CitySearchBar extends StatelessWidget {
         BlocBuilder<SelectedPlacesCubit, List<CityModel>>(
             builder: (context, selectedCities) {
           return ElevatedButton(
-            onPressed: () async {
-              if (selectedCities.isNotEmpty) {
-                // Access the TripCubit
-                final tripCubit = context.read<TripCubit>();
+            onPressed: selectedCities.isEmpty || _isLoading
+                ? null // Disable if no cities or loading
+                : () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
 
-                await tripCubit.saveTrip(); // Save the trip first
+                    try {
+                      final tripCubit = context.read<TripCubit>();
 
-                for (final city in selectedCities) {
-                  await tripCubit
-                      .addCityToTrip(city); // Add each city one by one
-                }
+                      await tripCubit.saveTrip();
+                      for (final city in selectedCities) {
+                        await tripCubit.addCityToTrip(city);
+                      }
 
-                // Navigate to the TripCreationOverviewView
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        TripCreationOverviewView(tripCubit: tripCubit),
-                  ),
-                );
-              }
-            },
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              TripCreationOverviewView(tripCubit: tripCubit),
+                        ),
+                      );
+                    } finally {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
+                  },
             child: Text('Create a Trip'),
           );
         }),
