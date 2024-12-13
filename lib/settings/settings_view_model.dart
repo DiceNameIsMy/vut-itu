@@ -19,6 +19,9 @@ class SettingsViewModel with ChangeNotifier {
   late GuiModeEnum _guiMode;
   GuiModeEnum get guiMode => _guiMode;
 
+  late String _geoapifyApiKey;
+  String get geoapifyApiKey => _geoapifyApiKey;
+
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
   /// settings from the service.
@@ -26,6 +29,7 @@ class SettingsViewModel with ChangeNotifier {
     _themeMode = await _settingsService.themeMode();
     _completedOnboarding = await _settingsService.onboardingCompleted();
     _guiMode = await _settingsService.guiMode();
+    _geoapifyApiKey = await _settingsService.geoapifyApiKey();
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();

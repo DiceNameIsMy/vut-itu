@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/map_view.dart';
+import 'package:vut_itu/alt/search_bar/cubit/search_bar_cubit.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
 import 'package:vut_itu/logger.dart';
@@ -12,11 +13,11 @@ import 'package:vut_itu/settings/settings_view_model.dart';
 class TripScreen extends StatelessWidget {
   static const maxBottomBarHeight = 500.0;
 
-  final SettingsViewModel settingsController;
+  final SettingsViewModel settingsViewModel;
   final int tripId;
 
   const TripScreen(
-      {super.key, required this.tripId, required this.settingsController});
+      {super.key, required this.tripId, required this.settingsViewModel});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,6 @@ class TripScreen extends StatelessWidget {
 
   Widget _build(BuildContext context, TripState state) {
     return BottomSheetScaffold(
-      resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(state.trip.name),
@@ -45,7 +45,7 @@ class TripScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             icon: Icon(Icons.arrow_back)),
         actions: [
-          SettingsScreen.navigateToUsingIcon(context, settingsController)
+          SettingsScreen.navigateToUsingIcon(context, settingsViewModel)
         ],
       ),
       body: MapView(
@@ -103,16 +103,48 @@ class TripScreen extends StatelessWidget {
               // Search bar
               Align(
                 alignment: Alignment.center,
-                child: SearchBar(
-                  leading: Icon(Icons.search),
-                  hintText: 'Search for a place',
-                  onTap: () {
-                    // TODO: Change bottom sheet body?
-                  },
-                ),
+                child: _searchBar(context),
               ),
             ],
           )),
+    );
+  }
+
+  Widget _searchBar(BuildContext context) {
+    return BlocProvider(
+      create: (context) =>
+          SearchBarCubit.fromContext(context, settingsViewModel),
+      child: BlocBuilder<SearchBarCubit, SearchBarState>(
+        builder: (contextWithCubit, state) {
+          return SearchAnchor(
+            isFullScreen: false,
+            searchController: state.controller,
+            builder: (context, controller) {
+              return SearchBar(
+                controller: controller,
+                leading: Icon(Icons.search),
+                hintText: 'Search for a place',
+                onTap: () => controller.openView(),
+              );
+            },
+            suggestionsBuilder: (context, SearchController controller) async {
+              logger.i('Loading suggestions for query: ${controller.text}');
+              var suggestions =
+                  await BlocProvider.of<SearchBarCubit>(contextWithCubit)
+                      .getSuggestions(controller.text);
+
+              return suggestions.map((suggestion) {
+                return ListTile(
+                  title: Text(suggestion),
+                  onTap: () {
+                    controller.closeView(suggestion);
+                  },
+                );
+              }).toList();
+            },
+          );
+        },
+      ),
     );
   }
 

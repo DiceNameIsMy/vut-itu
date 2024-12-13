@@ -50,4 +50,22 @@ class SettingsBackend {
   Future<void> setGuiMode(GuiModeEnum newGuiMode) async {
     await _prefs.setInt('guiMode', newGuiMode.index);
   }
+
+  Future<String> geoapifyApiKey() async {
+    var geoapifyApiKey = await _prefs.getString('geoapifyApiKey');
+    if (geoapifyApiKey != null && geoapifyApiKey != '') {
+      return geoapifyApiKey;
+    }
+
+    if (const bool.hasEnvironment('GEOAPIFY_API_KEY')) {
+      return const String.fromEnvironment('GEOAPIFY_API_KEY');
+    }
+
+    // TODO: Proper error handling
+    throw Exception('Geoapify API key not found');
+  }
+
+  Future<void> setGeoapifyApiKey(String newApiKey) async {
+    await _prefs.setString('geoapifyApiKey', newApiKey);
+  }
 }

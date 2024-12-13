@@ -118,7 +118,7 @@ class TripsScreen extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => TripScreen(
-                tripId: trip.id!, settingsController: settingsViewModel)));
+                tripId: trip.id, settingsViewModel: settingsViewModel)));
       },
     );
   }
