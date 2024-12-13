@@ -67,15 +67,17 @@ class TripCreationOverviewView extends StatelessWidget {
                                   .removeCityFromTrip(city);
                             },
                           ),
-                          // Add onTap to navigate to the add attractions to city view
+                          // Add onTap to navigate to the add attractions to city view and provide attractionCubit, tripattraactionCubit and cityId
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) {
-                                  return CityScreen(
+                                builder: (context) => BlocProvider.value(
+                                  value: tripCubit,
+                                  child: CityScreen(
                                     cityId: city.cityId,
-                                  );
-                                },
+                                    tripCity: city,
+                                  ),
+                                ),
                               ),
                             );
                           },

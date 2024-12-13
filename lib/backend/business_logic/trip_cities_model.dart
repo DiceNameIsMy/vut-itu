@@ -12,7 +12,7 @@ class TripCityModel {
 
   /// Optionally loaded from the database. If null then it was not loaded yet.
   final CityModel? city;
-  final List<TripAttractionModel>? attractions;
+  List<TripAttractionModel>? attractions;
 
   TripCityModel({
     this.id = 0, // todo: check if this is correct
@@ -49,5 +49,27 @@ class TripCityModel {
       'end_date': endDate?.toIso8601String(),
       'order_in_list': order,
     };
+  }
+
+  TripCityModel copyWith({
+    int? id,
+    int? tripId,
+    int? cityId,
+    DateTime? startDate,
+    DateTime? endDate,
+    int? order,
+    CityModel? city,
+    List<TripAttractionModel>? attractions,
+  }) {
+    return TripCityModel(
+      id: id ?? this.id,
+      tripId: tripId ?? this.tripId,
+      cityId: cityId ?? this.cityId,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      order: order ?? this.order,
+      city: city ?? this.city,
+      attractions: attractions ?? this.attractions,
+    );
   }
 }

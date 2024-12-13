@@ -524,6 +524,15 @@ class DatabaseHelper {
         .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
   }
 
+  //get trip city by id
+  Future<Map<String, dynamic>> getTripCity(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> tripCity =
+        await db.query('TripCities', where: 'id = ?', whereArgs: [id]);
+    return tripCity.first;
+  }
+
+  //do I use this? todo
   Future<List<TripCityModel>> getTripCitiesWithAll({required tripId}) async {
     final db = await database;
     var tripCitiesMapping =

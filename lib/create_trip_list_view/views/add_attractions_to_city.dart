@@ -10,8 +10,9 @@ import '../cubit/trip_attraction_cubit.dart';
 
 class CityScreen extends StatefulWidget {
   final int cityId;
+  final TripCityModel tripCity;
 
-  CityScreen({required this.cityId});
+  CityScreen({required this.cityId, required this.tripCity});
 
   @override
   _CityScreenState createState() => _CityScreenState();
@@ -22,14 +23,12 @@ class _CityScreenState extends State<CityScreen> {
   String selectedCategory = 'All';
   bool showDeletedAttractions = false;
 
-  @override
+  @override //init state to fetch attractions asu
   void initState() {
     super.initState();
-    // Fetch attractions and trip city data
+    // Fetch attractions
     context.read<AttractionCubit>().fetchAttractions(widget.cityId);
-    context
-        .read<TripCityCubit>()
-        .fetchTripCities(1); // Replace with actual trip ID
+    context.read<TripCityCubit>().fetchTripCity(widget.tripCity.id!);
   }
 
   @override
@@ -89,27 +88,15 @@ class _CityScreenState extends State<CityScreen> {
 
                       return ListTile(
                         title: Text(attraction.name),
-                        subtitle: Text(attraction.category),
+                        subtitle: Text(attraction.cost.toString()),
                         trailing: IconButton(
                           icon: Icon(Icons.add),
                           onPressed: () {
                             // Add to trip city
-                            final tripCity = context
-                                .read<TripCityCubit>()
-                                .state
-                                .firstWhere(
-                                    (city) => city.cityId == widget.cityId);
-                            final tripAttraction = TripAttractionModel(
-                              attractionId: attraction.id!,
-                              tripCityId: tripCity.id!,
-                              order: (tripCity.attractions?.length ?? 0) + 1,
 
-                              // Add other necessary fields here
-                            );
                             context
                                 .read<TripCityCubit>()
-                                .addAttractionToTripCity(
-                                    tripCity, tripAttraction);
+                                .addAttractionToTripCity(attraction);
                           },
                         ),
                         onLongPress: () {
@@ -136,14 +123,12 @@ class _CityScreenState extends State<CityScreen> {
                   : 'Show Deleted Attractions'),
             ),
             // Total Time and Cost
-            BlocBuilder<TripCityCubit, List<TripCityModel>>(
+            BlocBuilder<TripCityCubit, TripCityModel>(
               builder: (context, tripCities) {
-                final tripCity = tripCities
-                    .firstWhere((city) => city.cityId == widget.cityId);
                 final totalCost =
-                    context.read<TripCityCubit>().calculateTotalCost(tripCity);
+                    context.read<TripCityCubit>().calculateTotalCost();
                 final totalTime =
-                    context.read<TripCityCubit>().calculateTotalTime(tripCity);
+                    context.read<TripCityCubit>().calculateTotalTime();
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -167,20 +152,14 @@ class _CityScreenState extends State<CityScreen> {
                   lastDate: DateTime(2025),
                 ).then((selectedDate) {
                   if (selectedDate != null) {
-                    final tripCity = context
-                        .read<TripCityCubit>()
-                        .state
-                        .firstWhere((city) => city.cityId == widget.cityId);
                     context
                         .read<TripCityCubit>()
-                        .updateStartDate(tripCity, selectedDate);
+                        .updateTripCityStartDate(selectedDate);
                   }
                 });
               },
               child: Text('Add Start Date'),
             ),
-
-            //add end date
             ElevatedButton(
               onPressed: () {
                 // Navigate to a date picker or add visit date functionality
@@ -191,13 +170,9 @@ class _CityScreenState extends State<CityScreen> {
                   lastDate: DateTime(2025),
                 ).then((selectedDate) {
                   if (selectedDate != null) {
-                    final tripCity = context
-                        .read<TripCityCubit>()
-                        .state
-                        .firstWhere((city) => city.cityId == widget.cityId);
                     context
                         .read<TripCityCubit>()
-                        .updateEndDate(tripCity, selectedDate);
+                        .updateTripCityEndDate(selectedDate);
                   }
                 });
               },

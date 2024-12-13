@@ -1,89 +1,96 @@
-/* cubit that handles creation, update and removing tripCity from a selected trip and database table city.
-All changes in the trip_city_model will be updated in the database */
-
 import 'package:bloc/bloc.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/database_helper.dart';
 import 'trip_attraction_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
 
-class TripCityCubit extends Cubit<List<TripCityModel>> {
-  TripCityCubit() : super([]);
+/* This the cubit for the trip city model. It is responsible for managing the state of the trip city model. 
+It manages adding TripAttraction to the list TripCity and removing from the list*/
 
-  List<TripCityModel> _tripCities = [];
+class TripCityCubit extends Cubit<TripCityModel> {
+  //initialize the cubit with an empty TripCityModel. The Id of a trip is required to create a TripCityModel
+  TripCityCubit() : super(TripCityModel(tripId: 0, cityId: 0, order: 0));
 
-  Future<void> fetchTripCities(int tripId) async {
-    final tripCityMaps = await DatabaseHelper().getTripCities(tripId: tripId);
-    _tripCities =
-        tripCityMaps.map((map) => TripCityModel.fromMap(map)).toList();
-    emit(_tripCities);
+  TripCityModel _tripCity = TripCityModel(tripId: 0, cityId: 0, order: 0);
+
+  void resetTripCity() {
+    _tripCity = TripCityModel(tripId: 0, cityId: 0, order: 0);
+    emit(_tripCity);
   }
 
-  Future<void> updateCityInTrip(TripCityModel tripCity) async {
-    final index = _tripCities.indexWhere((tc) => tc.cityId == tripCity.cityId);
-    _tripCities[index] = tripCity;
-    await DatabaseHelper().updateTripCity(tripCity.cityId, tripCity.toMap());
-    emit(_tripCities);
+  //fetch trip city with attractions from the database
+  Future<void> fetchTripCity(int id) async {
+    final tripCity = await DatabaseHelper().getTripCity(id);
+    _tripCity = TripCityModel.fromMap(tripCity);
+    final tripAttractions =
+        await DatabaseHelper().getTripAttractions(_tripCity);
+    _tripCity.attractions = tripAttractions
+        .map((e) => TripAttractionModel.fromMap(e))
+        .toList()
+        .cast<TripAttractionModel>();
+    emit(_tripCity);
   }
 
-  Future<String> getCityName(int cityId) async {
-    final cityMap = await DatabaseHelper().getCity(cityId);
-    return cityMap['name'];
+  //add an attraction to the trip city
+  Future<void> addAttractionToTripCity(AttractionModel attraction) async {
+    final tripAttraction = TripAttractionModel(
+        tripCityId: _tripCity.id!,
+        attractionId: attraction.id!,
+        expectedCost: attraction.cost!,
+        expectedTimeToVisitInHours: attraction.averageTime!,
+        order: _tripCity.attractions!.length + 1);
+    await DatabaseHelper().insertTripAttraction(tripAttraction, _tripCity);
+    _tripCity.attractions!.add(tripAttraction);
+    emit(_tripCity.copyWith(attractions: _tripCity.attractions));
   }
 
-  //add attraction to the tripCity
-  Future<void> addAttractionToTripCity(
-      TripCityModel tripCity, TripAttractionModel tripAttraction) async {
-    final index = _tripCities.indexWhere((tc) => tc.cityId == tripCity.cityId);
-    _tripCities[index].attractions?.add(tripAttraction);
-    await DatabaseHelper().insertTripAttraction(tripAttraction, tripCity);
-    emit(_tripCities);
-  }
-
-  //remove attraction from the tripCity
+  //remove an attraction from the trip city
   Future<void> removeAttractionFromTripCity(
-      TripCityModel tripCity, TripAttractionModel tripAttraction) async {
-    final index = _tripCities.indexWhere((tc) => tc.cityId == tripCity.cityId);
-    _tripCities[index].attractions?.remove(tripAttraction);
-    await DatabaseHelper().deleteTripAttraction(tripAttraction.id!);
-    emit(_tripCities);
+      TripAttractionModel attraction) async {
+    await DatabaseHelper().deleteTripAttraction(attraction.id!);
+    _tripCity.attractions!.remove(attraction);
+    emit(_tripCity.copyWith(attractions: _tripCity.attractions));
   }
 
-  //culculate the total cost of the city from the attractions in the tripCity
-  double calculateTotalCost(TripCityModel tripCity) {
-    return tripCity.attractions?.fold(
-            0,
-            (previousValue, element) =>
-                previousValue! + (element.expectedCost ?? 0)) ??
-        0;
+  //calculate the total cost of the trip city
+  double calculateTotalCost() {
+    double totalCost = 0;
+    //check if the attractions list is not null
+    if (_tripCity.attractions == null) {
+      return totalCost;
+    }
+    for (var attraction in _tripCity.attractions!) {
+      totalCost += attraction.expectedCost!;
+    }
+    return totalCost;
   }
 
-  //culculate the total time of the city from the attractions in the tripCity
-  double calculateTotalTime(TripCityModel tripCity) {
-    return tripCity.attractions?.fold(
-            0,
-            (previousValue, element) =>
-                previousValue! + (element.expectedTimeToVisitInHours ?? 0)) ??
-        0;
+  //calculate the total time of the trip city
+  double calculateTotalTime() {
+    double totalTime = 0;
+    //check if the attractions list is not null
+    if (_tripCity.attractions == null) {
+      return totalTime;
+    }
+    for (var attraction in _tripCity.attractions!) {
+      totalTime += attraction.expectedTimeToVisitInHours!;
+    }
+    return totalTime;
   }
 
-  //ubdate start date of the tripCity
-  Future<void> updateStartDate(
-      TripCityModel tripCity, DateTime startDate) async {
-    final index = _tripCities.indexWhere((tc) => tc.cityId == tripCity.cityId);
-    _tripCities[index].startDate = startDate;
+  //update the trip city with the new start date
+  Future<void> updateTripCityStartDate(DateTime startDate) async {
     await DatabaseHelper().updateTripCity(
-        tripCity.cityId, {'startDate': startDate.toIso8601String()});
-    emit(_tripCities);
+        _tripCity.id!, {'start_date': startDate.toIso8601String()});
+    emit(_tripCity.copyWith(startDate: startDate));
   }
 
-  //ubdate end date of the tripCity
-  Future<void> updateEndDate(TripCityModel tripCity, DateTime endDate) async {
-    final index = _tripCities.indexWhere((tc) => tc.cityId == tripCity.cityId);
-    _tripCities[index].endDate = endDate;
-    await DatabaseHelper().updateTripCity(
-        tripCity.cityId, {'endDate': endDate.toIso8601String()});
-    emit(_tripCities);
+  //update the trip city with the new end date
+  Future<void> updateTripCityEndDate(DateTime endDate) async {
+    await DatabaseHelper()
+        .updateTripCity(_tripCity.id!, {'end_date': endDate.toIso8601String()});
+    emit(_tripCity.copyWith(endDate: endDate));
   }
 }
