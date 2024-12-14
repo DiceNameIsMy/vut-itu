@@ -2,24 +2,28 @@ part of 'trip_screen_cubit.dart';
 
 @immutable
 sealed class TripScreenState {
+  final MapController mapController;
+
   final List<Location> locations;
 
-  TripScreenState({this.locations = const []});
+  TripScreenState({required this.mapController, this.locations = const []});
 }
 
 final class TripScreenInitial extends TripScreenState {
-  TripScreenInitial({super.locations = const []});
+  TripScreenInitial({required super.mapController, super.locations = const []});
 }
 
 final class TripScreenLocationPressed extends TripScreenState {
   final Location selectedLocation;
 
   TripScreenLocationPressed({
+    required super.mapController,
     required this.selectedLocation,
     super.locations = const [],
   });
 }
 
 final class TripScreenShowLocations extends TripScreenState {
-  TripScreenShowLocations({super.locations = const []});
+  TripScreenShowLocations(
+      {required super.mapController, super.locations = const []});
 }
