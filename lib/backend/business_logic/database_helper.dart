@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -37,6 +36,237 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    await _createTables(db);
+    await _insertInitialData(db);
+  }
+
+  // Cities
+  Future<void> insertCity(CityModel city) async {
+    final db = await database;
+    city.id = await db.insert('Cities', city.toMap()..remove('id'));
+  }
+
+  Future<List<Map<String, dynamic>>> getCities() async {
+    final db = await database;
+    List<Map<String, dynamic>> Cities = await db.query('Cities');
+    return Cities;
+  }
+
+  //get city by id
+  Future<Map<String, dynamic>> getCity(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> city =
+        await db.query('Cities', where: 'id = ?', whereArgs: [id]);
+
+    return city.first;
+  }
+
+  Future<CityModel?> getCityByGeoapifyId(String geoapifyId) async {
+    final db = await database;
+    List<Map<String, dynamic>> city = await db
+        .query('Cities', where: 'geoapify_id = ?', whereArgs: [geoapifyId]);
+
+    return city.isEmpty ? null : CityModel.fromMap(city.first);
+  }
+
+  Future<List<Map<String, dynamic>>> getCitiesByCountry(String country) async {
+    final db = await database;
+    return await db.query('Cities', where: 'country = ?', whereArgs: [country]);
+  }
+
+  Future<int> updateCity(int id, Map<String, dynamic> city) async {
+    final db = await database;
+    return await db.update('Cities', city, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteCity(int id) async {
+    final db = await database;
+    return await db.delete('Cities', where: 'id = ?', whereArgs: [id]);
+  }
+
+  //  Attractions
+  Future<void> insertAttraction(AttractionModel attraction) async {
+    final db = await database;
+    attraction.id =
+        await db.insert('Attractions', attraction.toMap()..remove('id'));
+  }
+
+  Future<List<Map<String, dynamic>>> getAttractions(int cityId) async {
+    final db = await database;
+    return await db
+        .query('Attractions', where: 'city_id = ?', whereArgs: [cityId]);
+  }
+
+  Future<int> updateAttraction(int id, Map<String, dynamic> attraction) async {
+    final db = await database;
+    return await db
+        .update('Attractions', attraction, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteAttraction(int id) async {
+    final db = await database;
+    return await db.delete('Attractions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // Trips
+  // Insert a trip into the database
+  Future<void> insertTrip(TripModel trip) async {
+    final db = await database;
+    trip.id = await db.insert('Trips', trip.toMap()..remove('id'));
+  }
+
+  Future<List<Map<String, dynamic>>> getTripsForUser(int userId) async {
+    final db = await database;
+    return await db.query('Trips', where: 'user_id = ?', whereArgs: [userId]);
+  }
+
+  Future<List<Map<String, dynamic>>> getTrips({
+    String? orderByField,
+    bool orderByAsc = true,
+  }) async {
+    final db = await database;
+    var orderBy = orderByField == null
+        ? null
+        : '$orderByField ${orderByAsc ? 'ASC' : 'DESC'}';
+
+    return await db.query('Trips', orderBy: orderBy);
+  }
+
+  Future<Map<String, dynamic>> getTrip(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> trip =
+        await db.query('Trips', where: 'id = ?', whereArgs: [id]);
+    return trip.first;
+  }
+
+  Future<int> updateTrip(int id, Map<String, dynamic> trip) async {
+    final db = await database;
+    return await db.update('Trips', trip, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteTrip(int id) async {
+    final db = await database;
+    return await db.delete('Trips', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // TripCities
+  Future<TripCityModel> insertSingleTripCity(TripCityModel tripCity) async {
+    final db = await database;
+    final id = await db.insert('TripCities', tripCity.toMap()..remove('id'));
+    tripCity.id = id;
+    return tripCity;
+  }
+
+  Future<List<Map<String, dynamic>>> getTripCities({required tripId}) async {
+    final db = await database;
+    return await db
+        .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
+  }
+
+  //get trip city by id
+  Future<Map<String, dynamic>> getTripCity(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> tripCity =
+        await db.query('TripCities', where: 'id = ?', whereArgs: [id]);
+    return tripCity.first;
+  }
+
+  //do I use this? todo
+  Future<List<TripCityModel>> getTripCitiesWithAll({required tripId}) async {
+    final db = await database;
+    var tripCitiesMapping =
+        await db.query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
+
+    var futures = <Future>[];
+
+    var attractions =
+        List<List<TripAttractionModel>?>.filled(tripCitiesMapping.length, null);
+    var cities = List<CityModel?>.filled(tripCitiesMapping.length, null);
+
+    tripCitiesMapping.asMap().forEach((idx, tripCity) {
+      // Add Future: Load attractions
+      futures.add(db.query('TripAttractions',
+          where: 'trip_city_id = ?',
+          whereArgs: [tripCity['id']]).then((mapping) async {
+        attractions[idx] =
+            mapping.map((e) => TripAttractionModel.fromMap(e)).toList();
+      }));
+
+      // Add Future: Load city
+      futures.add(db.query('Cities',
+          where: 'id = ?',
+          whereArgs: [tripCity['city_id']]).then((cityMapping) async {
+        if (cityMapping.isNotEmpty) {
+          cities[idx] = CityModel.fromMap(cityMapping.first);
+        }
+      }));
+    });
+
+    await Future.wait(futures);
+
+    var tripCities = <TripCityModel>[];
+    tripCitiesMapping.asMap().forEach((idx, tripCity) {
+      tripCities.add(TripCityModel.fromMap(tripCity,
+          attractions: attractions[idx], city: cities[idx]));
+    });
+
+    return tripCities;
+  }
+
+  Future<int> updateTripCity(int id, Map<String, dynamic> tripCity) async {
+    final db = await database;
+    return await db
+        .update('TripCities', tripCity, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteTripCity(int id) async {
+    final db = await database;
+    return await db.delete('TripCities', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // TripAttractions
+// Insert a tripAttraction into the database to the provided TripCity
+  Future<void> insertTripAttraction(
+      TripAttractionModel tripAttraction, TripCityModel tripCity) async {
+    final db = await database;
+    tripAttraction.id = await db.insert(
+        'TripAttractions',
+        tripAttraction.toMap()
+          ..remove('id')
+          ..addAll({'trip_city_id': tripCity.id}));
+  }
+
+  Future<List<Map<String, dynamic>>> getTripAttractions(
+      TripCityModel TripCityModel) async {
+    final db = await database;
+    return await db.query('TripAttractions',
+        where: 'trip_city_id = ?', whereArgs: [TripCityModel.id]);
+  }
+
+  Future<int> updateTripAttraction(
+      int id, Map<String, dynamic> tripAttraction) async {
+    final db = await database;
+    return await db.update('TripAttractions', tripAttraction,
+        where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteTripAttraction(int id) async {
+    final db = await database;
+    return await db.delete('TripAttractions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  //delete all trip attractions from a trip city
+  Future<int> deleteAllTripAttractions(int tripCityId) async {
+    final db = await database;
+    return await db.delete('TripAttractions',
+        where: 'trip_city_id = ?', whereArgs: [tripCityId]);
+  }
+
+  ///
+
+  Future<void> _createTables(Database db) async {
+    // Insert some data
+    // Cities
     // Cities table
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Cities (
@@ -122,9 +352,10 @@ class DatabaseHelper {
         FOREIGN KEY (attraction_id) REFERENCES Attractions(id)
       )
     ''');
+  }
 
-    //   // Insert some data
-    //   // Cities
+  ///
+  Future<void> _insertInitialData(Database db) async {
     try {
       await db.insert(
         'Cities',
@@ -279,6 +510,7 @@ class DatabaseHelper {
     }
   }
 
+  /// Database migrations management
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
       try {
@@ -554,227 +786,5 @@ class DatabaseHelper {
         print(e);
       }
     }
-  }
-
-  // Cities
-  Future<void> insertCity(CityModel city) async {
-    final db = await database;
-    city.id = await db.insert('Cities', city.toMap()..remove('id'));
-  }
-
-  Future<List<Map<String, dynamic>>> getCities() async {
-    final db = await database;
-    List<Map<String, dynamic>> Cities = await db.query('Cities');
-    return Cities;
-  }
-
-  //get city by id
-  Future<Map<String, dynamic>> getCity(int id) async {
-    final db = await database;
-    List<Map<String, dynamic>> city =
-        await db.query('Cities', where: 'id = ?', whereArgs: [id]);
-
-    return city.first;
-  }
-
-  Future<CityModel?> getCityByGeoapifyId(String geoapifyId) async {
-    final db = await database;
-    List<Map<String, dynamic>> city = await db
-        .query('Cities', where: 'geoapify_id = ?', whereArgs: [geoapifyId]);
-
-    return city.isEmpty ? null : CityModel.fromMap(city.first);
-  }
-
-  Future<List<Map<String, dynamic>>> getCitiesByCountry(String country) async {
-    final db = await database;
-    return await db.query('Cities', where: 'country = ?', whereArgs: [country]);
-  }
-
-  Future<int> updateCity(int id, Map<String, dynamic> city) async {
-    final db = await database;
-    return await db.update('Cities', city, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteCity(int id) async {
-    final db = await database;
-    return await db.delete('Cities', where: 'id = ?', whereArgs: [id]);
-  }
-
-  //  Attractions
-  Future<void> insertAttraction(AttractionModel attraction) async {
-    final db = await database;
-    attraction.id =
-        await db.insert('Attractions', attraction.toMap()..remove('id'));
-  }
-
-  Future<List<Map<String, dynamic>>> getAttractions(int cityId) async {
-    final db = await database;
-    return await db
-        .query('Attractions', where: 'city_id = ?', whereArgs: [cityId]);
-  }
-
-  Future<int> updateAttraction(int id, Map<String, dynamic> attraction) async {
-    final db = await database;
-    return await db
-        .update('Attractions', attraction, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteAttraction(int id) async {
-    final db = await database;
-    return await db.delete('Attractions', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // Trips
-  // Insert a trip into the database
-  Future<void> insertTrip(TripModel trip) async {
-    final db = await database;
-    trip.id = await db.insert('Trips', trip.toMap()..remove('id'));
-  }
-
-  Future<List<Map<String, dynamic>>> getTripsForUser(int userId) async {
-    final db = await database;
-    return await db.query('Trips', where: 'user_id = ?', whereArgs: [userId]);
-  }
-
-  Future<List<Map<String, dynamic>>> getTrips({
-    String? orderByField,
-    bool orderByAsc = true,
-  }) async {
-    final db = await database;
-    var orderBy = orderByField == null
-        ? null
-        : '$orderByField ${orderByAsc ? 'ASC' : 'DESC'}';
-
-    return await db.query('Trips', orderBy: orderBy);
-  }
-
-  Future<Map<String, dynamic>> getTrip(int id) async {
-    final db = await database;
-    List<Map<String, dynamic>> trip =
-        await db.query('Trips', where: 'id = ?', whereArgs: [id]);
-    return trip.first;
-  }
-
-  Future<int> updateTrip(int id, Map<String, dynamic> trip) async {
-    final db = await database;
-    return await db.update('Trips', trip, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteTrip(int id) async {
-    final db = await database;
-    return await db.delete('Trips', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // TripCities
-  Future<TripCityModel> insertSingleTripCity(TripCityModel tripCity) async {
-    final db = await database;
-    final id = await db.insert('TripCities', tripCity.toMap()..remove('id'));
-    tripCity.id = id;
-    return tripCity;
-  }
-
-  Future<List<Map<String, dynamic>>> getTripCities({required tripId}) async {
-    final db = await database;
-    return await db
-        .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
-  }
-
-  //get trip city by id
-  Future<Map<String, dynamic>> getTripCity(int id) async {
-    final db = await database;
-    List<Map<String, dynamic>> tripCity =
-        await db.query('TripCities', where: 'id = ?', whereArgs: [id]);
-    return tripCity.first;
-  }
-
-  //do I use this? todo
-  Future<List<TripCityModel>> getTripCitiesWithAll({required tripId}) async {
-    final db = await database;
-    var tripCitiesMapping =
-        await db.query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
-
-    var futures = <Future>[];
-
-    var attractions =
-        List<List<TripAttractionModel>?>.filled(tripCitiesMapping.length, null);
-    var cities = List<CityModel?>.filled(tripCitiesMapping.length, null);
-
-    tripCitiesMapping.asMap().forEach((idx, tripCity) {
-      // Add Future: Load attractions
-      futures.add(db.query('TripAttractions',
-          where: 'trip_city_id = ?',
-          whereArgs: [tripCity['id']]).then((mapping) async {
-        attractions[idx] =
-            mapping.map((e) => TripAttractionModel.fromMap(e)).toList();
-      }));
-
-      // Add Future: Load city
-      futures.add(db.query('Cities',
-          where: 'id = ?',
-          whereArgs: [tripCity['city_id']]).then((cityMapping) async {
-        if (cityMapping.isNotEmpty) {
-          cities[idx] = CityModel.fromMap(cityMapping.first);
-        }
-      }));
-    });
-
-    await Future.wait(futures);
-
-    var tripCities = <TripCityModel>[];
-    tripCitiesMapping.asMap().forEach((idx, tripCity) {
-      tripCities.add(TripCityModel.fromMap(tripCity,
-          attractions: attractions[idx], city: cities[idx]));
-    });
-
-    return tripCities;
-  }
-
-  Future<int> updateTripCity(int id, Map<String, dynamic> tripCity) async {
-    final db = await database;
-    return await db
-        .update('TripCities', tripCity, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteTripCity(int id) async {
-    final db = await database;
-    return await db.delete('TripCities', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // TripAttractions
-// Insert a tripAttraction into the database to the provided TripCity
-  Future<void> insertTripAttraction(
-      TripAttractionModel tripAttraction, TripCityModel tripCity) async {
-    final db = await database;
-    tripAttraction.id = await db.insert(
-        'TripAttractions',
-        tripAttraction.toMap()
-          ..remove('id')
-          ..addAll({'trip_city_id': tripCity.id}));
-  }
-
-  Future<List<Map<String, dynamic>>> getTripAttractions(
-      TripCityModel TripCityModel) async {
-    final db = await database;
-    return await db.query('TripAttractions',
-        where: 'trip_city_id = ?', whereArgs: [TripCityModel.id]);
-  }
-
-  Future<int> updateTripAttraction(
-      int id, Map<String, dynamic> tripAttraction) async {
-    final db = await database;
-    return await db.update('TripAttractions', tripAttraction,
-        where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteTripAttraction(int id) async {
-    final db = await database;
-    return await db.delete('TripAttractions', where: 'id = ?', whereArgs: [id]);
-  }
-
-  //delete all trip attractions from a trip city
-  Future<int> deleteAllTripAttractions(int tripCityId) async {
-    final db = await database;
-    return await db.delete('TripAttractions',
-        where: 'trip_city_id = ?', whereArgs: [tripCityId]);
   }
 }
