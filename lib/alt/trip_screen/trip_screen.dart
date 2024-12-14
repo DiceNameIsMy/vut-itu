@@ -1,6 +1,7 @@
 import 'package:bottom_sheet_scaffold/bottom_sheet_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/map_view.dart';
 import 'package:vut_itu/alt/search_bar/search_bar_view.dart';
@@ -49,12 +50,13 @@ class TripScreen extends StatelessWidget {
       appBar: AppBar(
         title: SearchBarView(
           settingsViewModel,
-          onQuerySubmit: (locations) =>
-              BlocProvider.of<TripScreenCubit>(context)
-                  .showQueryResults(locations),
-          onLocationSelect: (location) =>
-              BlocProvider.of<TripScreenCubit>(context)
-                  .selectLocation(location),
+          onQuerySubmit: (locations) {
+            BlocProvider.of<TripScreenCubit>(context)
+                .showQueryResults(locations);
+          },
+          onLocationSelect: (location) {
+            BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
+          },
         ),
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -65,6 +67,7 @@ class TripScreen extends StatelessWidget {
         ],
       ),
       body: MapView(
+        mapController: screenState.mapController,
         trip: state.trip,
         locations: screenState.locations,
         centerAt: LatLng(51.5074, -0.1278),
@@ -98,6 +101,12 @@ class TripScreen extends StatelessWidget {
   }
 
   Container _bottomSheetHeader(BuildContext context, TripState state) {
+    var startDateString = state.trip.startDate != null
+        ? DateFormat('dd MMM').format(state.trip.startDate!)
+        : 'Unset';
+    var endDateString = state.trip.endDate != null
+        ? DateFormat('dd MMM').format(state.trip.endDate!)
+        : 'Unset';
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -122,25 +131,23 @@ class TripScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // TODO: If text is too long, it might overflow. Fix this.
-                    Text(
-                      state.trip.name,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        logger.w('Edit trip name not implemented');
+                      },
+                      icon: const Icon(Icons.edit),
+                      label: Text(state.trip.name),
                     ),
-                    Text(
-                      ', ',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    InkWell(
-                      onTap: () {
+                    OutlinedButton.icon(
+                      onPressed: () {
                         // TODO: Impement date picker.
                         logger.w('Date picker not implemented');
                       },
-                      child: Text(
-                        'Dec 11 - Dec 18',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
+                      label: Text('$startDateString - $endDateString'),
+                      icon: Icon(Icons.calendar_today),
                     )
                   ],
                 ),
