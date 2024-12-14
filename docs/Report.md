@@ -19,9 +19,43 @@ TODO
 TODO
 
 ### Nurdaulet's FE features
-- Onboarding screens to gather user's interests for better recommendations
-- Alternative trip planning screens with focus on maps
-- TODO: Map???
+
+#### Screen: `Onboarding`
+
+Onboarding screen to give an overview of the application's capabilities.
+
+#### Screen: `List of trips`
+
+TODO: Explain
+
+#### Screen: `Trip detail`
+
+TODO: Add intro?
+
+- Button to return to `List of trips` screen
+- Button to open settings
+- An interactive map with a route to be taken
+    - When user zooms in to a place/city, map changes mode & transforms to `Place/city` screen
+- Search widget to find, browse, and add places/cities to a trip
+- Editable date fields to configure when trip takes place, how many days are to be spent at each place/city, and when trip ends.
+- Editable, extendable, and reorderable list of places/cities to visit
+- Widget to open a detailed screen of a place/city to visit
+
+#### Screen: `Place/city`
+
+TODO: Add intro?
+
+- Button to return to `Trip detail` screen
+- Button to open settings
+- An interactive map with a route to be taken
+    - When user zooms out of a place/city, map changes mode & transforms to `Trip detail` screen
+    - Map can be configured to show only part of the route (Example: Instead of showing every place to visit, which might become cluttered, show only places to visit in a first day)
+- Search widget to find, browse (as list or with a map), and add attractions to a trip
+- Widget to add/remove place/city from the current trip
+- Editable, extendable, and reorderable list of attractions ordered by days when to be visited. Example:
+    - Day1: Attraction1, Attraction2
+    - Day2: Attraction3
+- Suggestions widget to show a customer best attractions in selected place/city
 
 <div style="page-break-after: always;"></div>
 

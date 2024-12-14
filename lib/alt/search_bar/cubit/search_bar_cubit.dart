@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/geoapify/geoapify_client.dart';
+import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
 part 'search_bar_state.dart';
@@ -18,10 +19,29 @@ class SearchBarCubit extends Cubit<SearchBarState> {
     return SearchBarCubit(GeoapifyClient(settingsViewModel.geoapifyApiKey));
   }
 
-  Future<List<String>> getSuggestions(String query) async {
+  void closeSearchBar(Location selectedLocation) {
+    state.controller.closeView(selectedLocation.name);
+
+    emit(SearchBarInitial(
+        controller: state.controller,
+        searchTerm: state.searchTerm,
+        searchSuggestions: state.searchSuggestions,
+        selectedLocation: selectedLocation));
+  }
+
+  Future<List<Location>> getSuggestions(String query) async {
     var suggestions =
         await _geoapifyClient.getDebouncedSearchAutocompletion(query);
-    emit(SearchBarInitial(controller: SearchController()));
+    if (suggestions == null) {
+      // If request was discarded, do not change state
+      return [];
+    }
+
+    emit(SearchBarLoaded(
+        controller: state.controller,
+        searchTerm: query,
+        searchSuggestions: suggestions));
+
     return suggestions;
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 
 /// Visit and signup at https://apidocs.geoapify.com/ (for free) to get an API key.
@@ -13,21 +14,21 @@ class GeoapifyClient {
 
   GeoapifyClient(this._apiKey);
 
-  Future<List<String>> getDebouncedSearchAutocompletion(String query) async {
+  Future<List<Location>?> getDebouncedSearchAutocompletion(String query) async {
     debounceId++;
     var localDebounceId = debounceId;
 
     await Future.delayed(Duration(seconds: 1));
     if (localDebounceId != debounceId) {
       // Autocompletion was requested again. This request is outdated.
-      return [];
+      return null;
     }
     debounceId = 0;
 
     return await getSearchAutocompletion(query);
   }
 
-  Future<List<String>> getSearchAutocompletion(String query) async {
+  Future<List<Location>> getSearchAutocompletion(String query) async {
     logger.i('Getting autocompletion suggestions for query: $query');
 
     if (query.length < 3) {
@@ -51,13 +52,13 @@ class GeoapifyClient {
       throw Exception('Failed to get autocompletion suggestions');
     }
 
-    final List<String> suggestions = [];
+    final List<Location> suggestions = [];
     final data = jsonDecode(response.body);
 
     try {
-      final results = data['results'] as List;
-      for (var suggestion in results) {
-        suggestions.add(suggestion['formatted'] as String);
+      final json = data['results'] as List;
+      for (var suggestionJson in json) {
+        suggestions.add(Location.fromJson(suggestionJson));
       }
     } catch (e) {
       logger.e('Failed to parse autocompletion suggestions: $e\n$data');

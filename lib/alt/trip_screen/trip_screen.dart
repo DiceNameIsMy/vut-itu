@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/map_view.dart';
-import 'package:vut_itu/alt/search_bar/cubit/search_bar_cubit.dart';
+import 'package:vut_itu/alt/search_bar/search_bar_view.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
 import 'package:vut_itu/logger.dart';
@@ -39,7 +39,7 @@ class TripScreen extends StatelessWidget {
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(state.trip.name),
+        title: SearchBarView(settingsViewModel),
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -75,12 +75,12 @@ class TripScreen extends StatelessWidget {
       gradientOpacity: false,
       radius: 30,
       animationDuration: Duration(milliseconds: 300),
-      header: _bottomSheetHeader(context),
+      header: _bottomSheetHeader(context, state),
       body: _bottomSheetBody(context, state),
     );
   }
 
-  Container _bottomSheetHeader(BuildContext context) {
+  Container _bottomSheetHeader(BuildContext context, TripState state) {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -100,51 +100,36 @@ class TripScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              // Search bar
+              // Trip preview
               Align(
                 alignment: Alignment.center,
-                child: _searchBar(context),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    // TODO: If text is too long, it might overflow. Fix this.
+                    Text(
+                      state.trip.name,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    Text(
+                      ', ',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // TODO: Impement date picker.
+                        logger.w('Date picker not implemented');
+                      },
+                      child: Text(
+                        'Dec 11 - Dec 18',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           )),
-    );
-  }
-
-  Widget _searchBar(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          SearchBarCubit.fromContext(context, settingsViewModel),
-      child: BlocBuilder<SearchBarCubit, SearchBarState>(
-        builder: (contextWithCubit, state) {
-          return SearchAnchor(
-            isFullScreen: false,
-            searchController: state.controller,
-            builder: (context, controller) {
-              return SearchBar(
-                controller: controller,
-                leading: Icon(Icons.search),
-                hintText: 'Search for a place',
-                onTap: () => controller.openView(),
-              );
-            },
-            suggestionsBuilder: (context, SearchController controller) async {
-              logger.i('Loading suggestions for query: ${controller.text}');
-              var suggestions =
-                  await BlocProvider.of<SearchBarCubit>(contextWithCubit)
-                      .getSuggestions(controller.text);
-
-              return suggestions.map((suggestion) {
-                return ListTile(
-                  title: Text(suggestion),
-                  onTap: () {
-                    controller.closeView(suggestion);
-                  },
-                );
-              }).toList();
-            },
-          );
-        },
-      ),
     );
   }
 

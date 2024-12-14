@@ -5,39 +5,32 @@ sealed class SearchBarState {
   final SearchController controller;
 
   final String searchTerm;
-  final List<String> searchSuggestions;
+  final List<Location> searchSuggestions;
 
-  SearchBarState(
-      {required this.controller,
-      this.searchTerm = '',
-      this.searchSuggestions = const []});
+  final Location? selectedLocation;
+
+  SearchBarState({
+    required this.controller,
+    this.searchTerm = '',
+    this.searchSuggestions = const [],
+    this.selectedLocation,
+  });
 }
 
 final class SearchBarInitial extends SearchBarState {
-  SearchBarInitial(
-      {required super.controller, super.searchSuggestions = const []});
-}
-
-final class SearchBarTyping extends SearchBarState {
-  final Timer searchDebouner;
-
-  SearchBarTyping(
-      {required this.searchDebouner,
-      required super.controller,
-      required super.searchTerm,
-      super.searchSuggestions = const []});
-}
-
-final class SearchBarLoading extends SearchBarState {
-  SearchBarLoading(
-      {required super.controller,
-      required super.searchTerm,
-      super.searchSuggestions = const []});
+  SearchBarInitial({
+    required super.controller,
+    super.searchTerm,
+    super.searchSuggestions = const [],
+    super.selectedLocation,
+  });
 }
 
 final class SearchBarLoaded extends SearchBarState {
-  SearchBarLoaded(
-      {required super.controller,
-      required super.searchTerm,
-      required super.searchSuggestions});
+  SearchBarLoaded({
+    required super.controller,
+    required super.searchTerm,
+    required super.searchSuggestions,
+    super.selectedLocation,
+  });
 }
