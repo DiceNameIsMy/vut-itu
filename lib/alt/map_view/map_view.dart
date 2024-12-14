@@ -5,9 +5,12 @@ import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_ti
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/cubit/map_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/backend/location.dart';
+import 'package:vut_itu/logger.dart';
 
 class MapView extends StatelessWidget {
   final TripModel trip;
+  final List<Location> locations;
   final LatLng centerAt;
   final double initZoomLevel;
 
@@ -20,49 +23,40 @@ class MapView extends StatelessWidget {
     tileProvider: CancellableNetworkTileProvider(),
   );
 
-  MapView(
-      {super.key,
-      required this.trip,
-      required this.centerAt,
-      required this.initZoomLevel});
+  MapView({
+    super.key,
+    required this.trip,
+    required this.locations,
+    required this.centerAt,
+    required this.initZoomLevel,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // poi stands for Point of Interest
-    var poiMarkersLayer = BlocBuilder<MapCubit, MapState>(
-      builder: (context, state) {
-        return MarkerLayer(markers: [
-          Marker(
-            point: LatLng(48.8699, 2.3522),
-            width: 80,
-            height: 80,
-            child: IconButton(
-                icon: Icon(Icons.location_city, color: Colors.red),
-                onPressed: () => {
-                      context.read<MapCubit>().openMarkerDetails(state),
-                      showModalBottomSheet(
-                          context: context,
-                          // TODO: Proper modal content
-                          builder: (_) => Container(
-                                color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text('Paris City Hall'),
-                                    Text('Some description'),
-                                    Text('N/A'),
-                                    Text('N/A'),
-                                  ],
-                                ),
-                              )),
-                    }),
+    return BlocProvider(
+      create: (context) => MapCubit(trip, locations, centerAt, initZoomLevel),
+      child: FlutterMap(
+        options: MapOptions(
+          initialCenter: centerAt,
+          initialZoom: initZoomLevel,
+          cameraConstraint: CameraConstraint.contain(
+            bounds: LatLngBounds(
+              const LatLng(-90, -180),
+              const LatLng(90, 180),
+            ),
           ),
-        ]);
-      },
+          onTap: (tapPosition, point) {
+            print('Tapped on point: $point');
+          },
+        ),
+        children: [tileProvider, _polylineLayer(), _markerLayer()],
+      ),
     );
+  }
 
-    var routePolylineLayer = PolylineLayer(polylines: [
+  PolylineLayer<Object> _polylineLayer() {
+    logger.i('Building polyline');
+    return PolylineLayer(polylines: [
       Polyline(
         color: Colors.red,
         strokeWidth: 4.0,
@@ -77,24 +71,44 @@ class MapView extends StatelessWidget {
         ],
       )
     ]);
+  }
 
-    return BlocProvider(
-      create: (context) => MapCubit(trip, centerAt, initZoomLevel),
-      child: FlutterMap(
-          options: MapOptions(
-            initialCenter: centerAt,
-            initialZoom: initZoomLevel,
-            cameraConstraint: CameraConstraint.contain(
-              bounds: LatLngBounds(
-                const LatLng(-90, -180),
-                const LatLng(90, 180),
-              ),
-            ),
-            onTap: (tapPosition, point) {
-              print('Tapped on point: $point');
-            },
-          ),
-          children: [tileProvider, routePolylineLayer, poiMarkersLayer]),
+  BlocBuilder<MapCubit, MapState> _markerLayer() {
+    return BlocBuilder<MapCubit, MapState>(
+      builder: (context, state) {
+        logger.i('Building ${locations.length} markers');
+        return MarkerLayer(
+          markers: locations.map((m) => _marker(context, m)).toList(),
+        );
+      },
+    );
+  }
+
+  Marker _marker(BuildContext context, Location marker) {
+    return Marker(
+      point: marker.latLng,
+      width: 80,
+      height: 80,
+      child: IconButton(
+          icon: Icon(Icons.location_city, color: Colors.purple),
+          onPressed: () => {
+                context.read<MapCubit>().openMarkerDetails(),
+                showModalBottomSheet(
+                    context: context,
+                    // TODO: Proper modal content
+                    builder: (_) => Container(
+                          color: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text('Paris City Hall'),
+                              Text('Some description'),
+                              Text('N/A'),
+                              Text('N/A'),
+                            ],
+                          ),
+                        )),
+              }),
     );
   }
 }

@@ -19,14 +19,29 @@ class SearchBarCubit extends Cubit<SearchBarState> {
     return SearchBarCubit(GeoapifyClient(settingsViewModel.geoapifyApiKey));
   }
 
-  void closeSearchBar(Location selectedLocation) {
-    state.controller.closeView(selectedLocation.name);
+  void searchQuerySubmitted(String query) {
+    state.controller.closeView(query);
 
-    emit(SearchBarInitial(
+    emit(
+      SearchBarInitial(
         controller: state.controller,
         searchTerm: state.searchTerm,
         searchSuggestions: state.searchSuggestions,
-        selectedLocation: selectedLocation));
+      ),
+    );
+  }
+
+  void locationSelected(Location selectedLocation) {
+    state.controller.closeView(selectedLocation.name);
+
+    emit(
+      SearchBarInitial(
+        controller: state.controller,
+        searchTerm: state.searchTerm,
+        searchSuggestions: state.searchSuggestions,
+        selectedLocation: selectedLocation,
+      ),
+    );
   }
 
   Future<List<Location>> getSuggestions(String query) async {

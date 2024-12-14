@@ -48,6 +48,7 @@ class _MapScreen extends State<MapScreen> {
           children: [
             MapView(
                 trip: widget.trip,
+                locations: [],
                 centerAt: widget.centerAt,
                 initZoomLevel: widget.initZoomLevel)
           ],

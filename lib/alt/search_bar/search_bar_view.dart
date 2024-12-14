@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/alt/search_bar/cubit/search_bar_cubit.dart';
+import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
 class SearchBarView extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
+  final void Function(List<Location>)? onQuerySubmit;
+  final void Function(Location)? onLocationSelect;
 
-  const SearchBarView(this.settingsViewModel, {super.key});
+  const SearchBarView(
+    this.settingsViewModel, {
+    super.key,
+    this.onQuerySubmit,
+    this.onLocationSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +31,17 @@ class SearchBarView extends StatelessWidget {
             barHintText: 'Try Prague, Big Ben...',
             barElevation: WidgetStatePropertyAll(0.0),
 
+            onSubmitted: (value) {
+              if (onQuerySubmit != null) {
+                onQuerySubmit!(state.searchSuggestions);
+              }
+              BlocProvider.of<SearchBarCubit>(contextWithCubit)
+                  .searchQuerySubmitted(value);
+            },
+
             // viewBuilder: , // TODO: Try this builder instead of suggestionsBuilder
 
-            suggestionsBuilder: (context, SearchController controller) async {
+            suggestionsBuilder: (context, controller) async {
               logger.i('Loading suggestions for query: ${controller.text}');
               var suggestions =
                   await BlocProvider.of<SearchBarCubit>(contextWithCubit)
@@ -36,7 +52,10 @@ class SearchBarView extends StatelessWidget {
                   title: Text(suggestion.name),
                   onTap: () {
                     BlocProvider.of<SearchBarCubit>(contextWithCubit)
-                        .closeSearchBar(suggestion);
+                        .locationSelected(suggestion);
+                    if (onLocationSelect != null) {
+                      onLocationSelect!(suggestion);
+                    }
                   },
                 );
               }).toList();
