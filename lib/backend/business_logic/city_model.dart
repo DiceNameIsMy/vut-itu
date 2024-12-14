@@ -2,7 +2,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/backend/location.dart';
 
 class CityModel {
-  int? id;
+  int id;
   String name;
   String country;
   String? description;
@@ -11,7 +11,7 @@ class CityModel {
   final String geoapifyId;
 
   CityModel({
-    this.id,
+    this.id = 0,
     required this.name,
     required this.country,
     this.description,

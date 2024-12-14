@@ -7,6 +7,7 @@ import 'package:vut_itu/alt/map_view/map_view.dart';
 import 'package:vut_itu/alt/search_bar/search_bar_view.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
+import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
@@ -48,6 +49,22 @@ class TripScreen extends StatelessWidget {
     TripState state,
     TripScreenState screenState,
   ) {
+    var locations = screenState.locations;
+    if (screenState is TripScreenShowLocationAttractions) {
+      var country = screenState.location.country;
+      locations = screenState.attractions
+          .map(
+            (a) => Location(
+              name: a.name,
+              country: country,
+              geoapifyId: '', // TODO
+              locationType: LocationType.attraction,
+              latLng: a.coordinates,
+            ),
+          )
+          .toList();
+    }
+
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -69,7 +86,7 @@ class TripScreen extends StatelessWidget {
       body: MapView(
         mapController: screenState.mapController,
         trip: state.trip,
-        locations: screenState.locations,
+        locations: locations,
         centerAt: LatLng(51.5074, -0.1278),
         initZoomLevel: 7,
       ),
