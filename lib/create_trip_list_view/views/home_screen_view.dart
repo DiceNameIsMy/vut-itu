@@ -4,6 +4,7 @@ import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/views/profileView/main_profile_screen.dart';
 import '../cubit/city_cubit.dart';
 import 'search_bar_city_view.dart';
 import 'trip_list_view.dart';
@@ -72,6 +73,16 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   child: Text('Cities'),
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(), // Profile Screen with Tabs
+                      ),
+                    );
+                  },
+                  child: Text('My Profile'),
+                )
               ],
             ),
           ),
