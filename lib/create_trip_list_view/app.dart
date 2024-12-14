@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'views/home_screen_view.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
-import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/select_places_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
@@ -45,6 +45,7 @@ class Napp extends StatelessWidget {
         BlocProvider<AttractionCubit>(create: (context) => AttractionCubit()),
         BlocProvider<SelectedPlacesCubit>(
             create: (context) => SelectedPlacesCubit()),
+        BlocProvider<SearchCubit>(create: (context) => SearchCubit()),
       ],
       child: ListenableBuilder(
           listenable: settingsController,

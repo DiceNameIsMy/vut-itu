@@ -5,6 +5,8 @@ import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import '../cubit/trip_city_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
+import 'search_bar.dart';
 import '../cubit/attraction_cubit.dart';
 import '../cubit/trip_attraction_cubit.dart';
 

@@ -77,10 +77,9 @@ class TripCubit extends Cubit<TripModel> {
         _trip.copyWith(cities: List.from(_trip.cities))); // Ensure immutability
   }
 
-  //TODO REMOVE ALL ATTRACTIONS FROM CITY
   //remove a city from the trip
   Future<void> removeCityFromTrip(TripCityModel tripCity) async {
-    await DatabaseHelper().deleteTripCity(tripCity.cityId);
+    await DatabaseHelper().deleteTripCity(tripCity.id!);
     await DatabaseHelper().deleteAllTripAttractions(tripCity.id!);
     _trip.cities.remove(tripCity);
     emit(_trip.copyWith(cities: _trip.cities));
