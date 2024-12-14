@@ -33,6 +33,6 @@ void main() async {
   } else if (settingsController.guiMode == GuiModeEnum.Nmode) {
     runApp(Napp(settingsController: settingsController));
   } else {
-    runApp(AltApp(settingsController: settingsController));
+    runApp(AltApp(settingsViewModel: settingsController));
   }
 }
