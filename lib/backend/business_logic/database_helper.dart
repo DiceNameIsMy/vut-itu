@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:latlong2/latlong.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -6,6 +8,7 @@ import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/logger.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -25,15 +28,249 @@ class DatabaseHelper {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, 'trip_planning.db');
 
+    // deleteDatabase(path);
+
     return await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    logger.d('Creating database version $version');
+    await _createTables(db);
+    await _insertInitialData(db);
+  }
+
+  // Cities
+  Future<void> insertCity(CityModel city) async {
+    final db = await database;
+    city.id = await db.insert('Cities', city.toMap()..remove('id'));
+  }
+
+  Future<List<Map<String, dynamic>>> getCities() async {
+    final db = await database;
+    List<Map<String, dynamic>> Cities = await db.query('Cities');
+    return Cities;
+  }
+
+  //get city by id
+  Future<Map<String, dynamic>> getCity(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> city =
+        await db.query('Cities', where: 'id = ?', whereArgs: [id]);
+
+    return city.first;
+  }
+
+  Future<CityModel?> getCityByGeoapifyId(String geoapifyId) async {
+    final db = await database;
+    List<Map<String, dynamic>> city = await db
+        .query('Cities', where: 'geoapify_id = ?', whereArgs: [geoapifyId]);
+
+    return city.isEmpty ? null : CityModel.fromMap(city.first);
+  }
+
+  Future<List<Map<String, dynamic>>> getCitiesByCountry(String country) async {
+    final db = await database;
+    return await db.query('Cities', where: 'country = ?', whereArgs: [country]);
+  }
+
+  Future<int> updateCity(int id, Map<String, dynamic> city) async {
+    final db = await database;
+    return await db.update('Cities', city, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteCity(int id) async {
+    final db = await database;
+    return await db.delete('Cities', where: 'id = ?', whereArgs: [id]);
+  }
+
+  //  Attractions
+  Future<void> insertAttraction(AttractionModel attraction) async {
+    final db = await database;
+    attraction.id =
+        await db.insert('Attractions', attraction.toMap()..remove('id'));
+  }
+
+  Future<List<Map<String, dynamic>>> getAttractions(int cityId) async {
+    final db = await database;
+    return await db
+        .query('Attractions', where: 'city_id = ?', whereArgs: [cityId]);
+  }
+
+  Future<int> updateAttraction(int id, Map<String, dynamic> attraction) async {
+    final db = await database;
+    return await db
+        .update('Attractions', attraction, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteAttraction(int id) async {
+    final db = await database;
+    return await db.delete('Attractions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // Trips
+  // Insert a trip into the database
+  Future<void> insertTrip(TripModel trip) async {
+    final db = await database;
+    trip.id = await db.insert('Trips', trip.toMap()..remove('id'));
+  }
+
+  Future<List<Map<String, dynamic>>> getTripsForUser(int userId) async {
+    final db = await database;
+    return await db.query('Trips', where: 'user_id = ?', whereArgs: [userId]);
+  }
+
+  Future<List<Map<String, dynamic>>> getTrips({
+    String? orderByField,
+    bool orderByAsc = true,
+  }) async {
+    final db = await database;
+    var orderBy = orderByField == null
+        ? null
+        : '$orderByField ${orderByAsc ? 'ASC' : 'DESC'}';
+
+    return await db.query('Trips', orderBy: orderBy);
+  }
+
+  Future<Map<String, dynamic>> getTrip(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> trip =
+        await db.query('Trips', where: 'id = ?', whereArgs: [id]);
+    return trip.first;
+  }
+
+  Future<int> updateTrip(int id, Map<String, dynamic> trip) async {
+    final db = await database;
+    return await db.update('Trips', trip, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteTrip(int id) async {
+    final db = await database;
+    return await db.delete('Trips', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // TripCities
+  Future<TripCityModel> insertSingleTripCity(TripCityModel tripCity) async {
+    final db = await database;
+    final id = await db.insert('TripCities', tripCity.toMap()..remove('id'));
+    tripCity.id = id;
+    return tripCity;
+  }
+
+  Future<List<Map<String, dynamic>>> getTripCities({required tripId}) async {
+    final db = await database;
+    return await db
+        .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
+  }
+
+  //get trip city by id
+  Future<Map<String, dynamic>> getTripCity(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> tripCity =
+        await db.query('TripCities', where: 'id = ?', whereArgs: [id]);
+    return tripCity.first;
+  }
+
+  //do I use this? todo
+  Future<List<TripCityModel>> getTripCitiesWithAll({required tripId}) async {
+    final db = await database;
+    var tripCitiesMapping =
+        await db.query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
+
+    var futures = <Future>[];
+
+    var attractions =
+        List<List<TripAttractionModel>?>.filled(tripCitiesMapping.length, null);
+    var cities = List<CityModel?>.filled(tripCitiesMapping.length, null);
+
+    tripCitiesMapping.asMap().forEach((idx, tripCity) {
+      // Add Future: Load attractions
+      futures.add(db.query('TripAttractions',
+          where: 'trip_city_id = ?',
+          whereArgs: [tripCity['id']]).then((mapping) async {
+        attractions[idx] =
+            mapping.map((e) => TripAttractionModel.fromMap(e)).toList();
+      }));
+
+      // Add Future: Load city
+      futures.add(db.query('Cities',
+          where: 'id = ?',
+          whereArgs: [tripCity['city_id']]).then((cityMapping) async {
+        if (cityMapping.isNotEmpty) {
+          cities[idx] = CityModel.fromMap(cityMapping.first);
+        }
+      }));
+    });
+
+    await Future.wait(futures);
+
+    var tripCities = <TripCityModel>[];
+    tripCitiesMapping.asMap().forEach((idx, tripCity) {
+      tripCities.add(TripCityModel.fromMap(tripCity,
+          attractions: attractions[idx], city: cities[idx]));
+    });
+
+    return tripCities;
+  }
+
+  Future<int> updateTripCity(int id, Map<String, dynamic> tripCity) async {
+    final db = await database;
+    return await db
+        .update('TripCities', tripCity, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteTripCity(int id) async {
+    final db = await database;
+    return await db.delete('TripCities', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // TripAttractions
+// Insert a tripAttraction into the database to the provided TripCity
+  Future<void> insertTripAttraction(
+      TripAttractionModel tripAttraction, TripCityModel tripCity) async {
+    final db = await database;
+    tripAttraction.id = await db.insert(
+        'TripAttractions',
+        tripAttraction.toMap()
+          ..remove('id')
+          ..addAll({'trip_city_id': tripCity.id}));
+  }
+
+  Future<List<Map<String, dynamic>>> getTripAttractions(
+      TripCityModel TripCityModel) async {
+    final db = await database;
+    return await db.query('TripAttractions',
+        where: 'trip_city_id = ?', whereArgs: [TripCityModel.id]);
+  }
+
+  Future<int> updateTripAttraction(
+      int id, Map<String, dynamic> tripAttraction) async {
+    final db = await database;
+    return await db.update('TripAttractions', tripAttraction,
+        where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteTripAttraction(int id) async {
+    final db = await database;
+    return await db.delete('TripAttractions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  //delete all trip attractions from a trip city
+  Future<int> deleteAllTripAttractions(int tripCityId) async {
+    final db = await database;
+    return await db.delete('TripAttractions',
+        where: 'trip_city_id = ?', whereArgs: [tripCityId]);
+  }
+
+  ///
+
+  Future<void> _createTables(Database db) async {
+    // Insert some data
+    // Cities
     // Cities table
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Cities (
@@ -43,8 +280,14 @@ class DatabaseHelper {
         description TEXT,
         coordinates_lat REAL,
         coordinates_lng REAL,
-        image_url TEXT
+        image_url TEXT,
+        geoapify_id TEXT
       )
+    ''');
+
+    // To speedup lookups by geoapify_id
+    await db.execute('''
+      CREATE INDEX idx_geoapify_id ON Cities (geoapify_id)
     ''');
 
     // Attractions table
@@ -113,9 +356,10 @@ class DatabaseHelper {
         FOREIGN KEY (attraction_id) REFERENCES Attractions(id)
       )
     ''');
+  }
 
-    //   // Insert some data
-    //   // Cities
+  ///
+  Future<void> _insertInitialData(Database db) async {
     try {
       await db.insert(
         'Cities',
@@ -125,6 +369,7 @@ class DatabaseHelper {
           description: 'City of Light',
           coordinates: LatLng(48.8566, 2.3522),
           imageUrl: 'https://example.com/paris.jpg',
+          geoapifyId: '',
         ).toMap(),
       );
     } catch (e) {
@@ -140,6 +385,7 @@ class DatabaseHelper {
           description: 'The Big Apple',
           coordinates: LatLng(40.7128, -74.0060),
           imageUrl: 'https://example.com/newyork.jpg',
+          geoapifyId: '',
         ).toMap(),
       );
       print('New York inserted');
@@ -156,6 +402,7 @@ class DatabaseHelper {
           description: 'The Capital of Japan',
           coordinates: LatLng(35.6895, 139.6917),
           imageUrl: 'https://example.com/tokyo.jpg',
+          geoapifyId: '',
         ).toMap(),
       );
       print('Tokyo inserted');
@@ -267,7 +514,9 @@ class DatabaseHelper {
     }
   }
 
+  /// Database migrations management
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    logger.d('Upgrading database from $oldVersion to $newVersion');
     if (oldVersion < 2) {
       try {
         await db.insert(
@@ -278,6 +527,7 @@ class DatabaseHelper {
             description: 'The Big Apple',
             coordinates: LatLng(40.7128, -74.0060),
             imageUrl: 'https://example.com/newyork.jpg',
+            geoapifyId: '',
           ).toMap(),
         );
         print('New York inserted');
@@ -294,6 +544,7 @@ class DatabaseHelper {
             description: 'The Capital of Japan',
             coordinates: LatLng(35.6895, 139.6917),
             imageUrl: 'https://example.com/tokyo.jpg',
+            geoapifyId: '',
           ).toMap(),
         );
         print('Tokyo inserted');
@@ -540,218 +791,182 @@ class DatabaseHelper {
         print(e);
       }
     }
+    if (oldVersion < 5) {
+      await _insertMockAttractions(db);
+    }
   }
 
-  // Cities
-  Future<void> insertCity(CityModel city) async {
-    final db = await database;
-    city.id = await db.insert('Cities', city.toMap()..remove('id'));
+  Future<void> _insertMockAttractions(Database db) async {
+    List<dynamic> jsonData = json.decode(_mockAttractionsJson);
+
+    var city = CityModel(
+      name: 'Prague',
+      country: 'Czech Republic',
+      description: 'City of a Hundred Spires',
+      coordinates: LatLng(50.0755, 14.4378),
+      imageUrl: null,
+      geoapifyId:
+          '51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208',
+    );
+    await insertCity(city);
+
+    for (var item in jsonData) {
+      try {
+        item['id'] = 0;
+        item['city_id'] = city.id;
+        AttractionModel attraction = AttractionModel.fromMap(item);
+        await insertAttraction(attraction);
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
-  Future<List<Map<String, dynamic>>> getCities() async {
-    final db = await database;
-    List<Map<String, dynamic>> Cities = await db.query('Cities');
-    return Cities;
-  }
-
-  //get city by id
-  Future<Map<String, dynamic>> getCity(int id) async {
-    final db = await database;
-    List<Map<String, dynamic>> city =
-        await db.query('Cities', where: 'id = ?', whereArgs: [id]);
-    return city.first;
-  }
-
-  Future<List<Map<String, dynamic>>> getCitiesByCountry(String country) async {
-    final db = await database;
-    return await db.query('Cities', where: 'country = ?', whereArgs: [country]);
-  }
-
-  Future<int> updateCity(int id, Map<String, dynamic> city) async {
-    final db = await database;
-    return await db.update('Cities', city, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteCity(int id) async {
-    final db = await database;
-    return await db.delete('Cities', where: 'id = ?', whereArgs: [id]);
-  }
-
-  //  Attractions
-  Future<void> insertAttraction(AttractionModel attraction) async {
-    final db = await database;
-    attraction.id =
-        await db.insert('Attractions', attraction.toMap()..remove('id'));
-  }
-
-  Future<List<Map<String, dynamic>>> getAttractions(int cityId) async {
-    final db = await database;
-    return await db
-        .query('Attractions', where: 'city_id = ?', whereArgs: [cityId]);
-  }
-
-  Future<int> updateAttraction(int id, Map<String, dynamic> attraction) async {
-    final db = await database;
-    return await db
-        .update('Attractions', attraction, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteAttraction(int id) async {
-    final db = await database;
-    return await db.delete('Attractions', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // Trips
-  // Insert a trip into the database
-  Future<void> insertTrip(TripModel trip) async {
-    final db = await database;
-    trip.id = await db.insert('Trips', trip.toMap()..remove('id'));
-  }
-
-  Future<List<Map<String, dynamic>>> getTripsForUser(int userId) async {
-    final db = await database;
-    return await db.query('Trips', where: 'user_id = ?', whereArgs: [userId]);
-  }
-
-  Future<List<Map<String, dynamic>>> getTrips({
-    String? orderByField,
-    bool orderByAsc = true,
-  }) async {
-    final db = await database;
-    var orderBy = orderByField == null
-        ? null
-        : '$orderByField ${orderByAsc ? 'ASC' : 'DESC'}';
-
-    return await db.query('Trips', orderBy: orderBy);
-  }
-
-  Future<Map<String, dynamic>> getTrip(int id) async {
-    final db = await database;
-    List<Map<String, dynamic>> trip =
-        await db.query('Trips', where: 'id = ?', whereArgs: [id]);
-    return trip.first;
-  }
-
-  Future<int> updateTrip(int id, Map<String, dynamic> trip) async {
-    final db = await database;
-    return await db.update('Trips', trip, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteTrip(int id) async {
-    final db = await database;
-    return await db.delete('Trips', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // TripCities
-  Future<TripCityModel> insertSingleTripCity(TripCityModel tripCity) async {
-    final db = await database;
-    final id = await db.insert('TripCities', tripCity.toMap()..remove('id'));
-    tripCity.id = id;
-    return tripCity;
-  }
-
-  Future<List<Map<String, dynamic>>> getTripCities({required tripId}) async {
-    final db = await database;
-    return await db
-        .query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
-  }
-
-  //get trip city by id
-  Future<Map<String, dynamic>> getTripCity(int id) async {
-    final db = await database;
-    List<Map<String, dynamic>> tripCity =
-        await db.query('TripCities', where: 'id = ?', whereArgs: [id]);
-    return tripCity.first;
-  }
-
-  //do I use this? todo
-  Future<List<TripCityModel>> getTripCitiesWithAll({required tripId}) async {
-    final db = await database;
-    var tripCitiesMapping =
-        await db.query('TripCities', where: 'trip_id = ?', whereArgs: [tripId]);
-
-    var futures = <Future>[];
-
-    var attractions =
-        List<List<TripAttractionModel>?>.filled(tripCitiesMapping.length, null);
-    var cities = List<CityModel?>.filled(tripCitiesMapping.length, null);
-
-    tripCitiesMapping.asMap().forEach((idx, tripCity) {
-      // Add Future: Load attractions
-      futures.add(db.query('TripAttractions',
-          where: 'trip_city_id = ?',
-          whereArgs: [tripCity['id']]).then((mapping) async {
-        attractions[idx] =
-            mapping.map((e) => TripAttractionModel.fromMap(e)).toList();
-      }));
-
-      // Add Future: Load city
-      futures.add(db.query('Cities',
-          where: 'id = ?',
-          whereArgs: [tripCity['city_id']]).then((cityMapping) async {
-        if (cityMapping.isNotEmpty) {
-          cities[idx] = CityModel.fromMap(cityMapping.first);
-        }
-      }));
-    });
-
-    await Future.wait(futures);
-
-    var tripCities = <TripCityModel>[];
-    tripCitiesMapping.asMap().forEach((idx, tripCity) {
-      tripCities.add(TripCityModel.fromMap(tripCity,
-          attractions: attractions[idx], city: cities[idx]));
-    });
-
-    return tripCities;
-  }
-
-  Future<int> updateTripCity(int id, Map<String, dynamic> tripCity) async {
-    final db = await database;
-    return await db
-        .update('TripCities', tripCity, where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteTripCity(int id) async {
-    final db = await database;
-    return await db.delete('TripCities', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // TripAttractions
-// Insert a tripAttraction into the database to the provided TripCity
-  Future<void> insertTripAttraction(
-      TripAttractionModel tripAttraction, TripCityModel tripCity) async {
-    final db = await database;
-    tripAttraction.id = await db.insert(
-        'TripAttractions',
-        tripAttraction.toMap()
-          ..remove('id')
-          ..addAll({'trip_city_id': tripCity.id}));
-  }
-
-  Future<List<Map<String, dynamic>>> getTripAttractions(
-      TripCityModel TripCityModel) async {
-    final db = await database;
-    return await db.query('TripAttractions',
-        where: 'trip_city_id = ?', whereArgs: [TripCityModel.id]);
-  }
-
-  Future<int> updateTripAttraction(
-      int id, Map<String, dynamic> tripAttraction) async {
-    final db = await database;
-    return await db.update('TripAttractions', tripAttraction,
-        where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future<int> deleteTripAttraction(int id) async {
-    final db = await database;
-    return await db.delete('TripAttractions', where: 'id = ?', whereArgs: [id]);
-  }
-
-  //delete all trip attractions from a trip city
-  Future<int> deleteAllTripAttractions(int tripCityId) async {
-    final db = await database;
-    return await db.delete('TripAttractions',
-        where: 'trip_city_id = ?', whereArgs: [tripCityId]);
-  }
+  static const String _mockAttractionsJson = '''
+[
+    {
+        "name": "Charles Bridge",
+        "description": "A historic bridge that connects the Old Town and Lesser Town, adorned with Baroque statues.",
+        "coordinates_lng": 14.41111,
+        "coordinates_lat": 50.08689,
+        "imageUrl": "https://example.com/images/charles_bridge.jpg",
+        "category": "Historic Landmark",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Prague Castle",
+        "description": "One of the largest ancient castles in the world, it includes stunning architecture and historical significance.",
+        "coordinates_lng": 14.40658,
+        "coordinates_lat": 50.09063,
+        "imageUrl": "https://example.com/images/prague_castle.jpg",
+        "category": "Historic Landmark",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Old Town Square",
+        "description": "The heart of Prague, featuring the Astronomical Clock and surrounded by colorful baroque buildings.",
+        "coordinates_lng": 14.42145,
+        "coordinates_lat": 50.08787,
+        "imageUrl": "https://example.com/images/old_town_square.jpg",
+        "category": "Public Square",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "St. Vitus Cathedral",
+        "description": "A magnificent Gothic cathedral located within Prague Castle, known for its stunning stained glass windows.",
+        "coordinates_lng": 14.40249,
+        "coordinates_lat": 50.09064,
+        "imageUrl": "https://example.com/images/st_vitus_cathedral.jpg",
+        "category": "Religious Site",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Wenceslas Square",
+        "description": "A vibrant square in the New Town, known for its historical significance and shopping opportunities.",
+        "coordinates_lng": 14.43042,
+        "coordinates_lat": 50.07928,
+        "imageUrl": "https://example.com/images/wenceslas_square.jpg",
+        "category": "Public Square",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The Dancing House",
+        "description": "An iconic modern architectural landmark, known for its unique design resembling a dancing couple.",
+        "coordinates_lng": 14.41435,
+        "coordinates_lat": 50.07559,
+        "imageUrl": "https://example.com/images/dancing_house.jpg",
+        "category": "Architectural Landmark",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Petrin Hill and Lookout Tower",
+        "description": "A large park offering beautiful gardens and a lookout tower resembling the Eiffel Tower.",
+        "coordinates_lng": 14.39509,
+        "coordinates_lat": 50.08349,
+        "imageUrl": "https://example.com/images/petrin_hill.jpg",
+        "category": "Park",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The Powder Tower",
+        "description": "A Gothic tower that was once part of the city fortifications, now a popular tourist attraction.",
+        "coordinates_lng": 14.42646,
+        "coordinates_lat": 50.08745,
+        "imageUrl": "https://example.com/images/powder_tower.jpg",
+        "category": "Historic Landmark",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The Jewish Quarter",
+        "description": "A historic area featuring synagogues, museums, and the Old Jewish Cemetery.",
+        "coordinates_lng": 14.42076,
+        "coordinates_lat": 50.09055,
+        "imageUrl": "https://example.com/images/jewish_quarter.jpg",
+        "category": "Cultural Site",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Kampa Island",
+        "description": "A picturesque island in the Vltava River, known for its parks and art installations.",
+        "coordinates_lng": 14.40556,
+        "coordinates_lat": 50.08051,
+        "imageUrl": "https://example.com/images/kampa_island.jpg",
+        "category": "Park",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Strahov Monastery",
+        "description": "An ancient monastery famous for its library and beautiful gardens.",
+        "coordinates_lng": 14.39486,
+        "coordinates_lat": 50.08729,
+        "imageUrl": "https://example.com/images/strahov_monastery.jpg",
+        "category": "Religious Site",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "John Lennon Wall",
+        "description": "A colorful wall filled with John Lennon-inspired graffiti and lyrics, symbolizing peace and love.",
+        "coordinates_lng": 14.39881,
+        "coordinates_lat": 50.08704,
+        "imageUrl": "https://example.com/images/john_lennon_wall.jpg",
+        "category": "Cultural Site",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The National Museum",
+        "description": "The largest museum in the Czech Republic, showcasing natural history and cultural artifacts.",
+        "coordinates_lng": 14.43042,
+        "coordinates_lat": 50.07835,
+        "imageUrl": "https://example.com/images/national_museum.jpg",
+        "category": "Museum",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    }
+]
+''';
 }

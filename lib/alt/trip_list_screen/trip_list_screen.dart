@@ -111,9 +111,20 @@ class TripsScreen extends StatelessWidget {
       title: Text(trip.name),
       subtitle: Text(subtitle),
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context)
+            .push(
+          MaterialPageRoute(
             builder: (context) => TripScreen(
-                tripId: trip.id, settingsViewModel: settingsViewModel)));
+              tripId: trip.id,
+              settingsViewModel: settingsViewModel,
+            ),
+          ),
+        )
+            .then((_) {
+          if (context.mounted) {
+            BlocProvider.of<TripsCubit>(context).invalidateTrips();
+          }
+        });
       },
     );
   }

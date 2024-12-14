@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
+import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/database_helper.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 
 part 'trip_state.dart';
@@ -35,5 +37,49 @@ class TripCubit extends Cubit<TripState> {
         .i('Loaded ${visitingPlaces.length} places for trip ${state.trip.id}');
 
     emit(TripLoaded(state.trip, visitingPlaces));
+  }
+
+  Future<void> setStartDate(DateTime newStartDate) async {
+    await _db.updateTrip(
+        state.trip.id, {'start_date': newStartDate.toIso8601String()});
+
+    await invalidateTrip();
+  }
+
+  Future<void> setEndDate(DateTime newEndDate) async {
+    await _db
+        .updateTrip(state.trip.id, {'end_date': newEndDate.toIso8601String()});
+
+    await invalidateTrip();
+  }
+
+  Future<void> setTripName(String newName) async {
+    await _db.updateTrip(state.trip.id, {'name': newName});
+
+    await invalidateTrip();
+  }
+
+  Future<void> invalidateTrip() async {
+    var trip = TripModel.fromMap(await _db.getTrip(state.trip.id));
+    var visitingPlaces = await _db.getTripCitiesWithAll(tripId: state.trip.id);
+
+    emit(TripLoaded(trip, visitingPlaces));
+  }
+
+  Future<void> addCityToVisit(Location location) async {
+    var city = await _db.getCityByGeoapifyId(location.geoapifyId);
+    if (city == null) {
+      city = CityModel.fromLocation(location);
+      await _db.insertCity(city);
+    }
+
+    var cityToVisit = TripCityModel(
+      tripId: state.trip.id,
+      cityId: city.id!,
+      order: state.places.length,
+    );
+    await _db.insertSingleTripCity(cityToVisit);
+
+    await invalidateVisitingPlaces();
   }
 }

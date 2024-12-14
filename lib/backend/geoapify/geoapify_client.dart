@@ -44,6 +44,7 @@ class GeoapifyClient {
       path: '/v1/geocode/autocomplete',
       queryParameters: {
         'text': query,
+        'type': 'city', // TODO: In future allow places, addresses, etc.
         'format': 'json',
         'apiKey': _apiKey,
       },

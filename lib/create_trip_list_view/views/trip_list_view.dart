@@ -9,7 +9,7 @@ class TripListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Call fetchTrips when the view is opened
-    context.read<TripsCubit>().fetchTrips();
+    context.read<TripsCubit>().invalidateTrips();
 
     return Scaffold(
       appBar: AppBar(

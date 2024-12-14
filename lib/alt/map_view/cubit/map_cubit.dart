@@ -31,6 +31,11 @@ class MapCubit extends Cubit<MapState> {
 
       // TODO: Add marker of user's location
 
+      if (isClosed) {
+        // TODO: Can happen in many places. Better to ensure every place is safely handles.
+        return;
+      }
+
       emit(
         state.copyWith(
           deviceLocation: LatLng(position.latitude, position.longitude),

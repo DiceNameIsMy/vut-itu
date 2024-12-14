@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 
 part 'trip_screen_state.dart';
 
 class TripScreenCubit extends Cubit<TripScreenState> {
-  TripScreenCubit() : super(TripScreenInitial(mapController: MapController()));
+  final TripCubit tripCubit;
+
+  TripScreenCubit(this.tripCubit)
+      : super(TripScreenInitial(mapController: MapController()));
 
   factory TripScreenCubit.fromContext(BuildContext context) {
-    return TripScreenCubit();
+    return TripScreenCubit(BlocProvider.of<TripCubit>(context));
   }
 
   void showQueryResults(List<Location> queryResults) {
@@ -45,5 +49,20 @@ class TripScreenCubit extends Cubit<TripScreenState> {
         locations: [location],
       ),
     );
+  }
+
+  Future<void> addLocation(Location location) async {
+    logger.i('Added location: ${location.name}');
+
+    state.mapController.move(location.latLng, 10);
+
+    emit(
+      TripScreenShowLocations(
+        mapController: state.mapController,
+        locations: [location],
+      ),
+    );
+
+    await tripCubit.addCityToVisit(location);
   }
 }

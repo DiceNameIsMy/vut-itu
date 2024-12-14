@@ -9,12 +9,14 @@ class SearchBarView extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
   final void Function(List<Location>)? onQuerySubmit;
   final void Function(Location)? onLocationSelect;
+  final void Function(Location)? onLocationAdd;
 
   const SearchBarView(
     this.settingsViewModel, {
     super.key,
     this.onQuerySubmit,
     this.onLocationSelect,
+    this.onLocationAdd,
   });
 
   @override
@@ -57,6 +59,16 @@ class SearchBarView extends StatelessWidget {
                       onLocationSelect!(suggestion);
                     }
                   },
+                  trailing: IconButton.outlined(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      BlocProvider.of<SearchBarCubit>(contextWithCubit)
+                          .locationSelected(suggestion);
+                      if (onLocationAdd != null) {
+                        onLocationAdd!(suggestion);
+                      }
+                    },
+                  ),
                 );
               }).toList();
             },

@@ -17,8 +17,11 @@ class TripScreen extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
   final int tripId;
 
-  const TripScreen(
-      {super.key, required this.tripId, required this.settingsViewModel});
+  const TripScreen({
+    super.key,
+    required this.tripId,
+    required this.settingsViewModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +51,13 @@ class TripScreen extends StatelessWidget {
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: SearchBarView(
-          settingsViewModel,
-          onQuerySubmit: (locations) {
-            BlocProvider.of<TripScreenCubit>(context)
-                .showQueryResults(locations);
-          },
-          onLocationSelect: (location) {
-            BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
-          },
-        ),
+        title: SearchBarView(settingsViewModel, onQuerySubmit: (locations) {
+          BlocProvider.of<TripScreenCubit>(context).showQueryResults(locations);
+        }, onLocationSelect: (location) {
+          BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
+        }, onLocationAdd: (location) {
+          BlocProvider.of<TripScreenCubit>(context).addLocation(location);
+        }),
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -126,7 +126,6 @@ class TripScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              // Trip preview
               Align(
                 alignment: Alignment.center,
                 child: Row(
@@ -141,19 +140,51 @@ class TripScreen extends StatelessWidget {
                       icon: const Icon(Icons.edit),
                       label: Text(state.trip.name),
                     ),
-                    OutlinedButton.icon(
-                      onPressed: () {
-                        // TODO: Impement date picker.
-                        logger.w('Date picker not implemented');
-                      },
-                      label: Text('$startDateString - $endDateString'),
-                      icon: Icon(Icons.calendar_today),
-                    )
+                    _tripDateRangePickerButton(
+                      context,
+                      state,
+                      startDateString,
+                      endDateString,
+                    ),
                   ],
                 ),
               ),
             ],
           )),
+    );
+  }
+
+  OutlinedButton _tripDateRangePickerButton(
+    BuildContext context,
+    TripState state,
+    String startDateString,
+    String endDateString,
+  ) {
+    return OutlinedButton.icon(
+      onPressed: () async {
+        if (!context.mounted) return;
+
+        var cubit = BlocProvider.of<TripCubit>(context);
+
+        var newDateRange = await showDateRangePicker(
+          helpText: 'Select trip dates',
+          saveText: 'Confirm',
+          context: context,
+          initialDateRange: DateTimeRange(
+            start: state.trip.startDate ?? DateTime.now(),
+            end: state.trip.endDate ?? DateTime.now(),
+          ),
+          firstDate: DateTime(DateTime.now().year - 10),
+          lastDate: DateTime(DateTime.now().year + 10),
+        );
+
+        if (newDateRange != null) {
+          cubit.setStartDate(newDateRange.start);
+          cubit.setEndDate(newDateRange.end);
+        }
+      },
+      label: Text('$startDateString - $endDateString'),
+      icon: Icon(Icons.calendar_today),
     );
   }
 
