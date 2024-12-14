@@ -18,23 +18,6 @@ final class SearchBarInitial extends SearchBarState {
       {required super.controller, super.searchSuggestions = const []});
 }
 
-final class SearchBarTyping extends SearchBarState {
-  final Timer searchDebouner;
-
-  SearchBarTyping(
-      {required this.searchDebouner,
-      required super.controller,
-      required super.searchTerm,
-      super.searchSuggestions = const []});
-}
-
-final class SearchBarLoading extends SearchBarState {
-  SearchBarLoading(
-      {required super.controller,
-      required super.searchTerm,
-      super.searchSuggestions = const []});
-}
-
 final class SearchBarLoaded extends SearchBarState {
   SearchBarLoaded(
       {required super.controller,

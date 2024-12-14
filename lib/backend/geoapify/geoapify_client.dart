@@ -13,14 +13,14 @@ class GeoapifyClient {
 
   GeoapifyClient(this._apiKey);
 
-  Future<List<String>> getDebouncedSearchAutocompletion(String query) async {
+  Future<List<String>?> getDebouncedSearchAutocompletion(String query) async {
     debounceId++;
     var localDebounceId = debounceId;
 
     await Future.delayed(Duration(seconds: 1));
     if (localDebounceId != debounceId) {
       // Autocompletion was requested again. This request is outdated.
-      return [];
+      return null;
     }
     debounceId = 0;
 

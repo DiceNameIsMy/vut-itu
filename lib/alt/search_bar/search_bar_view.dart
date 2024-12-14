@@ -19,6 +19,7 @@ class SearchBarView extends StatelessWidget {
           return SearchAnchor(
             isFullScreen: false,
             searchController: state.controller,
+            // viewBuilder: , // TODO: Try this builder instead of suggestionsBuilder
             builder: (context, controller) {
               return SearchBar(
                 controller: controller,
@@ -37,7 +38,8 @@ class SearchBarView extends StatelessWidget {
                 return ListTile(
                   title: Text(suggestion),
                   onTap: () {
-                    controller.closeView(suggestion);
+                    BlocProvider.of<SearchBarCubit>(contextWithCubit)
+                        .closeSearchBar(suggestion);
                   },
                 );
               }).toList();
