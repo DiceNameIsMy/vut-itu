@@ -66,7 +66,7 @@ class TripCubit extends Cubit<TripState> {
     emit(TripLoaded(trip, visitingPlaces));
   }
 
-  Future<void> addCityToVisit(Location location) async {
+  Future<TripCityModel> addCityToVisit(Location location) async {
     var city = await _db.getCityByGeoapifyId(location.geoapifyId);
     if (city == null) {
       city = CityModel.fromLocation(location);
@@ -75,11 +75,13 @@ class TripCubit extends Cubit<TripState> {
 
     var cityToVisit = TripCityModel(
       tripId: state.trip.id,
-      cityId: city.id!,
+      cityId: city.id,
       order: state.places.length,
     );
-    await _db.insertSingleTripCity(cityToVisit);
+    var tripCity = await _db.insertSingleTripCity(cityToVisit);
 
     await invalidateVisitingPlaces();
+
+    return tripCity;
   }
 }

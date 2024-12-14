@@ -42,6 +42,7 @@ class DatabaseHelper {
     logger.d('Creating database version $version');
     await _createTables(db);
     await _insertInitialData(db);
+    await _insertMockAttractions(db);
   }
 
   // Cities
@@ -99,6 +100,11 @@ class DatabaseHelper {
     final db = await database;
     return await db
         .query('Attractions', where: 'city_id = ?', whereArgs: [cityId]);
+  }
+
+  Future<List<Map<String, dynamic>>> getAllAttractions() async {
+    final db = await database;
+    return await db.query('Attractions');
   }
 
   Future<int> updateAttraction(int id, Map<String, dynamic> attraction) async {
@@ -791,12 +797,11 @@ class DatabaseHelper {
         print(e);
       }
     }
-    if (oldVersion < 5) {
-      await _insertMockAttractions(db);
-    }
   }
 
   Future<void> _insertMockAttractions(Database db) async {
+    logger.d('Inserting mock attractions');
+
     List<dynamic> jsonData = json.decode(_mockAttractionsJson);
 
     var city = CityModel(
@@ -808,16 +813,18 @@ class DatabaseHelper {
       geoapifyId:
           '51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208',
     );
-    await insertCity(city);
+    logger.d('Inserting city ${city.toMap()}');
+    city.id = await db.insert('Cities', (city.toMap().remove('id')));
 
     for (var item in jsonData) {
       try {
         item['id'] = 0;
         item['city_id'] = city.id;
         AttractionModel attraction = AttractionModel.fromMap(item);
-        await insertAttraction(attraction);
+
+        await db.insert('Attractions', attraction.toMap()..remove('id'));
       } catch (e) {
-        print(e);
+        logger.e(e);
       }
     }
   }
