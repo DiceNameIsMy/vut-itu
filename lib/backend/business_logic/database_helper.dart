@@ -27,7 +27,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -398,6 +398,142 @@ class DatabaseHelper {
             category: 'Landmark',
             averageTime: 60,
             cost: 0.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+    } else if (oldVersion < 4) {
+      //add more attractions to paris
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Arc de Triomphe',
+            description: 'Iconic arch in Paris',
+            cityId: 1,
+            coordinates: LatLng(48.8738, 2.2950),
+            category: 'Landmark',
+            averageTime: 60,
+            cost: 5.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Montmartre',
+            description: 'Hill in Paris',
+            cityId: 1,
+            coordinates: LatLng(48.8867, 2.3431),
+            category: 'Landmark',
+            averageTime: 120,
+            cost: 0.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Disneyland Paris',
+            description: 'Theme park in Paris',
+            cityId: 1,
+            coordinates: LatLng(48.8722, 2.7762),
+            category: 'Theme Park',
+            averageTime: 360,
+            cost: 50.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Palace of Versailles',
+            description: 'Royal château in Versailles',
+            cityId: 1,
+            coordinates: LatLng(48.8048, 2.1204),
+            category: 'Landmark',
+            averageTime: 180,
+            cost: 20.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Sainte-Chapelle',
+            description: 'Gothic chapel in Paris',
+            cityId: 1,
+            coordinates: LatLng(48.8555, 2.3458),
+            category: 'Landmark',
+            averageTime: 60,
+            cost: 10.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Empire State Building',
+            description: 'Iconic skyscraper in New York',
+            cityId: 2,
+            coordinates: LatLng(40.748817, -73.985428),
+            category: 'Landmark',
+            averageTime: 120,
+            cost: 20.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'Times Square',
+            description: 'Major commercial intersection in New York',
+            cityId: 2,
+            coordinates: LatLng(40.7580, -73.9855),
+            category: 'Landmark',
+            averageTime: 60,
+            cost: 0.0,
+          ).toMap(),
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      try {
+        await db.insert(
+          'Attractions',
+          AttractionModel(
+            name: 'One World Trade Center',
+            description: 'Tallest building in New York',
+            cityId: 2,
+            coordinates: LatLng(40.712742, -74.013382),
+            category: 'Landmark',
+            averageTime: 120,
+            cost: 15.0,
           ).toMap(),
         );
       } catch (e) {
