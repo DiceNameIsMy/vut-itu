@@ -1,9 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
-import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/database_helper.dart';
-import 'trip_attraction_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
 
 /* This the cubit for the trip city model. It is responsible for managing the state of the trip city model. 
@@ -38,8 +36,8 @@ class TripCityCubit extends Cubit<TripCityModel> {
     final tripAttraction = TripAttractionModel(
         tripCityId: _tripCity.id!,
         attractionId: attraction.id!,
-        expectedCost: attraction.cost!,
-        expectedTimeToVisitInHours: attraction.averageTime!,
+        expectedCost: attraction.cost,
+        expectedTimeToVisitInHours: attraction.averageTime,
         order: _tripCity.attractions!.length + 1);
     await DatabaseHelper().insertTripAttraction(tripAttraction, _tripCity);
     _tripCity.attractions!.add(tripAttraction);

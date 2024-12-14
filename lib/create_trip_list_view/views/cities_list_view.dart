@@ -1,9 +1,8 @@
 /*view to display the list of all cities and be able to delete them */
-import 'package:bloc/bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
-import 'package:vut_itu/main.dart';
 import '../cubit/city_cubit.dart';
 
 class CitiesListView extends StatelessWidget {

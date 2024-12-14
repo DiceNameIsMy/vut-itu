@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
-import 'package:provider/provider.dart';
 import 'views/home_screen_view.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
@@ -9,7 +8,6 @@ import 'package:vut_itu/create_trip_list_view/cubit/select_places_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
-import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_attraction_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/attraction_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';

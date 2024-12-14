@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
-import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
 import 'trip_creation_overview_view.dart';
@@ -46,7 +45,7 @@ class TripListView extends StatelessWidget {
                           final tripCubit = TripCubit();
 
                           // 2. Fetch the trip data asynchronously
-                          await tripCubit.fetchTrip(trip.id!);
+                          await tripCubit.fetchTrip(trip.id);
 
                           // 3. After the trip and associated cities are fetched, navigate to the overview
                           Navigator.of(context).push(

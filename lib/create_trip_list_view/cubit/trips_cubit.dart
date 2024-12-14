@@ -25,7 +25,7 @@ class TripsCubit extends Cubit<List<TripModel>> {
       await DatabaseHelper().deleteAllTripAttractions(city.id!);
       await DatabaseHelper().deleteTripCity(city.id!);
     }
-    await DatabaseHelper().deleteTrip(trip.id!); // Ensure `deleteTrip` works
+    await DatabaseHelper().deleteTrip(trip.id); // Ensure `deleteTrip` works
     _trips.removeWhere((t) => t.id == trip.id);
     emit(List.from(_trips)); // Emit a new instance of the list
   }

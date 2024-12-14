@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
-import 'package:vut_itu/create_trip_list_view/cubit/attraction_cubit.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/database_helper.dart';

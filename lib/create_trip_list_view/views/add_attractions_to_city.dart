@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import '../cubit/trip_city_cubit.dart';
-import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
-import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
-import 'search_bar.dart';
 import '../cubit/attraction_cubit.dart';
-import '../cubit/trip_attraction_cubit.dart';
 
 class CityScreen extends StatefulWidget {
   final int cityId;
@@ -77,6 +72,7 @@ class _CityScreenState extends State<CityScreen> {
               ],
             ),
             // List of Attractions
+            // List of Attractions
             Expanded(
               child: BlocBuilder<AttractionCubit, List<AttractionModel>>(
                 builder: (context, attractions) {
@@ -90,12 +86,45 @@ class _CityScreenState extends State<CityScreen> {
 
                       return ListTile(
                         title: Text(attraction.name),
-                        subtitle: Text(attraction.cost.toString()),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Category with an icon
+                            Row(
+                              children: [
+                                Icon(Icons.location_on,
+                                    size: 16), // Icon for category
+                                SizedBox(width: 4),
+                                Text(attraction.category),
+                              ],
+                            ),
+                            // Cost and Time on one line
+                            Row(
+                              children: [
+                                // Cost with an icon
+                                Icon(Icons.attach_money,
+                                    size: 16), // Icon for cost
+                                SizedBox(width: 4),
+                                Text("\$${attraction.cost.toString()}"),
+
+                                // Spacer to give some space between cost and time
+                                Spacer(),
+
+                                // Time with an icon
+                                Icon(Icons.access_time_outlined,
+                                    size: 16), // Icon for time
+                                SizedBox(width: 4),
+                                Text(
+                                  "${attraction.averageTime.toString()} minutes",
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                         trailing: IconButton(
                           icon: Icon(Icons.add),
                           onPressed: () {
                             // Add to trip city
-
                             context
                                 .read<TripCityCubit>()
                                 .addAttractionToTripCity(attraction);
@@ -113,6 +142,7 @@ class _CityScreenState extends State<CityScreen> {
                 },
               ),
             ),
+
             // Show deleted attractions toggle
             ElevatedButton(
               onPressed: () {
