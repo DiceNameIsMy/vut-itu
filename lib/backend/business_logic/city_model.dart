@@ -1,4 +1,5 @@
 import 'package:latlong2/latlong.dart';
+import 'package:vut_itu/backend/location.dart';
 
 class CityModel {
   int? id;
@@ -7,6 +8,7 @@ class CityModel {
   String? description;
   LatLng? coordinates;
   String? imageUrl;
+  final String geoapifyId;
 
   CityModel({
     this.id,
@@ -15,6 +17,7 @@ class CityModel {
     this.description,
     this.coordinates,
     this.imageUrl,
+    this.geoapifyId = '',
   });
 
   // Convert City object to Map (for database)
@@ -27,6 +30,7 @@ class CityModel {
       'coordinates_lat': coordinates?.latitude,
       'coordinates_lng': coordinates?.longitude,
       'image_url': imageUrl,
+      'geoapify_id': geoapifyId,
     };
   }
 
@@ -41,6 +45,18 @@ class CityModel {
           ? LatLng(map['coordinates_lat'], map['coordinates_lng'])
           : null,
       imageUrl: map['image_url'],
+      geoapifyId: map['geoapify_id'],
+    );
+  }
+
+  factory CityModel.fromLocation(Location location) {
+    return CityModel(
+      name: location.name,
+      country: location.country,
+      description: '',
+      coordinates: location.latLng,
+      imageUrl: null,
+      geoapifyId: location.geoapifyId,
     );
   }
 }

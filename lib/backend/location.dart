@@ -2,16 +2,19 @@ import 'package:latlong2/latlong.dart';
 
 class Location {
   final String name;
+  final String country;
 
   final String geoapifyId;
   final LocationType locationType;
   final LatLng latLng;
 
-  Location(
-      {required this.name,
-      required this.geoapifyId,
-      required this.locationType,
-      required this.latLng});
+  Location({
+    required this.name,
+    required this.country,
+    required this.geoapifyId,
+    required this.locationType,
+    required this.latLng,
+  });
 
   factory Location.fromJson(Map<String, dynamic> json) {
     var type = switch (json['result_type'] as String) {
@@ -23,6 +26,7 @@ class Location {
 
     return Location(
       name: json['formatted'] as String,
+      country: json['country'] as String,
       geoapifyId: geoapifyId,
       locationType: type,
       latLng: LatLng(json['lat'] as double, json['lon'] as double),

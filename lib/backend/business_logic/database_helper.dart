@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -25,6 +26,8 @@ class DatabaseHelper {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, 'trip_planning.db');
 
+    // deleteDatabase(path);
+
     return await openDatabase(
       path,
       version: 4,
@@ -43,8 +46,14 @@ class DatabaseHelper {
         description TEXT,
         coordinates_lat REAL,
         coordinates_lng REAL,
-        image_url TEXT
+        image_url TEXT,
+        geoapify_id TEXT
       )
+    ''');
+
+    // To speedup lookups by geoapify_id
+    await db.execute('''
+      CREATE INDEX idx_geoapify_id ON Cities (geoapify_id)
     ''');
 
     // Attractions table
@@ -125,6 +134,7 @@ class DatabaseHelper {
           description: 'City of Light',
           coordinates: LatLng(48.8566, 2.3522),
           imageUrl: 'https://example.com/paris.jpg',
+          geoapifyId: '',
         ).toMap(),
       );
     } catch (e) {
@@ -140,6 +150,7 @@ class DatabaseHelper {
           description: 'The Big Apple',
           coordinates: LatLng(40.7128, -74.0060),
           imageUrl: 'https://example.com/newyork.jpg',
+          geoapifyId: '',
         ).toMap(),
       );
       print('New York inserted');
@@ -156,6 +167,7 @@ class DatabaseHelper {
           description: 'The Capital of Japan',
           coordinates: LatLng(35.6895, 139.6917),
           imageUrl: 'https://example.com/tokyo.jpg',
+          geoapifyId: '',
         ).toMap(),
       );
       print('Tokyo inserted');
@@ -278,6 +290,7 @@ class DatabaseHelper {
             description: 'The Big Apple',
             coordinates: LatLng(40.7128, -74.0060),
             imageUrl: 'https://example.com/newyork.jpg',
+            geoapifyId: '',
           ).toMap(),
         );
         print('New York inserted');
@@ -294,6 +307,7 @@ class DatabaseHelper {
             description: 'The Capital of Japan',
             coordinates: LatLng(35.6895, 139.6917),
             imageUrl: 'https://example.com/tokyo.jpg',
+            geoapifyId: '',
           ).toMap(),
         );
         print('Tokyo inserted');
@@ -559,7 +573,16 @@ class DatabaseHelper {
     final db = await database;
     List<Map<String, dynamic>> city =
         await db.query('Cities', where: 'id = ?', whereArgs: [id]);
+
     return city.first;
+  }
+
+  Future<CityModel?> getCityByGeoapifyId(String geoapifyId) async {
+    final db = await database;
+    List<Map<String, dynamic>> city = await db
+        .query('Cities', where: 'geoapify_id = ?', whereArgs: [geoapifyId]);
+
+    return city.isEmpty ? null : CityModel.fromMap(city.first);
   }
 
   Future<List<Map<String, dynamic>>> getCitiesByCountry(String country) async {
