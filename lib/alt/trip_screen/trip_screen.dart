@@ -28,18 +28,34 @@ class TripScreen extends StatelessWidget {
         builder: (context, tripState) {
           return BlocProvider(
             create: (context) => TripScreenCubit.fromContext(context),
-            child: _build(context, tripState),
+            child: BlocBuilder<TripScreenCubit, TripScreenState>(
+              builder: (context, screenState) {
+                return _build(context, tripState, screenState);
+              },
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _build(BuildContext context, TripState state) {
+  Widget _build(
+    BuildContext context,
+    TripState state,
+    TripScreenState screenState,
+  ) {
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: SearchBarView(settingsViewModel),
+        title: SearchBarView(
+          settingsViewModel,
+          onQuerySubmit: (locations) =>
+              BlocProvider.of<TripScreenCubit>(context)
+                  .showQueryResults(locations),
+          onLocationSelect: (location) =>
+              BlocProvider.of<TripScreenCubit>(context)
+                  .selectLocation(location),
+        ),
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -50,6 +66,7 @@ class TripScreen extends StatelessWidget {
       ),
       body: MapView(
         trip: state.trip,
+        locations: screenState.locations,
         centerAt: LatLng(51.5074, -0.1278),
         initZoomLevel: 7,
       ),

@@ -1,18 +1,34 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:meta/meta.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/backend/location.dart';
 
 part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
-  MapCubit(TripModel trip, LatLng centerAt, double zoomLevel)
-      : super(MapInitial(trip: trip, centerAt: centerAt, zoomLevel: zoomLevel));
+  MapCubit(
+    TripModel trip,
+    List<Location> markers,
+    LatLng centerAt,
+    double zoomLevel,
+  ) : super(
+          MapInitial(
+            trip: trip,
+            markers: markers,
+            centerAt: centerAt,
+            zoomLevel: zoomLevel,
+          ),
+        );
 
-  void openMarkerDetails(MapState oldState) {
-    emit(MapMarkerDetailsOpened(
-        trip: oldState.trip,
+  void openMarkerDetails() {
+    emit(
+      MapMarkerDetailsOpened(
+        trip: state.trip,
         centerAt: state.centerAt,
-        zoomLevel: state.zoomLevel));
+        markers: state.markers,
+        zoomLevel: state.zoomLevel,
+      ),
+    );
   }
 }
