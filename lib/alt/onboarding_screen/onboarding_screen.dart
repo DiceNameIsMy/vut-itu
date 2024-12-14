@@ -33,15 +33,15 @@ class OnboardingScreen extends StatelessWidget {
       back: const Icon(Icons.arrow_back),
       pages: [
         PageViewModel(
-          title: 'Title of introduction page',
-          body: 'Welcome to the app! This is a description of how it works.',
+          title: 'Title of the introduction page',
+          body: 'Plan your travels, navigate within the city.',
           image: const Center(
             child: Icon(Icons.waving_hand, size: 50.0),
           ),
         ),
         PageViewModel(
-          title: 'Title of introduction page 2',
-          body: 'Welcome to the app! This is a description of how it works.',
+          title: 'Title of the second introduction page',
+          body: 'Estimate costs, set a budget, and share with friends.',
           image: const Center(
             child: Icon(Icons.waving_hand, size: 50.0),
           ),
