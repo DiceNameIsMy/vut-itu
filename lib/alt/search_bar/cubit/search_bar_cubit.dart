@@ -45,6 +45,8 @@ class SearchBarCubit extends Cubit<SearchBarState> {
   }
 
   Future<List<Location>> getSuggestions(String query) async {
+    // TODO: Have 2 searches: city focused and attractions focused. Attractions focused must have a radius filter, I think.
+
     var suggestions =
         await _geoapifyClient.getDebouncedSearchAutocompletion(query);
     if (suggestions == null) {
