@@ -51,16 +51,13 @@ class TripScreen extends StatelessWidget {
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: SearchBarView(
-          settingsViewModel,
-          onQuerySubmit: (locations) {
-            BlocProvider.of<TripScreenCubit>(context)
-                .showQueryResults(locations);
-          },
-          onLocationSelect: (location) {
-            BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
-          },
-        ),
+        title: SearchBarView(settingsViewModel, onQuerySubmit: (locations) {
+          BlocProvider.of<TripScreenCubit>(context).showQueryResults(locations);
+        }, onLocationSelect: (location) {
+          BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
+        }, onLocationAdd: (location) {
+          BlocProvider.of<TripScreenCubit>(context).addLocation(location);
+        }),
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),

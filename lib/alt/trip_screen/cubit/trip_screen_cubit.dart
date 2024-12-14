@@ -46,4 +46,17 @@ class TripScreenCubit extends Cubit<TripScreenState> {
       ),
     );
   }
+
+  void addLocation(Location location) {
+    logger.i('Added location: ${location.name}');
+
+    state.mapController.move(location.latLng, 10);
+
+    emit(
+      TripScreenShowLocations(
+        mapController: state.mapController,
+        locations: [location],
+      ),
+    );
+  }
 }

@@ -23,7 +23,7 @@ class SearchBarCubit extends Cubit<SearchBarState> {
     state.controller.closeView(query);
 
     emit(
-      SearchBarInitial(
+      SearchBarLoaded(
         controller: state.controller,
         searchTerm: state.searchTerm,
         searchSuggestions: state.searchSuggestions,
@@ -35,7 +35,22 @@ class SearchBarCubit extends Cubit<SearchBarState> {
     state.controller.closeView(selectedLocation.name);
 
     emit(
-      SearchBarInitial(
+      SearchBarLoaded(
+        controller: state.controller,
+        searchTerm: state.searchTerm,
+        searchSuggestions: state.searchSuggestions,
+        selectedLocation: selectedLocation,
+      ),
+    );
+  }
+
+  void locationAdded(Location selectedLocation) {
+    state.controller.clear();
+
+    // TODO: Create a trip city
+
+    emit(
+      SearchBarLoaded(
         controller: state.controller,
         searchTerm: state.searchTerm,
         searchSuggestions: state.searchSuggestions,
