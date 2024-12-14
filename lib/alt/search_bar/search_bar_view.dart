@@ -16,19 +16,15 @@ class SearchBarView extends StatelessWidget {
           SearchBarCubit.fromContext(context, settingsViewModel),
       child: BlocBuilder<SearchBarCubit, SearchBarState>(
         builder: (contextWithCubit, state) {
-          return SearchAnchor(
-            isFullScreen: false,
+          return SearchAnchor.bar(
             searchController: state.controller,
+            barLeading: Container(),
+            barTrailing: [Icon(Icons.search)],
+            barHintText: 'Try Prague, Big Ben...',
+            barElevation: WidgetStatePropertyAll(0.0),
+
             // viewBuilder: , // TODO: Try this builder instead of suggestionsBuilder
-            builder: (context, controller) {
-              return SearchBar(
-                elevation: WidgetStatePropertyAll(0.0),
-                controller: controller,
-                trailing: [Icon(Icons.search)],
-                hintText: 'Try Prague, Big Ben...',
-                onTap: () => controller.openView(),
-              );
-            },
+
             suggestionsBuilder: (context, SearchController controller) async {
               logger.i('Loading suggestions for query: ${controller.text}');
               var suggestions =
@@ -37,7 +33,7 @@ class SearchBarView extends StatelessWidget {
 
               return suggestions.map((suggestion) {
                 return ListTile(
-                  title: Text(suggestion),
+                  title: Text(suggestion.name),
                   onTap: () {
                     BlocProvider.of<SearchBarCubit>(contextWithCubit)
                         .closeSearchBar(suggestion);
