@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
-import '../cubit/trip_city_cubit.dart';
-import '../cubit/attraction_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/attraction_cubit.dart';
+import 'package:bottom_sheet_scaffold/bottom_sheet_scaffold.dart';
 
 class CityScreen extends StatefulWidget {
   final int cityId;
@@ -19,7 +20,8 @@ class _CityScreenState extends State<CityScreen> {
   final _searchController = TextEditingController();
   String selectedCategory = 'All';
   bool showDeletedAttractions = false;
-  bool isBottomSheetExpanded = false; // Tracks Bottom Sheet toggle state
+  final AttractionCubit attractionCubit = AttractionCubit();
+  final TripCityCubit tripCityCubit = TripCityCubit();
 
   @override
   void initState() {
@@ -28,9 +30,11 @@ class _CityScreenState extends State<CityScreen> {
     context.read<TripCityCubit>().fetchTripCity(widget.tripCity.id!);
   }
 
-  void toggleBottomSheet() {
-    setState(() {
-      isBottomSheetExpanded = !isBottomSheetExpanded;
+  void _onSearchChanged(String query) {
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (query == _searchController.text) {
+        context.read<AttractionCubit>().searchAttractions(query);
+      }
     });
   }
 
@@ -40,7 +44,6 @@ class _CityScreenState extends State<CityScreen> {
       appBar: AppBar(title: Text('City Attractions')),
       body: Stack(
         children: [
-          // Main CityScreen content
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -141,6 +144,9 @@ class _CityScreenState extends State<CityScreen> {
                                   context
                                       .read<TripCityCubit>()
                                       .addAttractionToTripCity(attraction);
+                                  context
+                                      .read<AttractionCubit>()
+                                      .hideAttraction(attraction);
                                 },
                               ),
                               onLongPress: () {
@@ -158,48 +164,144 @@ class _CityScreenState extends State<CityScreen> {
               ],
             ),
           ),
-          // Bottom Sheet Header and Overlay
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: toggleBottomSheet,
-                  child: Container(
-                    color: Colors.grey[300], // Header background color
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          // Drag handle
-                          Container(
-                            width: 50,
-                            height: 4,
-                            margin: const EdgeInsets.only(bottom: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                          Text(
-                            'Selected Attractions',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                if (isBottomSheetExpanded)
-                  CityAttractionsBottomSheet(onToggle: toggleBottomSheet),
-              ],
-            ),
+          DraggableBottomSheet(
+            maxHeight: 700.0,
+            animationDuration: Duration(milliseconds: 300),
+            gradientOpacity: false,
+            header: _bottomSheetHeader(context),
+            body: _bottomSheetBody(context),
           ),
         ],
+      ),
+    );
+  }
+
+  Container _bottomSheetHeader(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 255, 255, 255),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(66, 18, 11, 142),
+            blurRadius: 20,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      //calculate the total cost and time of the trip city and display it in the bottom sheet header in a row
+      child: BlocBuilder<TripCityCubit, TripCityModel>(
+        builder: (context, tripCity) {
+          final totalCost = context.read<TripCityCubit>().calculateTotalCost();
+          final totalTime =
+              context.read<TripCityCubit>().calculateTotalTime() / 60;
+
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Icon(Icons.drag_handle, color: Colors.grey),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.attach_money, size: 16),
+                        SizedBox(width: 4),
+                        Text(
+                          '${totalCost.toStringAsFixed(2)}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.access_time, size: 16),
+                        SizedBox(width: 4),
+                        Text(
+                          '${totalTime.toStringAsFixed(2)} hours',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Container _bottomSheetBody(BuildContext context) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SizedBox(
+        height: 400, // Set a fixed height
+        child: BlocBuilder<TripCityCubit, TripCityModel>(
+          builder: (context, tripCity) {
+            return ListView.builder(
+              itemCount: tripCity.attractions!.length,
+              itemBuilder: (context, index) {
+                final attraction = tripCity.attractions![index];
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Text(attraction.attractionId.toString()),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.location_on, size: 16),
+                            SizedBox(width: 4),
+                            Text(attraction.attractionId.toString()),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.attach_money, size: 16),
+                            SizedBox(width: 4),
+                            Text("\$${attraction.expectedCost.toString()}"),
+                            Spacer(),
+                            Icon(Icons.access_time_outlined, size: 16),
+                            SizedBox(width: 4),
+                            Text(
+                                "${attraction.expectedTimeToVisitInHours.toString()} minutes"),
+                          ],
+                        ),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        context
+                            .read<TripCityCubit>()
+                            .removeAttractionFromTripCity(attraction);
+                        context
+                            .read<AttractionCubit>()
+                            .fetchAttractions(widget.cityId);
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -233,65 +335,6 @@ class CategoryFilterDialog extends StatelessWidget {
               ),
             )
             .toList(),
-      ),
-    );
-  }
-}
-
-class CityAttractionsBottomSheet extends StatelessWidget {
-  final VoidCallback onToggle;
-
-  CityAttractionsBottomSheet({required this.onToggle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 400, // Expanded Bottom Sheet height
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Column(
-        children: [
-          // Header with close button
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Selected Attractions',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: onToggle, // Collapse Bottom Sheet
-                ),
-              ],
-            ),
-          ),
-          Divider(),
-          // Content
-          Expanded(
-            child: BlocBuilder<TripCityCubit, TripCityModel>(
-              builder: (context, tripCity) {
-                final totalCost =
-                    context.read<TripCityCubit>().calculateTotalCost();
-                final totalTime =
-                    context.read<TripCityCubit>().calculateTotalTime();
-
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text('Total Cost: \$${totalCost.toStringAsFixed(2)}',
-                          style: TextStyle(fontSize: 18)),
-                      Text('Total Time: ${totalTime.toStringAsFixed(2)} hours',
-                          style: TextStyle(fontSize: 18)),
-                      // Add additional content or widgets here
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
