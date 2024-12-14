@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:vut_itu/alt/map_screen.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
 import 'package:vut_itu/alt/trip_list_screen/cubit/trip_list_screen_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
@@ -108,41 +106,15 @@ class TripsScreen extends StatelessWidget {
         ? DateFormat('dd MMM, yyyy').format(trip.startDate!)
         : 'No dates';
 
-    var openMapButton = _openMapIcon(trip, visitingPlaces, context);
-
     return ListTile(
       leading: Icon(Icons.directions_car),
       title: Text(trip.name),
       subtitle: Text(subtitle),
-      trailing: openMapButton,
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => TripScreen(
                 tripId: trip.id, settingsViewModel: settingsViewModel)));
       },
     );
-  }
-
-  Widget _openMapIcon(TripModel trip, List<TripCityModel> visitingPlaces,
-      BuildContext context) {
-    if (visitingPlaces.isEmpty) {
-      return IconButton(
-        icon: Icon(Icons.map_rounded, color: Theme.of(context).disabledColor),
-        onPressed: () {},
-      );
-    } else {
-      return IconButton(
-        icon: Icon(Icons.map_rounded),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MapScreen(
-                  trip: trip,
-                  visitingPlaces: visitingPlaces,
-                  centerAt: LatLng(
-                      0, 0), // TODO: Add visitingPlaces.first.coordinates,
-                  initZoomLevel: 7)));
-        },
-      );
-    }
   }
 }
