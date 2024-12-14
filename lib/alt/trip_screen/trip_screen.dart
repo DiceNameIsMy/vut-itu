@@ -39,7 +39,7 @@ class TripScreen extends StatelessWidget {
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(state.trip.name),
+        title: SearchBarView(settingsViewModel),
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -75,12 +75,12 @@ class TripScreen extends StatelessWidget {
       gradientOpacity: false,
       radius: 30,
       animationDuration: Duration(milliseconds: 300),
-      header: _bottomSheetHeader(context),
+      header: _bottomSheetHeader(context, state),
       body: _bottomSheetBody(context, state),
     );
   }
 
-  Container _bottomSheetHeader(BuildContext context) {
+  Container _bottomSheetHeader(BuildContext context, TripState state) {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -100,10 +100,33 @@ class TripScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              // Search bar
+              // Trip preview
               Align(
                 alignment: Alignment.center,
-                child: SearchBarView(settingsViewModel),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    // TODO: If text is too long, it might overflow. Fix this.
+                    Text(
+                      state.trip.name,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    Text(
+                      ', ',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // TODO: Impement date picker.
+                        logger.w('Date picker not implemented');
+                      },
+                      child: Text(
+                        'Dec 11 - Dec 18',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           )),

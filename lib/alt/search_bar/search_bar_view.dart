@@ -22,9 +22,10 @@ class SearchBarView extends StatelessWidget {
             // viewBuilder: , // TODO: Try this builder instead of suggestionsBuilder
             builder: (context, controller) {
               return SearchBar(
+                elevation: WidgetStatePropertyAll(0.0),
                 controller: controller,
-                leading: Icon(Icons.search),
-                hintText: 'Search for a place',
+                trailing: [Icon(Icons.search)],
+                hintText: 'Try Prague, Big Ben...',
                 onTap: () => controller.openView(),
               );
             },
