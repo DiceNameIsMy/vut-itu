@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/cubit/map_cubit.dart';
+import 'package:vut_itu/alt/map_view/map_marker_detail_view.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
@@ -90,25 +91,16 @@ class MapView extends StatelessWidget {
       width: 80,
       height: 80,
       child: IconButton(
-          icon: Icon(Icons.location_city, color: Colors.purple),
-          onPressed: () => {
-                context.read<MapCubit>().openMarkerDetails(),
-                showModalBottomSheet(
-                    context: context,
-                    // TODO: Proper modal content
-                    builder: (_) => Container(
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text('Paris City Hall'),
-                              Text('Some description'),
-                              Text('N/A'),
-                              Text('N/A'),
-                            ],
-                          ),
-                        )),
-              }),
+        icon: Icon(Icons.location_city, color: Colors.purple),
+        onPressed: () => {
+          context.read<MapCubit>().openMarkerDetails(),
+          showModalBottomSheet(
+            context: context,
+            // TODO: Proper modal content
+            builder: (_) => MapMarkerDetailView(),
+          ),
+        },
+      ),
     );
   }
 }
