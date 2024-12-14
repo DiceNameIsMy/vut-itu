@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_city_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trips_cubit.dart';
-import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/select_places_cubit.dart';
 import '../cubit/city_cubit.dart';
 import 'search_bar_city_view.dart';
 import 'trip_list_view.dart';

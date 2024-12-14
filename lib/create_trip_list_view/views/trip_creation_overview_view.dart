@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
-import 'package:vut_itu/create_trip_list_view/views/search_bar_city_view.dart';
 import 'package:vut_itu/create_trip_list_view/views/home_screen_view.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
-import 'search_bar_city_view.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/search_bar_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/city_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/cubit/attraction_cubit.dart';
+import 'search_bar.dart';
 import 'add_attractions_to_city.dart';
 
 class TripCreationOverviewView extends StatelessWidget {
   final TripCubit tripCubit;
+  final CityCubit cityCubit = CityCubit();
+  final AttractionCubit attractionCubit = AttractionCubit();
 
   TripCreationOverviewView({required this.tripCubit});
 
@@ -19,7 +23,7 @@ class TripCreationOverviewView extends StatelessWidget {
       value: tripCubit,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Trip Creation Overview'),
+          title: Text('Trip Overview'),
         ),
         body: BlocBuilder<TripCubit, TripModel>(
           builder: (context, trip) {
@@ -88,10 +92,28 @@ class TripCreationOverviewView extends StatelessWidget {
                   // Add new city button
                   ElevatedButton(
                     onPressed: () {
-                      // Add logic to display the search bar
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return BlocProvider(
+                            create: (context) => SearchCubit<CityModel>(),
+                            child: SearchBarWithSuggestions<CityModel>(
+                              hintText: "Search for a city...",
+                              searchType: "city",
+                              onSuggestionSelected: (city) {
+                                // Handle selected city
+                                tripCubit.addCityToTrip(city);
+                                Navigator.pop(context); // Close the search bar
+                              },
+                              cityId: null,
+                            ),
+                          );
+                        },
+                      );
                     },
                     child: Text('Add New City'),
                   ),
+
                   // navigate to the home screen
                   ElevatedButton(
                     onPressed: () {

@@ -62,7 +62,9 @@ class TripCityCubit extends Cubit<TripCityModel> {
       return totalCost;
     }
     for (var attraction in _tripCity.attractions!) {
-      totalCost += attraction.expectedCost!;
+      if (attraction.expectedCost != null) {
+        totalCost += attraction.expectedCost!;
+      }
     }
     return totalCost;
   }
@@ -75,7 +77,9 @@ class TripCityCubit extends Cubit<TripCityModel> {
       return totalTime;
     }
     for (var attraction in _tripCity.attractions!) {
-      totalTime += attraction.expectedTimeToVisitInHours!;
+      if (attraction.expectedTimeToVisitInHours != null) {
+        totalTime += attraction.expectedTimeToVisitInHours!;
+      }
     }
     return totalTime;
   }

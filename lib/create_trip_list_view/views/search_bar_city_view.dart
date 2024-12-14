@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/city_cubit.dart';
-import '../cubit/search_bar_cubit.dart';
+import '../cubit/select_places_cubit.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/create_trip_list_view/views/trip_creation_overview_view.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
