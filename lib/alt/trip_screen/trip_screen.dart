@@ -101,6 +101,7 @@ class TripScreen extends StatelessWidget {
   }
 
   Container _bottomSheetHeader(BuildContext context, TripState state) {
+    var cubit = BlocProvider.of<TripCubit>(context);
     var startDateString = state.trip.startDate != null
         ? DateFormat('dd MMM').format(state.trip.startDate!)
         : 'Unset';
@@ -126,7 +127,6 @@ class TripScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              // Trip preview
               Align(
                 alignment: Alignment.center,
                 child: Row(
@@ -141,19 +141,49 @@ class TripScreen extends StatelessWidget {
                       icon: const Icon(Icons.edit),
                       label: Text(state.trip.name),
                     ),
-                    OutlinedButton.icon(
-                      onPressed: () {
-                        // TODO: Impement date picker.
-                        logger.w('Date picker not implemented');
-                      },
-                      label: Text('$startDateString - $endDateString'),
-                      icon: Icon(Icons.calendar_today),
-                    )
+                    _tripDateRangePickerButton(
+                      context,
+                      state,
+                      cubit,
+                      startDateString,
+                      endDateString,
+                    ),
                   ],
                 ),
               ),
             ],
           )),
+    );
+  }
+
+  OutlinedButton _tripDateRangePickerButton(
+    BuildContext context,
+    TripState state,
+    TripCubit cubit,
+    String startDateString,
+    String endDateString,
+  ) {
+    return OutlinedButton.icon(
+      onPressed: () async {
+        if (!context.mounted) return;
+        var newDateRange = await showDateRangePicker(
+          helpText: 'Select trip dates',
+          saveText: 'Confirm',
+          context: context,
+          initialDateRange: DateTimeRange(
+            start: state.trip.startDate ?? DateTime.now(),
+            end: state.trip.endDate ?? DateTime.now(),
+          ),
+          firstDate: DateTime(DateTime.now().year - 10),
+          lastDate: DateTime(DateTime.now().year + 10),
+        );
+        if (newDateRange != null) {
+          cubit.setStartDate(newDateRange.start);
+          cubit.setEndDate(newDateRange.end);
+        }
+      },
+      label: Text('$startDateString - $endDateString'),
+      icon: Icon(Icons.calendar_today),
     );
   }
 

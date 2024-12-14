@@ -13,10 +13,10 @@ final class TripScreenInitial extends TripScreenState {
   TripScreenInitial({required super.mapController, super.locations = const []});
 }
 
-final class TripScreenLocationPressed extends TripScreenState {
+final class TripScreenLocationSelected extends TripScreenState {
   final Location selectedLocation;
 
-  TripScreenLocationPressed({
+  TripScreenLocationSelected({
     required super.mapController,
     required this.selectedLocation,
     super.locations = const [],

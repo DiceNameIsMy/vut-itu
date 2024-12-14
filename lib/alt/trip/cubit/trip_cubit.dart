@@ -36,4 +36,31 @@ class TripCubit extends Cubit<TripState> {
 
     emit(TripLoaded(state.trip, visitingPlaces));
   }
+
+  Future<void> setStartDate(DateTime newStartDate) async {
+    await _db.updateTrip(
+        state.trip.id, {'start_date': newStartDate.toIso8601String()});
+
+    await invalidateTrip();
+  }
+
+  Future<void> setEndDate(DateTime newEndDate) async {
+    await _db
+        .updateTrip(state.trip.id, {'end_date': newEndDate.toIso8601String()});
+
+    await invalidateTrip();
+  }
+
+  Future<void> setTripName(String newName) async {
+    await _db.updateTrip(state.trip.id, {'name': newName});
+
+    await invalidateTrip();
+  }
+
+  Future<void> invalidateTrip() async {
+    var trip = TripModel.fromMap(await _db.getTrip(state.trip.id));
+    var visitingPlaces = await _db.getTripCitiesWithAll(tripId: state.trip.id);
+
+    emit(TripLoaded(trip, visitingPlaces));
+  }
 }
