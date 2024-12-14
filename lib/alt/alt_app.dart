@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vut_itu/alt/onboarding_screen/onboarding_screen.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
 import 'package:vut_itu/alt/trip_list_screen/trip_list_screen.dart';
+import 'package:vut_itu/alt/onboarding_screen/onboarding_screen.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
 class AltApp extends StatelessWidget {
-  const AltApp({super.key, required this.settingsController});
+  const AltApp({super.key, required this.settingsViewModel});
 
-  final SettingsViewModel settingsController;
+  final SettingsViewModel settingsViewModel;
 
   @override
   Widget build(BuildContext context) {
     var themeSeedColor = Colors.deepPurple;
 
     var initialRoute = '/';
-    if (!settingsController.completedOnboarding) {
+    if (!settingsViewModel.completedOnboarding) {
       initialRoute = '/onboarding';
     }
 
@@ -27,7 +27,7 @@ class AltApp extends StatelessWidget {
         ),
       ],
       child: ListenableBuilder(
-          listenable: settingsController,
+          listenable: settingsViewModel,
           builder: (BuildContext context, Widget? child) {
             return MaterialApp(
               title: 'TripHub',
@@ -40,15 +40,15 @@ class AltApp extends StatelessWidget {
                   colorScheme: ColorScheme.fromSeed(
                       seedColor: themeSeedColor, brightness: Brightness.dark),
                   useMaterial3: true),
-              themeMode: settingsController.themeMode,
+              themeMode: settingsViewModel.themeMode,
 
               // Routing
               routes: {
-                '/': (context) => TripsScreen(settingsController),
+                '/': (context) => TripsScreen(settingsViewModel),
                 '/onboarding': (context) =>
-                    OnboaringScreen(settingsViewModel: settingsController),
+                    OnboardingScreen(settingsViewModel: settingsViewModel),
                 '/settings': (context) =>
-                    SettingsScreen(settingsController: settingsController),
+                    SettingsScreen(settingsController: settingsViewModel),
               },
               initialRoute: initialRoute,
             );
