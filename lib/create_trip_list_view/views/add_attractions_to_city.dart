@@ -237,11 +237,22 @@ class _CityScreenState extends State<CityScreen> {
   Container _bottomSheetBody(BuildContext context) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: SizedBox(
-        height: 400, // Set a fixed height
-        child: BlocBuilder<TripCityCubit, TripCityModel>(
-          builder: (context, tripCity) {
-            return ListView.builder(
+      child: BlocBuilder<TripCityCubit, TripCityModel>(
+        builder: (context, tripCity) {
+          // Check if attractions are null or empty
+          if (tripCity.attractions == null || tripCity.attractions!.isEmpty) {
+            return Center(
+              child: Text(
+                'No attractions available.',
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+            );
+          }
+
+          // Render the list of attractions
+          return SizedBox(
+            height: 400, // Set a fixed height
+            child: ListView.builder(
               itemCount: tripCity.attractions!.length,
               itemBuilder: (context, index) {
                 final attraction = tripCity.attractions![index];
@@ -299,9 +310,9 @@ class _CityScreenState extends State<CityScreen> {
                   ),
                 );
               },
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
