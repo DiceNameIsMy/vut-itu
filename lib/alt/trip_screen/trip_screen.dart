@@ -17,8 +17,11 @@ class TripScreen extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
   final int tripId;
 
-  const TripScreen(
-      {super.key, required this.tripId, required this.settingsViewModel});
+  const TripScreen({
+    super.key,
+    required this.tripId,
+    required this.settingsViewModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +104,6 @@ class TripScreen extends StatelessWidget {
   }
 
   Container _bottomSheetHeader(BuildContext context, TripState state) {
-    var cubit = BlocProvider.of<TripCubit>(context);
     var startDateString = state.trip.startDate != null
         ? DateFormat('dd MMM').format(state.trip.startDate!)
         : 'Unset';
@@ -144,7 +146,6 @@ class TripScreen extends StatelessWidget {
                     _tripDateRangePickerButton(
                       context,
                       state,
-                      cubit,
                       startDateString,
                       endDateString,
                     ),
@@ -159,13 +160,15 @@ class TripScreen extends StatelessWidget {
   OutlinedButton _tripDateRangePickerButton(
     BuildContext context,
     TripState state,
-    TripCubit cubit,
     String startDateString,
     String endDateString,
   ) {
     return OutlinedButton.icon(
       onPressed: () async {
         if (!context.mounted) return;
+
+        var cubit = BlocProvider.of<TripCubit>(context);
+
         var newDateRange = await showDateRangePicker(
           helpText: 'Select trip dates',
           saveText: 'Confirm',
@@ -177,6 +180,7 @@ class TripScreen extends StatelessWidget {
           firstDate: DateTime(DateTime.now().year - 10),
           lastDate: DateTime(DateTime.now().year + 10),
         );
+
         if (newDateRange != null) {
           cubit.setStartDate(newDateRange.start);
           cubit.setEndDate(newDateRange.end);

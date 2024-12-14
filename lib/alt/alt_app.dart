@@ -23,7 +23,8 @@ class AltApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<TripsCubit>(
-            create: (context) => TripsCubit()..invalidateTrips()),
+          create: (context) => TripsCubit()..invalidateTrips(),
+        ),
       ],
       child: ListenableBuilder(
           listenable: settingsController,

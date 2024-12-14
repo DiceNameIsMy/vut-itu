@@ -8,7 +8,7 @@ class TripsCubit extends Cubit<List<TripModel>> {
 
   List<TripModel> _trips = [];
 
-  Future<void> fetchTrips() async {
+  Future<void> invalidateTrips() async {
     final tripMaps = await DatabaseHelper().getTrips();
     _trips = tripMaps.map((map) => TripModel.fromMap(map)).toList();
     emit(_trips);
