@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:latlong2/latlong.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -6,6 +8,7 @@ import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
 import 'package:vut_itu/backend/business_logic/city_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/logger.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -29,13 +32,14 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    logger.d('Creating database version $version');
     await _createTables(db);
     await _insertInitialData(db);
   }
@@ -512,6 +516,7 @@ class DatabaseHelper {
 
   /// Database migrations management
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    logger.d('Upgrading database from $oldVersion to $newVersion');
     if (oldVersion < 2) {
       try {
         await db.insert(
@@ -786,5 +791,182 @@ class DatabaseHelper {
         print(e);
       }
     }
+    if (oldVersion < 5) {
+      await _insertMockAttractions(db);
+    }
   }
+
+  Future<void> _insertMockAttractions(Database db) async {
+    List<dynamic> jsonData = json.decode(_mockAttractionsJson);
+
+    var city = CityModel(
+      name: 'Prague',
+      country: 'Czech Republic',
+      description: 'City of a Hundred Spires',
+      coordinates: LatLng(50.0755, 14.4378),
+      imageUrl: null,
+      geoapifyId:
+          '51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208',
+    );
+    await insertCity(city);
+
+    for (var item in jsonData) {
+      try {
+        item['id'] = 0;
+        item['city_id'] = city.id;
+        AttractionModel attraction = AttractionModel.fromMap(item);
+        await insertAttraction(attraction);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  static const String _mockAttractionsJson = '''
+[
+    {
+        "name": "Charles Bridge",
+        "description": "A historic bridge that connects the Old Town and Lesser Town, adorned with Baroque statues.",
+        "coordinates_lng": 14.41111,
+        "coordinates_lat": 50.08689,
+        "imageUrl": "https://example.com/images/charles_bridge.jpg",
+        "category": "Historic Landmark",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Prague Castle",
+        "description": "One of the largest ancient castles in the world, it includes stunning architecture and historical significance.",
+        "coordinates_lng": 14.40658,
+        "coordinates_lat": 50.09063,
+        "imageUrl": "https://example.com/images/prague_castle.jpg",
+        "category": "Historic Landmark",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Old Town Square",
+        "description": "The heart of Prague, featuring the Astronomical Clock and surrounded by colorful baroque buildings.",
+        "coordinates_lng": 14.42145,
+        "coordinates_lat": 50.08787,
+        "imageUrl": "https://example.com/images/old_town_square.jpg",
+        "category": "Public Square",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "St. Vitus Cathedral",
+        "description": "A magnificent Gothic cathedral located within Prague Castle, known for its stunning stained glass windows.",
+        "coordinates_lng": 14.40249,
+        "coordinates_lat": 50.09064,
+        "imageUrl": "https://example.com/images/st_vitus_cathedral.jpg",
+        "category": "Religious Site",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Wenceslas Square",
+        "description": "A vibrant square in the New Town, known for its historical significance and shopping opportunities.",
+        "coordinates_lng": 14.43042,
+        "coordinates_lat": 50.07928,
+        "imageUrl": "https://example.com/images/wenceslas_square.jpg",
+        "category": "Public Square",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The Dancing House",
+        "description": "An iconic modern architectural landmark, known for its unique design resembling a dancing couple.",
+        "coordinates_lng": 14.41435,
+        "coordinates_lat": 50.07559,
+        "imageUrl": "https://example.com/images/dancing_house.jpg",
+        "category": "Architectural Landmark",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Petrin Hill and Lookout Tower",
+        "description": "A large park offering beautiful gardens and a lookout tower resembling the Eiffel Tower.",
+        "coordinates_lng": 14.39509,
+        "coordinates_lat": 50.08349,
+        "imageUrl": "https://example.com/images/petrin_hill.jpg",
+        "category": "Park",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The Powder Tower",
+        "description": "A Gothic tower that was once part of the city fortifications, now a popular tourist attraction.",
+        "coordinates_lng": 14.42646,
+        "coordinates_lat": 50.08745,
+        "imageUrl": "https://example.com/images/powder_tower.jpg",
+        "category": "Historic Landmark",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The Jewish Quarter",
+        "description": "A historic area featuring synagogues, museums, and the Old Jewish Cemetery.",
+        "coordinates_lng": 14.42076,
+        "coordinates_lat": 50.09055,
+        "imageUrl": "https://example.com/images/jewish_quarter.jpg",
+        "category": "Cultural Site",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Kampa Island",
+        "description": "A picturesque island in the Vltava River, known for its parks and art installations.",
+        "coordinates_lng": 14.40556,
+        "coordinates_lat": 50.08051,
+        "imageUrl": "https://example.com/images/kampa_island.jpg",
+        "category": "Park",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "Strahov Monastery",
+        "description": "An ancient monastery famous for its library and beautiful gardens.",
+        "coordinates_lng": 14.39486,
+        "coordinates_lat": 50.08729,
+        "imageUrl": "https://example.com/images/strahov_monastery.jpg",
+        "category": "Religious Site",
+        "cost": 5,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "John Lennon Wall",
+        "description": "A colorful wall filled with John Lennon-inspired graffiti and lyrics, symbolizing peace and love.",
+        "coordinates_lng": 14.39881,
+        "coordinates_lat": 50.08704,
+        "imageUrl": "https://example.com/images/john_lennon_wall.jpg",
+        "category": "Cultural Site",
+        "cost": 0,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    },
+    {
+        "name": "The National Museum",
+        "description": "The largest museum in the Czech Republic, showcasing natural history and cultural artifacts.",
+        "coordinates_lng": 14.43042,
+        "coordinates_lat": 50.07835,
+        "imageUrl": "https://example.com/images/national_museum.jpg",
+        "category": "Museum",
+        "cost": 10,
+        "geoapify_id": "51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208",
+        "average_time": 5
+    }
+]
+''';
 }
