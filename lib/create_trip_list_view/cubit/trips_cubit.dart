@@ -8,7 +8,7 @@ class TripsCubit extends Cubit<List<TripModel>> {
 
   List<TripModel> _trips = [];
 
-  Future<void> fetchTrips() async {
+  Future<void> invalidateTrips() async {
     final tripMaps = await DatabaseHelper().getTrips();
     _trips = tripMaps.map((map) => TripModel.fromMap(map)).toList();
     emit(_trips);
@@ -25,7 +25,7 @@ class TripsCubit extends Cubit<List<TripModel>> {
       await DatabaseHelper().deleteAllTripAttractions(city.id!);
       await DatabaseHelper().deleteTripCity(city.id!);
     }
-    await DatabaseHelper().deleteTrip(trip.id!); // Ensure `deleteTrip` works
+    await DatabaseHelper().deleteTrip(trip.id); // Ensure `deleteTrip` works
     _trips.removeWhere((t) => t.id == trip.id);
     emit(List.from(_trips)); // Emit a new instance of the list
   }

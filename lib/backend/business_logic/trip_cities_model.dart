@@ -3,7 +3,7 @@ import 'package:vut_itu/backend/business_logic/trip_attractions_model.dart';
 
 /// Represents a city to visit in a trip.
 class TripCityModel {
-  int? id;
+  int id;
   final int tripId;
   final int cityId;
   DateTime? startDate;

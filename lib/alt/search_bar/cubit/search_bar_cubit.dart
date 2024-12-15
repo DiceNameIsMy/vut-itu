@@ -19,17 +19,49 @@ class SearchBarCubit extends Cubit<SearchBarState> {
     return SearchBarCubit(GeoapifyClient(settingsViewModel.geoapifyApiKey));
   }
 
-  void closeSearchBar(Location selectedLocation) {
-    state.controller.closeView(selectedLocation.name);
+  void searchQuerySubmitted(String query) {
+    state.controller.closeView(query);
 
-    emit(SearchBarInitial(
+    emit(
+      SearchBarLoaded(
         controller: state.controller,
         searchTerm: state.searchTerm,
         searchSuggestions: state.searchSuggestions,
-        selectedLocation: selectedLocation));
+      ),
+    );
+  }
+
+  void locationSelected(Location selectedLocation) {
+    state.controller.closeView(selectedLocation.name);
+
+    emit(
+      SearchBarLoaded(
+        controller: state.controller,
+        searchTerm: state.searchTerm,
+        searchSuggestions: state.searchSuggestions,
+        selectedLocation: selectedLocation,
+      ),
+    );
+  }
+
+  void locationAdded(Location selectedLocation) {
+    state.controller.clear();
+
+    // TODO: Create a trip city
+
+    emit(
+      SearchBarLoaded(
+        controller: state.controller,
+        searchTerm: state.searchTerm,
+        searchSuggestions: state.searchSuggestions,
+        selectedLocation: selectedLocation,
+      ),
+    );
   }
 
   Future<List<Location>> getSuggestions(String query) async {
+    // TODO: Have 2 searches: city focused and attractions focused. Attractions focused must have a radius filter, I think.
+
     var suggestions =
         await _geoapifyClient.getDebouncedSearchAutocompletion(query);
     if (suggestions == null) {

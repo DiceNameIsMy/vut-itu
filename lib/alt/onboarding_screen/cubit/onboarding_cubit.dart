@@ -24,6 +24,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   Future<void> createFirstTrip() async {
     var trip = TripModel(userId: 0, name: 'My First Trip');
+
     await _db.insertTrip(trip);
 
     // TODO: Convert to a cubit/bloc

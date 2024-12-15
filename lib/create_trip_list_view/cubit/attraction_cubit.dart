@@ -23,10 +23,20 @@ class AttractionCubit extends Cubit<List<AttractionModel>> {
   }
 
   void filterAttractionsByCategory(String category) {
-    final filtered = _attractions
-        .where((attraction) =>
-            attraction.category.toLowerCase().contains(category.toLowerCase()))
-        .toList();
+    List<AttractionModel> filtered;
+
+    if (category.toLowerCase() == "all") {
+      // If the category is "All", return all attractions
+      filtered = _attractions;
+    } else {
+      // Otherwise, filter by the given category
+      filtered = _attractions
+          .where((attraction) => attraction.category
+              .toLowerCase()
+              .contains(category.toLowerCase()))
+          .toList();
+    }
+
     emit(filtered);
   }
 

@@ -18,6 +18,8 @@ class GeoapifyClient {
     debounceId++;
     var localDebounceId = debounceId;
 
+    // TODO: Cache results
+
     await Future.delayed(Duration(seconds: 1));
     if (localDebounceId != debounceId) {
       // Autocompletion was requested again. This request is outdated.
@@ -42,6 +44,7 @@ class GeoapifyClient {
       path: '/v1/geocode/autocomplete',
       queryParameters: {
         'text': query,
+        'type': 'city', // TODO: In future allow places, addresses, etc.
         'format': 'json',
         'apiKey': _apiKey,
       },

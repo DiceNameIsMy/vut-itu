@@ -1,11 +1,13 @@
 import 'package:bottom_sheet_scaffold/bottom_sheet_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/map_view.dart';
 import 'package:vut_itu/alt/search_bar/search_bar_view.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
+import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
@@ -16,8 +18,11 @@ class TripScreen extends StatelessWidget {
   final SettingsViewModel settingsViewModel;
   final int tripId;
 
-  const TripScreen(
-      {super.key, required this.tripId, required this.settingsViewModel});
+  const TripScreen({
+    super.key,
+    required this.tripId,
+    required this.settingsViewModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +33,48 @@ class TripScreen extends StatelessWidget {
         builder: (context, tripState) {
           return BlocProvider(
             create: (context) => TripScreenCubit.fromContext(context),
-            child: _build(context, tripState),
+            child: BlocBuilder<TripScreenCubit, TripScreenState>(
+              builder: (context, screenState) {
+                return _build(context, tripState, screenState);
+              },
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _build(BuildContext context, TripState state) {
+  Widget _build(
+    BuildContext context,
+    TripState state,
+    TripScreenState screenState,
+  ) {
+    var locations = screenState.locations;
+    if (screenState is TripScreenShowLocationAttractions) {
+      var country = screenState.location.country;
+      locations = screenState.attractions
+          .map(
+            (a) => Location(
+              name: a.name,
+              country: country,
+              geoapifyId: '', // TODO
+              locationType: LocationType.attraction,
+              latLng: a.coordinates,
+            ),
+          )
+          .toList();
+    }
+
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: SearchBarView(settingsViewModel),
+        title: SearchBarView(settingsViewModel, onQuerySubmit: (locations) {
+          BlocProvider.of<TripScreenCubit>(context).showQueryResults(locations);
+        }, onLocationSelect: (location) {
+          BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
+        }, onLocationAdd: (location) {
+          BlocProvider.of<TripScreenCubit>(context).addLocation(location);
+        }),
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -49,7 +84,9 @@ class TripScreen extends StatelessWidget {
         ],
       ),
       body: MapView(
+        mapController: screenState.mapController,
         trip: state.trip,
+        locations: locations,
         centerAt: LatLng(51.5074, -0.1278),
         initZoomLevel: 7,
       ),
@@ -81,6 +118,12 @@ class TripScreen extends StatelessWidget {
   }
 
   Container _bottomSheetHeader(BuildContext context, TripState state) {
+    var startDateString = state.trip.startDate != null
+        ? DateFormat('dd MMM').format(state.trip.startDate!)
+        : 'Unset';
+    var endDateString = state.trip.endDate != null
+        ? DateFormat('dd MMM').format(state.trip.endDate!)
+        : 'Unset';
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -100,36 +143,65 @@ class TripScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              // Trip preview
               Align(
                 alignment: Alignment.center,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // TODO: If text is too long, it might overflow. Fix this.
-                    Text(
-                      state.trip.name,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    Text(
-                      ', ',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        // TODO: Impement date picker.
-                        logger.w('Date picker not implemented');
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        logger.w('Edit trip name not implemented');
                       },
-                      child: Text(
-                        'Dec 11 - Dec 18',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    )
+                      icon: const Icon(Icons.edit),
+                      label: Text(state.trip.name),
+                    ),
+                    _tripDateRangePickerButton(
+                      context,
+                      state,
+                      startDateString,
+                      endDateString,
+                    ),
                   ],
                 ),
               ),
             ],
           )),
+    );
+  }
+
+  OutlinedButton _tripDateRangePickerButton(
+    BuildContext context,
+    TripState state,
+    String startDateString,
+    String endDateString,
+  ) {
+    return OutlinedButton.icon(
+      onPressed: () async {
+        if (!context.mounted) return;
+
+        var cubit = BlocProvider.of<TripCubit>(context);
+
+        var newDateRange = await showDateRangePicker(
+          helpText: 'Select trip dates',
+          saveText: 'Confirm',
+          context: context,
+          initialDateRange: DateTimeRange(
+            start: state.trip.startDate ?? DateTime.now(),
+            end: state.trip.endDate ?? DateTime.now(),
+          ),
+          firstDate: DateTime(DateTime.now().year - 10),
+          lastDate: DateTime(DateTime.now().year + 10),
+        );
+
+        if (newDateRange != null) {
+          cubit.setStartDate(newDateRange.start);
+          cubit.setEndDate(newDateRange.end);
+        }
+      },
+      label: Text('$startDateString - $endDateString'),
+      icon: Icon(Icons.calendar_today),
     );
   }
 
