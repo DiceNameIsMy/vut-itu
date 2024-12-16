@@ -3,14 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vut_itu/alt/map_view/cubit/map_cubit.dart';
-import 'package:vut_itu/alt/map_view/map_marker_detail_view.dart';
+import 'package:vut_itu/alt/device_location/cubit/device_location_cubit.dart';
+import 'package:vut_itu/alt/map_marker_detail_view.dart';
 import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 
 class MapView extends StatelessWidget {
+  static const locationStillLoadingSnackBar =
+      SnackBar(content: Text('Location is loading...'));
+
   final MapController mapController;
   final TripModel trip;
   final List<Location> locations;
@@ -19,8 +22,6 @@ class MapView extends StatelessWidget {
   final TileLayer tileProvider = TileLayer(
     urlTemplate:
         'https://maps.geoapify.com/v1/tile/osm-carto/{z}/{x}/{y}.png?apiKey=e3ea74d99880486cb73bc554b25dfe84',
-    // Use the recommended flutter_map_cancellable_tile_provider package to
-    // support the cancellation of loading tiles.
     tileProvider: CancellableNetworkTileProvider(),
   );
 
@@ -35,16 +36,57 @@ class MapView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TripScreenCubit, TripScreenState>(
       builder: (context, state) {
-        return BlocProvider(
-          create: (context) =>
-              MapCubit.fromContext(context)..invalidateDeviceLocation(),
-          child: BlocBuilder<MapCubit, MapState>(
-            builder: (context, _) {
-              return _build(context, state);
-            },
-          ),
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            _map(state),
+            Positioned(
+              right: 10,
+              bottom: 100,
+              child: _focusOnCurrentLocationButton(),
+            ),
+          ],
         );
       },
+    );
+  }
+
+  BlocBuilder<DeviceLocationCubit, DeviceLocationState>
+      _focusOnCurrentLocationButton() {
+    return BlocBuilder<DeviceLocationCubit, DeviceLocationState>(
+      builder: (context, state) {
+        return FloatingActionButton.small(
+          child: Icon(Icons.my_location),
+          onPressed: () {
+            if (state is DeviceLocationLoaded) {
+              context
+                  .read<TripScreenCubit>()
+                  .focusOnLocation(state.deviceLocation);
+            } else {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(locationStillLoadingSnackBar);
+            }
+          },
+        );
+      },
+    );
+  }
+
+  FlutterMap _map(TripScreenState state) {
+    return FlutterMap(
+      mapController: state.mapController,
+      options: MapOptions(
+        cameraConstraint: CameraConstraint.contain(
+          bounds: LatLngBounds(
+            const LatLng(-90, -180),
+            const LatLng(90, 180),
+          ),
+        ),
+        onTap: (tapPosition, point) {
+          logger.d('Tapped on point: $point');
+        },
+      ),
+      children: [tileProvider, _polylineLayer(), _markerLayer()],
     );
   }
 
@@ -67,15 +109,23 @@ class MapView extends StatelessWidget {
           ),
           children: [tileProvider, _polylineLayer(), _markerLayer()],
         ),
-        Positioned(
-          right: 10,
-          bottom: 100,
-          child: FloatingActionButton.small(
-            child: Icon(Icons.my_location),
-            onPressed: () {
-              context.read<MapCubit>().focusOnDeviceLocation();
-            },
-          ),
+        BlocBuilder<DeviceLocationCubit, DeviceLocationState>(
+          builder: (context, state) {
+            return Positioned(
+              right: 10,
+              bottom: 100,
+              child: FloatingActionButton.small(
+                child: Icon(Icons.my_location),
+                onPressed: () {
+                  if (state is DeviceLocationLoaded) {
+                    context
+                        .read<TripScreenCubit>()
+                        .focusOnLocation(state.deviceLocation);
+                  }
+                },
+              ),
+            );
+          },
         ),
       ],
     );
@@ -87,13 +137,14 @@ class MapView extends StatelessWidget {
     return PolylineLayer(polylines: []);
   }
 
-  BlocBuilder<MapCubit, MapState> _markerLayer() {
-    return BlocBuilder<MapCubit, MapState>(
+  BlocBuilder<DeviceLocationCubit, DeviceLocationState> _markerLayer() {
+    return BlocBuilder<DeviceLocationCubit, DeviceLocationState>(
       builder: (context, state) {
         logger.i('Building ${locations.length} markers');
         var markers = locations.map((m) => _marker(context, m)).toList();
-        if (state.deviceLocation != null) {
-          markers.add(_deviceLocationMarker(context, state.deviceLocation!));
+
+        if (state is DeviceLocationLoaded) {
+          markers.add(_deviceLocationMarker(context, state.deviceLocation));
         }
         return MarkerLayer(markers: markers);
       },
@@ -108,7 +159,9 @@ class MapView extends StatelessWidget {
       child: IconButton(
         icon: Icon(Icons.location_city, color: Colors.purple),
         onPressed: () => {
-          context.read<MapCubit>().openMarkerDetails(),
+          context
+              .read<TripScreenCubit>()
+              .focusOnLocation(marker.latLng, zoomLevel: 8),
           showModalBottomSheet(
             context: context,
             // TODO: Proper modal content
@@ -127,7 +180,9 @@ class MapView extends StatelessWidget {
       child: IconButton(
         icon: Icon(Icons.location_pin, color: Colors.purple),
         onPressed: () => {
-          context.read<MapCubit>().openMarkerDetails(),
+          context
+              .read<TripScreenCubit>()
+              .focusOnLocation(location, zoomLevel: 10),
           showModalBottomSheet(
             context: context,
             builder: (_) => MapMarkerDetailView(),

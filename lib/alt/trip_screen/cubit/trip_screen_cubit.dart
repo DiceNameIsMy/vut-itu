@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/backend/business_logic/attraction_model.dart';
 import 'package:vut_itu/backend/business_logic/database_helper.dart';
@@ -92,5 +93,9 @@ class TripScreenCubit extends Cubit<TripScreenState> {
         .i('Adding location: ${location.name} with id: ${location.geoapifyId}');
 
     await selectLocation(location);
+  }
+
+  void focusOnLocation(LatLng deviceLocation, {double zoomLevel = 10}) {
+    state.mapController.move(deviceLocation, zoomLevel);
   }
 }
