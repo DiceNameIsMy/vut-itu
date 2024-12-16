@@ -53,10 +53,12 @@ class TripsCubit extends Cubit<TripsState> {
     // Fetch the cities for each trip & pair them together
     var futures = <Future>[];
     for (var trip in trips) {
-      futures.add(_db.getTripCities(tripId: trip.id).then((tripCitiesMap) {
-        var tripCities = tripCitiesMap.map(TripCityModel.fromMap).toList();
-        fetchedData.add((trip, tripCities));
-      }),);
+      futures.add(
+        _db.getTripCities(tripId: trip.id).then((tripCitiesMap) {
+          var tripCities = tripCitiesMap.map(TripCityModel.fromMap).toList();
+          fetchedData.add((trip, tripCities));
+        }),
+      );
     }
     await Future.wait(futures);
 
@@ -71,6 +73,16 @@ class TripsCubit extends Cubit<TripsState> {
     await _db.insertTrip(newTrip);
 
     state.trips.add((newTrip, []));
+
+    // Fetch the updated list of trips
+    await invalidateTrips();
+  }
+
+  Future<void> updateTripName(int tripId, String newName) async {
+    emit(TripsLoading(state.trips));
+
+    // Update the trip
+    await _db.updateTrip(tripId, {'name': newName});
 
     // Fetch the updated list of trips
     await invalidateTrips();

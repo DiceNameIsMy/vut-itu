@@ -14,8 +14,6 @@ class MapView extends StatelessWidget {
   final MapController mapController;
   final TripModel trip;
   final List<Location> locations;
-  final LatLng centerAt;
-  final double initZoomLevel;
 
   // Define how to query tiles that are used to show a map.
   final TileLayer tileProvider = TileLayer(
@@ -31,8 +29,6 @@ class MapView extends StatelessWidget {
     required this.mapController,
     required this.trip,
     required this.locations,
-    required this.centerAt,
-    required this.initZoomLevel,
   });
 
   @override
@@ -52,21 +48,36 @@ class MapView extends StatelessWidget {
     );
   }
 
-  FlutterMap _build(BuildContext context, TripScreenState state) {
-    return FlutterMap(
-      mapController: state.mapController,
-      options: MapOptions(
-        cameraConstraint: CameraConstraint.contain(
-          bounds: LatLngBounds(
-            const LatLng(-90, -180),
-            const LatLng(90, 180),
+  Widget _build(BuildContext context, TripScreenState state) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        FlutterMap(
+          mapController: state.mapController,
+          options: MapOptions(
+            cameraConstraint: CameraConstraint.contain(
+              bounds: LatLngBounds(
+                const LatLng(-90, -180),
+                const LatLng(90, 180),
+              ),
+            ),
+            onTap: (tapPosition, point) {
+              logger.d('Tapped on point: $point');
+            },
+          ),
+          children: [tileProvider, _polylineLayer(), _markerLayer()],
+        ),
+        Positioned(
+          right: 10,
+          bottom: 100,
+          child: FloatingActionButton.small(
+            child: Icon(Icons.my_location),
+            onPressed: () {
+              context.read<MapCubit>().focusOnDeviceLocation();
+            },
           ),
         ),
-        onTap: (tapPosition, point) {
-          logger.d('Tapped on point: $point');
-        },
-      ),
-      children: [tileProvider, _polylineLayer(), _markerLayer()],
+      ],
     );
   }
 
@@ -80,9 +91,11 @@ class MapView extends StatelessWidget {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
         logger.i('Building ${locations.length} markers');
-        return MarkerLayer(
-          markers: locations.map((m) => _marker(context, m)).toList(),
-        );
+        var markers = locations.map((m) => _marker(context, m)).toList();
+        if (state.deviceLocation != null) {
+          markers.add(_deviceLocationMarker(context, state.deviceLocation!));
+        }
+        return MarkerLayer(markers: markers);
       },
     );
   }
@@ -99,6 +112,24 @@ class MapView extends StatelessWidget {
           showModalBottomSheet(
             context: context,
             // TODO: Proper modal content
+            builder: (_) => MapMarkerDetailView(),
+          ),
+        },
+      ),
+    );
+  }
+
+  Marker _deviceLocationMarker(BuildContext context, LatLng location) {
+    return Marker(
+      point: location,
+      width: 80,
+      height: 80,
+      child: IconButton(
+        icon: Icon(Icons.location_pin, color: Colors.purple),
+        onPressed: () => {
+          context.read<MapCubit>().openMarkerDetails(),
+          showModalBottomSheet(
+            context: context,
             builder: (_) => MapMarkerDetailView(),
           ),
         },

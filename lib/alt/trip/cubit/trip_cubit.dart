@@ -41,7 +41,9 @@ class TripCubit extends Cubit<TripState> {
 
   Future<void> setStartDate(DateTime newStartDate) async {
     await _db.updateTrip(
-        state.trip.id, {'start_date': newStartDate.toIso8601String()},);
+      state.trip.id,
+      {'start_date': newStartDate.toIso8601String()},
+    );
 
     await invalidateTrip();
   }
@@ -103,5 +105,19 @@ class TripCubit extends Cubit<TripState> {
     emit(TripLoaded(state.trip, newPlaces));
 
     // TODO: Update order in the database
+  }
+
+  Future<void> removeCity(int visitingPlaceIdx) async {
+    // Remove from the list
+    final newPlaces = state.places.toList();
+    final item = newPlaces.removeAt(visitingPlaceIdx);
+
+    emit(TripLoaded(state.trip, newPlaces));
+
+    // Delete from the database
+    await _db.deleteTripCity(item.id);
+
+    // Refresh the list, just in case
+    await invalidateVisitingPlaces();
   }
 }

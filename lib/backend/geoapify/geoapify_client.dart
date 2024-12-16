@@ -61,7 +61,7 @@ class GeoapifyClient {
     try {
       final json = data['results'] as List;
       for (var suggestionJson in json) {
-        suggestions.add(Location.fromJson(suggestionJson));
+        suggestions.add(Location.fromGeoapifyApi(suggestionJson));
       }
     } catch (e) {
       logger.e('Failed to parse autocompletion suggestions: $e\n$data');

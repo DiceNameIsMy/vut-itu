@@ -27,11 +27,6 @@ class MapCubit extends Cubit<MapState> {
     }
     logger.d('Device location: ${position.latitude}, ${position.longitude}');
 
-    var markers = tripScreenCubit.state.locations.map((m) => m.latLng).toList()
-      ..add(LatLng(position.latitude, position.longitude));
-
-    logger.d('Fitting camera to $markers');
-
     if (isClosed) {
       // TODO: Can happen in many places. Better to ensure every place is safely handles.
       return;
@@ -46,5 +41,17 @@ class MapCubit extends Cubit<MapState> {
 
   void openMarkerDetails() {
     emit(MapMarkerDetailsOpened(deviceLocation: state.deviceLocation));
+  }
+
+  Future<void> focusOnDeviceLocation() async {
+    if (state.deviceLocation == null) {
+      await invalidateDeviceLocation();
+    }
+    if (state.deviceLocation == null) {
+      // TODO: Indicate that location was not found
+      return;
+    }
+
+    tripScreenCubit.state.mapController.move(state.deviceLocation!, 15.0);
   }
 }

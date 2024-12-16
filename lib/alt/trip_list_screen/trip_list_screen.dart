@@ -1,10 +1,9 @@
+import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
 import 'package:vut_itu/alt/trip_list_screen/cubit/trip_list_screen_cubit.dart';
-import 'package:vut_itu/backend/business_logic/trip_cities_model.dart';
-import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
@@ -18,20 +17,13 @@ class TripsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TripsCubit, TripsState>(
-      builder: (context, tripListState) {
+      builder: (context, tripsState) {
         return BlocProvider(
-          create: (context) => TripListScreenCubit.fromContext(context),
-          child: BlocConsumer<TripListScreenCubit, TripListScreenState>(
+          create: (context) =>
+              TripListScreenCubit.fromContext(context, tripsState),
+          child: BlocBuilder<TripListScreenCubit, TripListScreenState>(
             builder: (context, screenState) {
-              return _build(context, tripListState, screenState);
-            },
-            listener: (context, state) async {
-              if (state is! TripListScreenAddNew) {
-                logger.w(
-                    'Adding new trip in a modal window, but state is not AddNew',);
-                return;
-              }
-              await _showAddTripBottomSheet(context, state);
+              return _build(context, tripsState, screenState);
             },
           ),
         );
@@ -39,32 +31,11 @@ class TripsScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> _showAddTripBottomSheet(
-      BuildContext context, TripListScreenAddNew state,) {
-    return showModalBottomSheet(
-        context: context,
-        enableDrag: true,
-        showDragHandle: true,
-        builder: (context) {
-          return Center(
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: state.nameTextFieldController,
-                  decoration: InputDecoration(
-                      labelText: 'Trip name', hintText: 'Enter trip name',),
-                ),
-                // TODO: dates + budget
-                // TODO: search & select cities
-                // TODO: confirm button
-              ],
-            ),
-          );
-        },);
-  }
-
   Scaffold _build(
-      BuildContext context, TripsState state, TripListScreenState screenState,) {
+    BuildContext context,
+    TripsState tripsState,
+    TripListScreenState screenState,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Trips'),
@@ -81,50 +52,77 @@ class TripsScreen extends StatelessWidget {
         },
       ),
       body: RefreshIndicator(
-          onRefresh: () async {
-            await BlocProvider.of<TripsCubit>(context).invalidateTrips();
-          },
-          child: _tripsList(context, state, screenState),),
+        onRefresh: () async {
+          await BlocProvider.of<TripsCubit>(context).invalidateTrips();
+        },
+        child: _tripsList(context, tripsState, screenState),
+      ),
     );
   }
 
-  Widget _tripsList(BuildContext context, TripsState tripsState,
-      TripListScreenState screenState,) {
+  Widget _tripsList(
+    BuildContext context,
+    TripsState tripsState,
+    TripListScreenState screenState,
+  ) {
+    logger.i('tripsState.trips.length: ${tripsState.trips.length}');
     return ListView.builder(
-      reverse: false,
       itemCount: tripsState.trips.length,
       itemBuilder: (context, index) {
-        var (trip, places) = tripsState.trips[index];
-        return _tripItem(trip, places, context);
-      },
-    );
-  }
+        var (trip, _) = tripsState.trips[index];
+        var subtitle = trip.startDate != null
+            ? DateFormat('dd MMM, yyyy').format(trip.startDate!)
+            : 'No dates';
 
-  ListTile _tripItem(TripModel trip, List<TripCityModel> visitingPlaces,
-      BuildContext context,) {
-    var subtitle = trip.startDate != null
-        ? DateFormat('dd MMM, yyyy').format(trip.startDate!)
-        : 'No dates';
+        if (screenState.titleControllers[trip.id] == null) {
+          var nameController = TextEditingController(text: trip.name);
+          nameController.addListener(() {
+            nameController.value = nameController.value.copyWith(
+              text: nameController.text,
+              selection: TextSelection(
+                baseOffset: nameController.text.length,
+                extentOffset: nameController.text.length,
+              ),
+              composing: TextRange.empty,
+            );
+          });
+          screenState.titleControllers[trip.id] = nameController;
+        }
 
-    return ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text(trip.name),
-      subtitle: Text(subtitle),
-      onTap: () {
-        Navigator.of(context)
-            .push(
-          MaterialPageRoute(
-            builder: (context) => TripScreen(
-              tripId: trip.id,
-              settingsViewModel: settingsViewModel,
-            ),
+        return ListTile(
+          leading: Icon(Icons.directions_car),
+          title: AutoSizeTextField(
+            fullwidth: false,
+            minLines: 1,
+            maxLines: 2,
+            controller: screenState.titleControllers[trip.id],
+            decoration: InputDecoration(border: InputBorder.none),
+            onEditingComplete: () {
+              BlocProvider.of<TripListScreenCubit>(context).updateTripName(
+                trip.id,
+                screenState.titleControllers[trip.id]!.text,
+              );
+            },
           ),
-        )
-            .then((_) {
-          if (context.mounted) {
-            BlocProvider.of<TripsCubit>(context).invalidateTrips();
-          }
-        });
+          subtitle: Text(subtitle),
+          trailing: Icon(Icons.map),
+          onTap: () {
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (context) => TripScreen(
+                  tripId: trip.id,
+                  settingsViewModel: settingsViewModel,
+                ),
+              ),
+            )
+                .then((_) {
+              if (context.mounted) {
+                BlocProvider.of<TripsCubit>(context).invalidateTrips();
+              }
+            });
+          },
+        );
       },
     );
   }

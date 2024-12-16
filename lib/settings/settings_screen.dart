@@ -53,8 +53,8 @@ class SettingsScreen extends StatelessWidget {
               onChanged: settingsController.updateGuiMode,
               items: const [
                 DropdownMenuItem(
-                  value: GuiModeEnum.defaultMode,
-                  child: Text('Default'),
+                  value: GuiModeEnum.Nmode,
+                  child: Text('Alternative'),
                 ),
                 DropdownMenuItem(
                   value: GuiModeEnum.alternativeMode,

@@ -2,7 +2,6 @@ import 'package:bottom_sheet_scaffold/bottom_sheet_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/map_view.dart';
 import 'package:vut_itu/alt/search_bar/search_bar_view.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
@@ -49,21 +48,21 @@ class TripScreen extends StatelessWidget {
     TripState state,
     TripScreenState screenState,
   ) {
-    var locations = screenState.locations;
-    if (screenState is TripScreenShowLocationAttractions) {
-      var country = screenState.location.country;
-      locations = screenState.attractions
+    List<Location> locations = switch (screenState) {
+      TripScreenShowLocations() => screenState.locations,
+      TripScreenShowLocationAttractions() => screenState.attractions
           .map(
             (a) => Location(
               name: a.name,
-              country: country,
+              country: screenState.location.country,
               geoapifyId: '', // TODO
               locationType: LocationType.attraction,
               latLng: a.coordinates,
             ),
           )
-          .toList();
-    }
+          .toList(),
+      _ => []
+    };
 
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
@@ -73,9 +72,11 @@ class TripScreen extends StatelessWidget {
           onQuerySubmit: (locations) {
             BlocProvider.of<TripScreenCubit>(context)
                 .showQueryResults(locations);
+            // BottomSheetPanel.close();
           },
           onLocationSelect: (location) {
             BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
+            // BottomSheetPanel.close();
           },
           onLocationAdd: (location) {
             BlocProvider.of<TripScreenCubit>(context).addLocation(location);
@@ -94,22 +95,12 @@ class TripScreen extends StatelessWidget {
         mapController: screenState.mapController,
         trip: state.trip,
         locations: locations,
-        centerAt: LatLng(51.5074, -0.1278),
-        initZoomLevel: 7,
       ),
       dismissOnClick: true,
       barrierColor: Colors.white.withOpacity(0.5),
 
       // Configure the bottom sheet
       bottomSheet: _bottomSheet(context, state),
-      onWillPop: (() async {
-        if (BottomSheetPanel.isOpen) {
-          BottomSheetPanel.close();
-          return false;
-        } else {
-          return true;
-        }
-      }),
     );
   }
 
@@ -221,22 +212,33 @@ class TripScreen extends StatelessWidget {
       color: Theme.of(context).scaffoldBackgroundColor,
       height: maxBottomBarHeight,
       width: double.infinity,
-      child: ReorderableListView.builder(
-        itemCount: state.places.length,
-        itemBuilder: (context, idx) {
-          if (state.places[idx].city == null) {
-            logger.e('City is null for place $idx');
-          }
-          return ListTile(
+      child: _visitingPlacesList(state, context),
+    );
+  }
+
+  ReorderableListView _visitingPlacesList(
+      TripState state, BuildContext context) {
+    return ReorderableListView.builder(
+      itemCount: state.places.length,
+      itemBuilder: (context, idx) {
+        if (state.places[idx].city == null) {
+          logger.w('City ${state.places[idx].id} is not loaded yet');
+        }
+        return Dismissible(
+          key: Key(idx.toString()),
+          onDismissed: (direction) {
+            BlocProvider.of<TripCubit>(context).removeCity(idx);
+          },
+          child: ListTile(
             key: Key('$idx'),
-            title: Text(state.places[idx].city?.name ?? 'Unknown city'),
+            title: Text(state.places[idx].city?.name ?? 'Loading...'),
             trailing: Icon(Icons.drag_handle),
-          );
-        },
-        onReorder: (int oldIndex, int newIndex) {
-          BlocProvider.of<TripCubit>(context).reoderPlaces(oldIndex, newIndex);
-        },
-      ),
+          ),
+        );
+      },
+      onReorder: (int oldIndex, int newIndex) {
+        BlocProvider.of<TripCubit>(context).reoderPlaces(oldIndex, newIndex);
+      },
     );
   }
 }

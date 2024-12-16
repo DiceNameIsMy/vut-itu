@@ -1,29 +1,12 @@
 part of 'trip_list_screen_cubit.dart';
 
 @immutable
-sealed class TripListScreenState {}
+sealed class TripListScreenState {
+  final Map<int, TextEditingController> titleControllers;
 
-final class TripListScreenInitial extends TripListScreenState {}
+  TripListScreenState({required this.titleControllers});
+}
 
-final class TripListScreenAddNew extends TripListScreenState {
-  final TripModel newTrip;
-  final TextEditingController nameTextFieldController;
-
-  TripListScreenAddNew(this.newTrip, this.nameTextFieldController);
-
-  void nameChanged(String newName) {
-    // Add new trip
-  }
-
-  void startDateChanged(DateTime newDate) {
-    // Add new trip
-  }
-
-  void endDateChanged(DateTime newDate) {
-    // Add new trip
-  }
-
-  void budgetChanged(double newBudget) {
-    // Add new trip
-  }
+final class TripListScreenInitial extends TripListScreenState {
+  TripListScreenInitial({required super.titleControllers});
 }

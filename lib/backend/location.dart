@@ -16,7 +16,7 @@ class Location {
     required this.latLng,
   });
 
-  factory Location.fromJson(Map<String, dynamic> json) {
+  factory Location.fromGeoapifyApi(Map<String, dynamic> json) {
     var type = switch (json['result_type'] as String) {
       'city' => LocationType.city,
       'attraction' => LocationType.attraction,

@@ -81,4 +81,22 @@ class SearchBarCubit extends Cubit<SearchBarState> {
 
     return suggestions;
   }
+
+  Future<List<Location>> getLastSuggestion(String query) async {
+    var suggestions = await _geoapifyClient.getSearchAutocompletion(query);
+
+    emit(
+      SearchBarLoaded(
+        controller: state.controller,
+        searchTerm: query,
+        searchSuggestions: suggestions,
+      ),
+    );
+
+    return suggestions;
+  }
+
+  void clearQuery() {
+    state.controller.clear();
+  }
 }
