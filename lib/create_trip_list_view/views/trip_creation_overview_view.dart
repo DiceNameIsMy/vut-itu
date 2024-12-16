@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/create_trip_list_view/cubit/trip_cubit.dart';
@@ -14,8 +15,28 @@ class TripCreationOverviewView extends StatelessWidget {
   final TripCubit tripCubit;
   final CityCubit cityCubit = CityCubit();
   final AttractionCubit attractionCubit = AttractionCubit();
-
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _budgetController = TextEditingController();
   TripCreationOverviewView({required this.tripCubit});
+
+  void _onNameChanged(String name, BuildContext context) {
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (name == _nameController.text) {
+        context.read<TripCubit>().updateTripName(name);
+      }
+    });
+  }
+
+  //debounce budget update
+  void _onBudgetChanged(String budget, BuildContext context) {
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (budget == _budgetController.text) {
+        context
+            .read<TripCubit>()
+            .updateTripBudget(double.tryParse(budget) ?? 0.0);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +48,19 @@ class TripCreationOverviewView extends StatelessWidget {
         ),
         body: BlocBuilder<TripCubit, TripModel>(
           builder: (context, trip) {
+            _nameController.text = trip.name;
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   // Trip Name
                   TextField(
-                    controller: TextEditingController(text: trip.name),
+                    controller: _nameController,
                     decoration: InputDecoration(
                       labelText: 'Trip Name',
                     ),
                     onChanged: (name) {
-                      context.read<TripCubit>().updateTripName(name);
+                      _onNameChanged(name, context);
                     },
                   ),
                   // List of cities
@@ -127,46 +149,136 @@ class TripCreationOverviewView extends StatelessWidget {
                   ),
 
                   // Budget, Start Date, End Date
-                  Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextField(
-                        controller: TextEditingController(
-                            text: trip.budget?.toString() ?? ''),
-                        decoration: InputDecoration(
-                          labelText: 'Budget',
-                        ),
-                        onChanged: (budget) {
-                          context
-                              .read<TripCubit>()
-                              .updateTripBudget(double.parse(budget));
-                        },
+                      Row(
+                        children: [
+                          Icon(Icons.monetization_on, size: 16),
+                          SizedBox(width: 4),
+
+                          // Tappable Budget Text
+                          GestureDetector(
+                            onTap: () async {
+                              final updatedBudget = await showDialog<double>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  final budgetController =
+                                      TextEditingController(
+                                    text: trip.budget?.toStringAsFixed(2) ?? '',
+                                  );
+
+                                  return AlertDialog(
+                                    title: Text('Update Budget'),
+                                    content: TextField(
+                                      controller: budgetController,
+                                      keyboardType:
+                                          TextInputType.numberWithOptions(
+                                              decimal: true),
+                                      decoration: InputDecoration(
+                                        hintText: 'Enter budget',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(
+                                              context, null); // Cancel
+                                        },
+                                        child: Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          final enteredValue = double.tryParse(
+                                              budgetController.text);
+                                          if (enteredValue != null) {
+                                            Navigator.pop(context,
+                                                enteredValue); // Pass the updated budget
+                                          }
+                                        },
+                                        child: Text('Save'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              if (updatedBudget != null) {
+                                context.read<TripCubit>().updateTripBudget(
+                                    updatedBudget); // Update the budget in the state
+                              }
+                            },
+                            child: Text(
+                              trip.budget == null
+                                  ? 'Set Budget'
+                                  : '\$${trip.budget!.toStringAsFixed(2)}',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.blue),
+                            ),
+                          ),
+                        ],
                       ),
-                      TextField(
-                        controller: TextEditingController(
-                            text: trip.startDate?.toIso8601String() ?? ''),
-                        decoration: InputDecoration(
-                          labelText: 'Start Date',
-                        ),
-                        onChanged: (startDate) {
-                          context
-                              .read<TripCubit>()
-                              .updateTripStartDate(DateTime.parse(startDate));
-                        },
-                      ),
-                      TextField(
-                        controller: TextEditingController(
-                            text: trip.endDate?.toIso8601String() ?? ''),
-                        decoration: InputDecoration(
-                          labelText: 'End Date',
-                        ),
-                        onChanged: (endDate) {
-                          context
-                              .read<TripCubit>()
-                              .updateTripEndDate(DateTime.parse(endDate));
-                        },
+                      Row(
+                        children: [
+                          Icon(Icons.date_range, size: 16),
+                          SizedBox(width: 4),
+
+                          // Start Date Picker
+                          GestureDetector(
+                            onTap: () async {
+                              final selectedDate = await showDatePicker(
+                                context: context,
+                                initialDate: trip.startDate ?? DateTime.now(),
+                                firstDate: DateTime.now()
+                                    .subtract(Duration(days: 365)),
+                                lastDate:
+                                    DateTime.now().add(Duration(days: 365)),
+                              );
+                              if (selectedDate != null) {
+                                context.read<TripCubit>().updateTripStartDate(
+                                    selectedDate); // Update the start date
+                              }
+                            },
+                            child: Text(
+                              trip.startDate == null
+                                  ? 'Select Date'
+                                  : '${trip.startDate!.day}.${trip.startDate!.month}',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.blue),
+                            ),
+                          ),
+
+                          Text(' - ', style: TextStyle(fontSize: 18)),
+
+                          // End Date Picker
+                          GestureDetector(
+                            onTap: () async {
+                              final selectedDate = await showDatePicker(
+                                context: context,
+                                initialDate: trip.endDate ?? DateTime.now(),
+                                firstDate: DateTime.now()
+                                    .subtract(Duration(days: 365)),
+                                lastDate:
+                                    DateTime.now().add(Duration(days: 365)),
+                              );
+                              if (selectedDate != null) {
+                                context.read<TripCubit>().updateTripEndDate(
+                                    selectedDate); // Update the end date
+                              }
+                            },
+                            child: Text(
+                              trip.endDate == null
+                                  ? 'Select Date'
+                                  : '${trip.endDate!.day}.${trip.endDate!.month}',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.blue),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
+                  )
                 ],
               ),
             );

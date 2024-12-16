@@ -34,7 +34,7 @@ class TripCityCubit extends Cubit<TripCityModel> {
   //add an attraction to the trip city
   Future<void> addAttractionToTripCity(AttractionModel attraction) async {
     final tripAttraction = TripAttractionModel(
-        tripCityId: _tripCity.id!,
+        tripCityId: _tripCity.id,
         attractionId: attraction.id!,
         expectedCost: attraction.cost,
         expectedTimeToVisitInHours: attraction.averageTime,
@@ -85,14 +85,14 @@ class TripCityCubit extends Cubit<TripCityModel> {
   //update the trip city with the new start date
   Future<void> updateTripCityStartDate(DateTime startDate) async {
     await DatabaseHelper().updateTripCity(
-        _tripCity.id!, {'start_date': startDate.toIso8601String()});
+        _tripCity.id, {'start_date': startDate.toIso8601String()});
     emit(_tripCity.copyWith(startDate: startDate));
   }
 
   //update the trip city with the new end date
   Future<void> updateTripCityEndDate(DateTime endDate) async {
     await DatabaseHelper()
-        .updateTripCity(_tripCity.id!, {'end_date': endDate.toIso8601String()});
+        .updateTripCity(_tripCity.id, {'end_date': endDate.toIso8601String()});
     emit(_tripCity.copyWith(endDate: endDate));
   }
 }

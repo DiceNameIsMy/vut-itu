@@ -27,7 +27,7 @@ class _CityScreenState extends State<CityScreen> {
   void initState() {
     super.initState();
     context.read<AttractionCubit>().fetchAttractions(widget.cityId);
-    context.read<TripCityCubit>().fetchTripCity(widget.tripCity.id!);
+    context.read<TripCityCubit>().fetchTripCity(widget.tripCity.id);
   }
 
   void _onSearchChanged(String query) {
@@ -53,15 +53,10 @@ class _CityScreenState extends State<CityScreen> {
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: _searchController,
-                        decoration:
-                            InputDecoration(labelText: 'Search Attractions'),
-                        onChanged: (query) {
-                          context
-                              .read<AttractionCubit>()
-                              .searchAttractions(query);
-                        },
-                      ),
+                          controller: _searchController,
+                          decoration:
+                              InputDecoration(labelText: 'Search Attractions'),
+                          onChanged: _onSearchChanged),
                     ),
                     IconButton(
                       icon: Icon(Icons.filter_list),
@@ -180,7 +175,12 @@ class _CityScreenState extends State<CityScreen> {
     return Container(
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 255, 255, 255),
-        borderRadius: BorderRadius.circular(10),
+        //top left and right corners of the bottom sheet
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+
         boxShadow: [
           BoxShadow(
             color: const Color.fromARGB(66, 18, 11, 142),
@@ -224,6 +224,64 @@ class _CityScreenState extends State<CityScreen> {
                         ),
                       ],
                     ),
+                    Row(
+                      children: [
+                        Icon(Icons.date_range, size: 16),
+                        SizedBox(width: 4),
+
+                        // Start Date Picker
+                        GestureDetector(
+                          onTap: () async {
+                            final selectedDate = await showDatePicker(
+                              context: context,
+                              initialDate: tripCity.startDate ?? DateTime.now(),
+                              firstDate:
+                                  DateTime.now().subtract(Duration(days: 365)),
+                              lastDate: DateTime.now().add(Duration(days: 365)),
+                            );
+                            if (selectedDate != null) {
+                              context
+                                  .read<TripCityCubit>()
+                                  .updateTripCityStartDate(
+                                      selectedDate); // Update the start date
+                            }
+                          },
+                          child: Text(
+                            tripCity.startDate == null
+                                ? 'Select Date'
+                                : '${tripCity.startDate!.day}.${tripCity.startDate!.month}',
+                            style: TextStyle(fontSize: 18, color: Colors.blue),
+                          ),
+                        ),
+
+                        Text(' - ', style: TextStyle(fontSize: 18)),
+
+                        // End Date Picker
+                        GestureDetector(
+                          onTap: () async {
+                            final selectedDate = await showDatePicker(
+                              context: context,
+                              initialDate: tripCity.endDate ?? DateTime.now(),
+                              firstDate:
+                                  DateTime.now().subtract(Duration(days: 365)),
+                              lastDate: DateTime.now().add(Duration(days: 365)),
+                            );
+                            if (selectedDate != null) {
+                              context
+                                  .read<TripCityCubit>()
+                                  .updateTripCityEndDate(
+                                      selectedDate); // Update the end date
+                            }
+                          },
+                          child: Text(
+                            tripCity.endDate == null
+                                ? 'Select Date'
+                                : '${tripCity.endDate!.day}.${tripCity.endDate!.month}',
+                            style: TextStyle(fontSize: 18, color: Colors.blue),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 )
               ],
