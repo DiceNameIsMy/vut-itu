@@ -221,7 +221,7 @@ class _CityScreenState extends State<CityScreen> {
                           size: 16,
                           color: const Color.fromARGB(255, 16, 8, 63),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(width: 3),
                         Text(
                           '${totalCost.toStringAsFixed(2)}',
                           style: TextStyle(
@@ -237,7 +237,7 @@ class _CityScreenState extends State<CityScreen> {
                           size: 16,
                           color: const Color.fromARGB(255, 16, 8, 63),
                         ),
-                        SizedBox(width: 4),
+                        SizedBox(width: 3),
                         Text(
                           '${totalTime.toStringAsFixed(2)} hours',
                           style: TextStyle(
@@ -274,7 +274,7 @@ class _CityScreenState extends State<CityScreen> {
                           },
                           child: Text(
                             tripCity.startDate == null
-                                ? 'Select Date'
+                                ? 'Enter date'
                                 : '${tripCity.startDate!.day}.${tripCity.startDate!.month}',
                             style: TextStyle(
                                 fontSize: 18,
@@ -303,7 +303,7 @@ class _CityScreenState extends State<CityScreen> {
                           },
                           child: Text(
                             tripCity.endDate == null
-                                ? 'Select Date'
+                                ? 'Enter date'
                                 : '${tripCity.endDate!.day}.${tripCity.endDate!.month}',
                             style: TextStyle(
                                 fontSize: 18,
