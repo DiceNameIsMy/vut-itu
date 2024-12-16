@@ -22,24 +22,26 @@ TODO
 
 #### Screen: `Onboarding`
 
-Onboarding screen to give an overview of the application's capabilities.
+Onboarding screen to give an overview of the application's capabilities. It's shown only once, unless user clears out the application storage.
 
 #### Screen: `List of trips`
 
-TODO: Explain
+A screen to show all trips that a user has. He can:
+
+- Make an inline editaion of its name
+- Open a `Trip detail` screen for his trips
 
 #### Screen: `Trip detail`
 
-TODO: Add intro?
+A screen that includes 2 data representations: On a map with markers, and in form of a list. Change in one of these would result in updating the other. User can:
 
-- Button to return to `List of trips` screen
-- Button to open settings
-- An interactive map with a route to be taken
+- Press a button to return to `List of trips` screen
+- Press a button to open settings
+- Use an interactive map with a route to be taken
     - When user zooms in to a place/city, map changes mode & transforms to `Place/city` screen
-- Search widget to find, browse, and add places/cities to a trip
-- Editable date fields to configure when trip takes place, how many days are to be spent at each place/city, and when trip ends.
-- Editable, extendable, and reorderable list of places/cities to visit
-- Widget to open a detailed screen of a place/city to visit
+- Use search widget to find, browse, and add places/cities to a trip.
+- Utilize editable date fields to configure when trip takes place, how many days are to be spent at each place/city, and when trip ends.
+- Utilize an editable, extendable, and reorderable list of places/cities to visit
 
 #### Screen: `Place/city`
 
