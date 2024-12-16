@@ -16,11 +16,15 @@ class TripCubit extends Cubit<TripModel> {
   Future<void> fetchTrip(int id) async {
     final trip = await DatabaseHelper().getTrip(id);
     final tripCities = await DatabaseHelper().getTripCities(tripId: id);
+
     final tripModel = TripModel.fromMap(trip);
-    tripModel.cities = tripCities
-        .map((e) => TripCityModel.fromMap(e))
-        .toList()
-        .cast<TripCityModel>();
+
+    List<TripCityModel> citiesList =
+        tripCities.map((e) => TripCityModel.fromMap(e)).toList();
+
+    citiesList.sort((a, b) => a.order.compareTo(b.order));
+
+    tripModel.cities = citiesList;
     emit(tripModel);
   }
 
@@ -106,5 +110,31 @@ class TripCubit extends Cubit<TripModel> {
   Future<void> updateTrip() async {
     await DatabaseHelper().updateTrip(state.id, state.toMap());
     emit(state); // Emit the current state
+  }
+
+  // Reorder the cities in the state and update the database
+  Future<void> reorderCities(int oldIndex, int newIndex) async {
+    // Adjust for the case where the newIndex is after the oldIndex
+    if (newIndex > oldIndex) newIndex -= 1;
+
+    // Create a copy of the cities list and move the city
+    final updatedCities = List.of(state.cities);
+    final movedCity = updatedCities.removeAt(oldIndex);
+    updatedCities.insert(newIndex, movedCity);
+
+    // Update the order of the cities in the database
+    for (int i = 0; i < updatedCities.length; i++) {
+      final city = updatedCities[i];
+      city.order = i + 1; // Update order starting from 1
+      await updateTripCityOrder(city.id, city.order);
+    }
+
+    // Emit the updated state with the reordered cities
+    emit(state.copyWith(cities: updatedCities));
+  }
+
+// Update the order of a city in the database
+  Future<void> updateTripCityOrder(int cityId, int order) async {
+    await DatabaseHelper().updateTripCity(cityId, {'order_in_list': order});
   }
 }

@@ -242,7 +242,6 @@ class DatabaseHelper {
   }
 
   // TripAttractions
-// Insert a tripAttraction into the database to the provided TripCity
   Future<void> insertTripAttraction(
       TripAttractionModel tripAttraction, TripCityModel tripCity) async {
     final db = await database;
