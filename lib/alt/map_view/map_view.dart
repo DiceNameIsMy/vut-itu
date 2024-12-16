@@ -14,8 +14,6 @@ class MapView extends StatelessWidget {
   final MapController mapController;
   final TripModel trip;
   final List<Location> locations;
-  final LatLng centerAt;
-  final double initZoomLevel;
 
   // Define how to query tiles that are used to show a map.
   final TileLayer tileProvider = TileLayer(
@@ -31,8 +29,6 @@ class MapView extends StatelessWidget {
     required this.mapController,
     required this.trip,
     required this.locations,
-    required this.centerAt,
-    required this.initZoomLevel,
   });
 
   @override

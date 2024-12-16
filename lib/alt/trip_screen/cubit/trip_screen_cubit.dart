@@ -71,7 +71,6 @@ class TripScreenCubit extends Cubit<TripScreenState> {
       TripLoadAttractions(
         location: location,
         mapController: state.mapController,
-        locations: [location],
       ),
     );
 
@@ -89,7 +88,6 @@ class TripScreenCubit extends Cubit<TripScreenState> {
         location: location,
         attractions: attractions,
         mapController: state.mapController,
-        locations: [location],
       ),
     );
     logger.i(

@@ -4,19 +4,19 @@ part of 'trip_screen_cubit.dart';
 sealed class TripScreenState {
   final MapController mapController;
 
-  final List<Location> locations;
-
-  TripScreenState({required this.mapController, this.locations = const []});
+  TripScreenState({required this.mapController});
 }
 
 final class TripScreenInitial extends TripScreenState {
-  TripScreenInitial({required super.mapController, super.locations = const []});
+  TripScreenInitial({required super.mapController});
 }
 
 final class TripScreenShowLocations extends TripScreenState {
+  final List<Location> locations;
+
   TripScreenShowLocations({
     required super.mapController,
-    super.locations = const [],
+    this.locations = const [],
   });
 }
 
@@ -26,7 +26,6 @@ final class TripLoadAttractions extends TripScreenState {
   TripLoadAttractions({
     required this.location,
     required super.mapController,
-    super.locations = const [],
   });
 }
 
@@ -38,6 +37,5 @@ final class TripScreenShowLocationAttractions extends TripScreenState {
     required this.location,
     required this.attractions,
     required super.mapController,
-    super.locations = const [],
   });
 }
