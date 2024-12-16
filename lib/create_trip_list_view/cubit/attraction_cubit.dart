@@ -11,7 +11,7 @@ class AttractionCubit extends Cubit<List<AttractionModel>> {
     final attractionMaps = await DatabaseHelper().getAttractions(cityId);
     _attractions =
         attractionMaps.map((map) => AttractionModel.fromMap(map)).toList();
-    emit(_attractions);
+    emit(List.from(_attractions)); // Emit a new list to ensure immutability
   }
 
   void searchAttractions(String query) {
@@ -19,7 +19,7 @@ class AttractionCubit extends Cubit<List<AttractionModel>> {
         .where((attraction) =>
             attraction.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
-    emit(filtered);
+    emit(List.from(filtered)); // Emit a new list after filtering
   }
 
   void filterAttractionsByCategory(String category) {
@@ -37,17 +37,19 @@ class AttractionCubit extends Cubit<List<AttractionModel>> {
           .toList();
     }
 
-    emit(filtered);
+    emit(List.from(filtered)); // Emit a new list after filtering
   }
 
-  //hide the attraction from the list
+  // Hide the attraction from the list by removing it and emitting a new list
   void hideAttraction(AttractionModel attraction) {
     _attractions.remove(attraction);
-    emit(_attractions);
+    emit(List.from(
+        _attractions)); // Emit a new list after removing the attraction
   }
 
   void addAttractionToCity(AttractionModel attraction) {
     _attractions.add(attraction);
-    emit(_attractions);
+    emit(
+        List.from(_attractions)); // Emit a new list after adding the attraction
   }
 }

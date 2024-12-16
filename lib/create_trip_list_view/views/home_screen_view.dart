@@ -11,6 +11,7 @@ import 'trip_list_view.dart';
 import 'cities_list_view.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -31,6 +32,8 @@ class _MainScreenState extends State<MainScreen> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -77,7 +80,8 @@ class _MainScreenState extends State<MainScreen> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => ProfileScreen(), // Profile Screen with Tabs
+                        builder: (context) =>
+                            ProfileScreen(), // Profile Screen with Tabs
                       ),
                     );
                   },

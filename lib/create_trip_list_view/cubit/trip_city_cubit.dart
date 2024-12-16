@@ -52,6 +52,18 @@ class TripCityCubit extends Cubit<TripCityModel> {
     emit(_tripCity.copyWith(attractions: _tripCity.attractions));
   }
 
+  //get attraction name by id
+  Future<String> getAttractionNameById(int id) async {
+    final attraction = await DatabaseHelper().getAttraction(id);
+    return AttractionModel.fromMap(attraction).name;
+  }
+
+  //get attraction category by id
+  Future<String> getAttractionCategoryById(int id) async {
+    final attraction = await DatabaseHelper().getAttraction(id);
+    return AttractionModel.fromMap(attraction).category;
+  }
+
   //calculate the total cost of the trip city
   double calculateTotalCost() {
     double totalCost = 0;
@@ -82,17 +94,23 @@ class TripCityCubit extends Cubit<TripCityModel> {
     return totalTime;
   }
 
-  //update the trip city with the new start date
+  // Update the trip city with the new start date
   Future<void> updateTripCityStartDate(DateTime startDate) async {
     await DatabaseHelper().updateTripCity(
         _tripCity.id, {'start_date': startDate.toIso8601String()});
-    emit(_tripCity.copyWith(startDate: startDate));
+
+    // Ensure that we keep the other fields in the TripCityModel while updating only the startDate
+    _tripCity = _tripCity.copyWith(startDate: startDate);
+    emit(_tripCity); // Emit the updated trip city state
   }
 
-  //update the trip city with the new end date
+// Update the trip city with the new end date
   Future<void> updateTripCityEndDate(DateTime endDate) async {
     await DatabaseHelper()
         .updateTripCity(_tripCity.id, {'end_date': endDate.toIso8601String()});
-    emit(_tripCity.copyWith(endDate: endDate));
+
+    // Ensure that we keep the other fields in the TripCityModel while updating only the endDate
+    _tripCity = _tripCity.copyWith(endDate: endDate);
+    emit(_tripCity); // Emit the updated trip city state
   }
 }

@@ -107,6 +107,13 @@ class DatabaseHelper {
     return await db.query('Attractions');
   }
 
+  Future<Map<String, dynamic>> getAttraction(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> attraction =
+        await db.query('Attractions', where: 'id = ?', whereArgs: [id]);
+    return attraction.first;
+  }
+
   Future<int> updateAttraction(int id, Map<String, dynamic> attraction) async {
     final db = await database;
     return await db

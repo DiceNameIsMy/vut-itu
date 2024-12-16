@@ -54,12 +54,19 @@ class _CityScreenState extends State<CityScreen> {
                     Expanded(
                       child: TextField(
                           controller: _searchController,
-                          decoration:
-                              InputDecoration(labelText: 'Search Attractions'),
+                          decoration: InputDecoration(
+                            labelText: 'Search Attractions',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
                           onChanged: _onSearchChanged),
                     ),
                     IconButton(
-                      icon: Icon(Icons.filter_list),
+                      icon: Icon(
+                        Icons.filter_list,
+                        color: const Color.fromARGB(255, 16, 8, 63),
+                      ),
                       onPressed: () {
                         showDialog(
                           context: context,
@@ -134,7 +141,10 @@ class _CityScreenState extends State<CityScreen> {
                                 ],
                               ),
                               trailing: IconButton(
-                                icon: Icon(Icons.add),
+                                icon: Icon(
+                                  Icons.add,
+                                  color: const Color.fromARGB(255, 16, 8, 63),
+                                ),
                                 onPressed: () {
                                   context
                                       .read<TripCityCubit>()
@@ -177,8 +187,8 @@ class _CityScreenState extends State<CityScreen> {
         color: const Color.fromARGB(255, 255, 255, 255),
         //top left and right corners of the bottom sheet
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(20),
         ),
 
         boxShadow: [
@@ -206,27 +216,43 @@ class _CityScreenState extends State<CityScreen> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.attach_money, size: 16),
-                        SizedBox(width: 4),
+                        Icon(
+                          Icons.attach_money,
+                          size: 16,
+                          color: const Color.fromARGB(255, 16, 8, 63),
+                        ),
+                        SizedBox(width: 3),
                         Text(
                           '${totalCost.toStringAsFixed(2)}',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: const Color.fromARGB(255, 16, 8, 63)),
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        Icon(Icons.access_time, size: 16),
-                        SizedBox(width: 4),
+                        Icon(
+                          Icons.access_time,
+                          size: 16,
+                          color: const Color.fromARGB(255, 16, 8, 63),
+                        ),
+                        SizedBox(width: 3),
                         Text(
                           '${totalTime.toStringAsFixed(2)} hours',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: const Color.fromARGB(255, 16, 8, 63)),
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        Icon(Icons.date_range, size: 16),
+                        Icon(
+                          Icons.date_range,
+                          size: 16,
+                          color: const Color.fromARGB(255, 16, 8, 63),
+                        ),
                         SizedBox(width: 4),
 
                         // Start Date Picker
@@ -248,9 +274,11 @@ class _CityScreenState extends State<CityScreen> {
                           },
                           child: Text(
                             tripCity.startDate == null
-                                ? 'Select Date'
+                                ? 'Enter date'
                                 : '${tripCity.startDate!.day}.${tripCity.startDate!.month}',
-                            style: TextStyle(fontSize: 18, color: Colors.blue),
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: const Color.fromARGB(255, 16, 8, 63)),
                           ),
                         ),
 
@@ -275,9 +303,11 @@ class _CityScreenState extends State<CityScreen> {
                           },
                           child: Text(
                             tripCity.endDate == null
-                                ? 'Select Date'
+                                ? 'Enter date'
                                 : '${tripCity.endDate!.day}.${tripCity.endDate!.month}',
-                            style: TextStyle(fontSize: 18, color: Colors.blue),
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: const Color.fromARGB(255, 16, 8, 63)),
                           ),
                         ),
                       ],
@@ -329,22 +359,55 @@ class _CityScreenState extends State<CityScreen> {
                     ],
                   ),
                   child: ListTile(
-                    title: Text(attraction.attractionId.toString()),
+                    title: FutureBuilder<String>(
+                      future: context
+                          .read<TripCityCubit>()
+                          .getAttractionNameById(attraction.attractionId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return Text(snapshot.data ?? 'Unknown Attraction');
+                        }
+                      },
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.location_on, size: 16),
+                            Icon(
+                              Icons.location_on,
+                              size: 16,
+                            ),
                             SizedBox(width: 4),
-                            Text(attraction.attractionId.toString()),
+                            FutureBuilder<String>(
+                              future: context
+                                  .read<TripCityCubit>()
+                                  .getAttractionCategoryById(
+                                      attraction.attractionId),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Text(
+                                      snapshot.data ?? 'Unknown Category');
+                                }
+                              },
+                            ),
                           ],
                         ),
                         Row(
                           children: [
                             Icon(Icons.attach_money, size: 16),
                             SizedBox(width: 4),
-                            Text("\$${attraction.expectedCost.toString()}"),
+                            Text("${attraction.expectedCost.toString()}"),
                             Spacer(),
                             Icon(Icons.access_time_outlined, size: 16),
                             SizedBox(width: 4),
@@ -355,7 +418,10 @@ class _CityScreenState extends State<CityScreen> {
                       ],
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: Icon(
+                        Icons.delete,
+                        color: const Color.fromARGB(255, 16, 8, 63),
+                      ),
                       onPressed: () {
                         context
                             .read<TripCityCubit>()
