@@ -7,96 +7,104 @@ import 'package:vut_itu/backend/business_logic/database_helper.dart';
 class TripCubit extends Cubit<TripModel> {
   TripCubit() : super(TripModel());
 
-  TripModel _trip = TripModel();
-
+  // Reset the trip state
   void resetTrip() {
-    _trip = TripModel();
-    emit(_trip);
-    emit(_trip.copyWith(cities: []));
+    emit(TripModel()); // Reset state to default
   }
 
-  //fetch trip with cities from the database
+  // Fetch trip from database and update state
   Future<void> fetchTrip(int id) async {
     final trip = await DatabaseHelper().getTrip(id);
-    _trip = TripModel.fromMap(trip);
     final tripCities = await DatabaseHelper().getTripCities(tripId: id);
-    _trip.cities = tripCities
+    final tripModel = TripModel.fromMap(trip);
+    tripModel.cities = tripCities
         .map((e) => TripCityModel.fromMap(e))
         .toList()
         .cast<TripCityModel>();
-    emit(_trip);
+    emit(tripModel);
   }
-  //TODO refactor update methods to use the emit method instead of the _trip variable
 
-  //update the trip with the new name
+  // Update the trip name in the database and state
   Future<void> updateTripName(String name) async {
-    await DatabaseHelper().updateTrip(_trip.id, {'name': name});
-    emit(_trip.copyWith(name: name));
+    final updatedTrip = state.copyWith(name: name);
+    await DatabaseHelper().updateTrip(state.id, {'name': name});
+    emit(updatedTrip); // Emit the updated state
   }
 
-  //update the trip with the new budget
+  // Update the trip budget in the database and state
   Future<void> updateTripBudget(double budget) async {
-    await DatabaseHelper().updateTrip(_trip.id, {'budget': budget});
-    emit(_trip.copyWith(budget: budget));
+    final updatedTrip = state.copyWith(budget: budget);
+    await DatabaseHelper().updateTrip(state.id, {'budget': budget});
+    emit(updatedTrip); // Emit the updated state
   }
 
-  //update the trip with the new start date
+  // Update the trip start date in the database and state
   Future<void> updateTripStartDate(DateTime startDate) async {
+    final updatedTrip = state.copyWith(startDate: startDate);
     await DatabaseHelper()
-        .updateTrip(_trip.id, {'start_date': startDate.toIso8601String()});
-    emit(state.copyWith(startDate: startDate));
+        .updateTrip(state.id, {'start_date': startDate.toIso8601String()});
+    emit(updatedTrip); // Emit the updated state
   }
 
-  //update the trip with the new end date
+  // Update the trip end date in the database and state
   Future<void> updateTripEndDate(DateTime endDate) async {
+    final updatedTrip = state.copyWith(endDate: endDate);
     await DatabaseHelper()
-        .updateTrip(_trip.id, {'end_date': endDate.toIso8601String()});
-    emit(state.copyWith(endDate: endDate));
+        .updateTrip(state.id, {'end_date': endDate.toIso8601String()});
+    emit(updatedTrip); // Emit the updated state
   }
 
-  //add a city to the trip in the correct order
+  // Add a city to the trip in the database and state
   Future<void> addCityToTrip(CityModel city) async {
     final tripCity = TripCityModel(
       cityId: city.id,
-      tripId: _trip.id,
-      order: _trip.cities.length + 1,
+      tripId: state.id,
+      order: state.cities.length + 1,
     );
 
-    // Insert the trip city into the database
     final insertedTripCity =
         await DatabaseHelper().insertSingleTripCity(tripCity);
+    final updatedCities = List<TripCityModel>.from(state.cities)
+      ..add(insertedTripCity);
+    final updatedTrip = state.copyWith(cities: updatedCities);
 
-    // Update local _trip.cities list
-    _trip.cities.add(insertedTripCity);
-
-    // Emit the updated state
-    emit(
-        _trip.copyWith(cities: List.from(_trip.cities))); // Ensure immutability
+    emit(updatedTrip); // Emit the updated state
   }
 
-  //remove a city from the trip
+  // Remove a city from the trip in the database and state
   Future<void> removeCityFromTrip(TripCityModel tripCity) async {
     await DatabaseHelper().deleteTripCity(tripCity.id);
     await DatabaseHelper().deleteAllTripAttractions(tripCity.id);
-    _trip.cities.remove(tripCity);
-    emit(_trip.copyWith(cities: _trip.cities));
+
+    final updatedCities = List<TripCityModel>.from(state.cities)
+      ..remove(tripCity);
+    final updatedTrip = state.copyWith(cities: updatedCities);
+    emit(updatedTrip); // Emit the updated state
   }
 
-  //get city name from the city id
+  // Get city name by its ID
   Future<String> getCityName(int cityId) async {
     final cityMap = await DatabaseHelper().getCity(cityId);
     final city = CityModel.fromMap(cityMap);
     return city.name;
   }
 
-  //insert the trip to the database
-  Future<void> saveTrip() async {
-    await DatabaseHelper().insertTrip(_trip);
-    emit(_trip);
+  // Get city country by its ID
+  Future<String> getCityCountry(int cityId) async {
+    final cityMap = await DatabaseHelper().getCity(cityId);
+    final city = CityModel.fromMap(cityMap);
+    return city.country;
   }
 
-  //save the trip to the database
+  // Save the trip to the database
+  Future<void> saveTrip() async {
+    await DatabaseHelper().insertTrip(state); // Save the current state
+    emit(state); // Emit the current state
+  }
+
+  // Update the trip in the database
   Future<void> updateTrip() async {
-    await DatabaseHelper().updateTrip(_trip.id, _trip.toMap());
+    await DatabaseHelper().updateTrip(state.id, state.toMap());
+    emit(state); // Emit the current state
   }
 }

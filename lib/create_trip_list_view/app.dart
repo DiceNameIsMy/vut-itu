@@ -18,9 +18,9 @@ class Napp extends StatelessWidget {
   final SettingsViewModel settingsController;
   @override
   Widget build(BuildContext context) {
-    var themeSeedColor = Colors.deepPurple;
-    Color primaryColor = const Color.fromARGB(255, 18, 13, 78);
-    Color secondaryColor = const Color.fromARGB(255, 216, 144, 9);
+    var themeSeedColor = const Color.fromARGB(255, 224, 138, 17);
+    Color primaryColor = const Color.fromARGB(255, 229, 152, 28);
+    Color secondaryColor = const Color.fromARGB(255, 9, 10, 68);
 
     var initialRoute =
         settingsController.completedOnboarding ? '/' : '/onboarding';

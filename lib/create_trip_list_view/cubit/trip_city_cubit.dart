@@ -52,6 +52,18 @@ class TripCityCubit extends Cubit<TripCityModel> {
     emit(_tripCity.copyWith(attractions: _tripCity.attractions));
   }
 
+  //get attraction name by id
+  Future<String> getAttractionNameById(int id) async {
+    final attraction = await DatabaseHelper().getAttraction(id);
+    return AttractionModel.fromMap(attraction).name;
+  }
+
+  //get attraction category by id
+  Future<String> getAttractionCategoryById(int id) async {
+    final attraction = await DatabaseHelper().getAttraction(id);
+    return AttractionModel.fromMap(attraction).category;
+  }
+
   //calculate the total cost of the trip city
   double calculateTotalCost() {
     double totalCost = 0;

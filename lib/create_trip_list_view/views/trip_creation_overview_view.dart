@@ -17,6 +17,7 @@ class TripCreationOverviewView extends StatelessWidget {
   final AttractionCubit attractionCubit = AttractionCubit();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _budgetController = TextEditingController();
+
   TripCreationOverviewView({required this.tripCubit});
 
   void _onNameChanged(String name, BuildContext context) {
@@ -27,13 +28,10 @@ class TripCreationOverviewView extends StatelessWidget {
     });
   }
 
-  //debounce budget update
   void _onBudgetChanged(String budget, BuildContext context) {
     Future.delayed(Duration(milliseconds: 300), () {
       if (budget == _budgetController.text) {
-        context
-            .read<TripCubit>()
-            .updateTripBudget(double.tryParse(budget) ?? 0.0);
+        context.read<TripCubit>().updateTripBudget(double.parse(budget));
       }
     });
   }
@@ -58,6 +56,9 @@ class TripCreationOverviewView extends StatelessWidget {
                     controller: _nameController,
                     decoration: InputDecoration(
                       labelText: 'Trip Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                     onChanged: (name) {
                       _onNameChanged(name, context);
@@ -69,50 +70,88 @@ class TripCreationOverviewView extends StatelessWidget {
                       itemCount: trip.cities.length,
                       itemBuilder: (context, index) {
                         final city = trip.cities[index];
-                        return ListTile(
-                          title: FutureBuilder<String>(
-                            future: context
-                                .read<TripCubit>()
-                                .getCityName(city.cityId),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                return Text(snapshot.data ?? 'Unknown City');
-                              }
-                            },
+                        return Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                           ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              context
+                          child: ListTile(
+                            title: FutureBuilder<String>(
+                              future: context
                                   .read<TripCubit>()
-                                  .removeCityFromTrip(city);
-                            },
-                          ),
-                          // Add onTap to navigate to the add attractions to city view and provide attractionCubit, tripattraactionCubit and cityId
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider.value(
-                                  value: tripCubit,
-                                  child: CityScreen(
-                                    cityId: city.cityId,
-                                    tripCity: city,
+                                  .getCityName(city.cityId),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Text(snapshot.data ?? 'Unknown City');
+                                }
+                              },
+                            ),
+                            subtitle: FutureBuilder<String>(
+                              future: context
+                                  .read<TripCubit>()
+                                  .getCityCountry(city.cityId),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Text(
+                                      snapshot.data ?? 'Unknown Country');
+                                }
+                              },
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: const Color.fromARGB(255, 16, 8, 63),
+                              ),
+                              onPressed: () {
+                                context
+                                    .read<TripCubit>()
+                                    .removeCityFromTrip(city);
+                              },
+                            ),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider.value(
+                                    value: tripCubit,
+                                    child: CityScreen(
+                                      cityId: city.cityId,
+                                      tripCity: city,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
                   ),
-                  // Add new city button
+
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 221, 169, 91),
+                      foregroundColor: const Color.fromARGB(255, 16, 8, 63),
+                    ),
                     onPressed: () {
                       showModalBottomSheet(
                         context: context,
@@ -133,151 +172,185 @@ class TripCreationOverviewView extends StatelessWidget {
                         },
                       );
                     },
-                    child: Text('Add New City'),
+                    child: Icon(Icons.add,
+                        color: const Color.fromARGB(255, 16, 8, 63)),
                   ),
-
-                  // navigate to the home screen
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => MainScreen(),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 221, 169, 91),
+                          foregroundColor: const Color.fromARGB(255, 16, 8, 63),
                         ),
-                      );
-                    },
-                    child: Text('Save'),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MainScreen(),
+                            ),
+                          );
+                        },
+                        child: Text('Save'),
+                      ),
+                    ),
                   ),
 
                   // Budget, Start Date, End Date
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.monetization_on, size: 16),
-                          SizedBox(width: 4),
-
-                          // Tappable Budget Text
-                          GestureDetector(
-                            onTap: () async {
-                              final updatedBudget = await showDialog<double>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  final budgetController =
-                                      TextEditingController(
-                                    text: trip.budget?.toStringAsFixed(2) ?? '',
-                                  );
-
-                                  return AlertDialog(
-                                    title: Text('Update Budget'),
-                                    content: TextField(
-                                      controller: budgetController,
-                                      keyboardType:
-                                          TextInputType.numberWithOptions(
-                                              decimal: true),
-                                      decoration: InputDecoration(
-                                        hintText: 'Enter budget',
-                                        border: OutlineInputBorder(),
-                                      ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(
-                                              context, null); // Cancel
-                                        },
-                                        child: Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          final enteredValue = double.tryParse(
-                                              budgetController.text);
-                                          if (enteredValue != null) {
-                                            Navigator.pop(context,
-                                                enteredValue); // Pass the updated budget
-                                          }
-                                        },
-                                        child: Text('Save'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-
-                              if (updatedBudget != null) {
-                                context.read<TripCubit>().updateTripBudget(
-                                    updatedBudget); // Update the budget in the state
-                              }
-                            },
-                            child: Text(
-                              trip.budget == null
-                                  ? 'Set Budget'
-                                  : '\$${trip.budget!.toStringAsFixed(2)}',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.blue),
-                            ),
-                          ),
-                        ],
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
                       ),
-                      Row(
-                        children: [
-                          Icon(Icons.date_range, size: 16),
-                          SizedBox(width: 4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.monetization_on, size: 16),
+                            SizedBox(width: 4),
 
-                          // Start Date Picker
-                          GestureDetector(
-                            onTap: () async {
-                              final selectedDate = await showDatePicker(
-                                context: context,
-                                initialDate: trip.startDate ?? DateTime.now(),
-                                firstDate: DateTime.now()
-                                    .subtract(Duration(days: 365)),
-                                lastDate:
-                                    DateTime.now().add(Duration(days: 365)),
-                              );
-                              if (selectedDate != null) {
-                                context.read<TripCubit>().updateTripStartDate(
-                                    selectedDate); // Update the start date
-                              }
-                            },
-                            child: Text(
-                              trip.startDate == null
-                                  ? 'Select Date'
-                                  : '${trip.startDate!.day}.${trip.startDate!.month}',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.blue),
+                            // Tappable Budget Text
+                            GestureDetector(
+                              onTap: () async {
+                                final updatedBudget = await showDialog<double>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    final budgetController =
+                                        TextEditingController(
+                                      text:
+                                          trip.budget?.toStringAsFixed(2) ?? '',
+                                    );
+
+                                    return AlertDialog(
+                                      title: Text('Update Budget'),
+                                      content: TextField(
+                                        controller: budgetController,
+                                        keyboardType:
+                                            TextInputType.numberWithOptions(
+                                                decimal: true),
+                                        decoration: InputDecoration(
+                                          hintText: 'Enter budget',
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(
+                                                context, null); // Cancel
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            _onBudgetChanged(
+                                                budgetController.text, context);
+                                            Navigator.pop(
+                                                context,
+                                                double.parse(budgetController
+                                                    .text)); // Save
+                                          },
+                                          child: Text('Save'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                if (updatedBudget != null) {
+                                  context.read<TripCubit>().updateTripBudget(
+                                      updatedBudget); // Update the budget in the state
+                                }
+                              },
+                              child: Text(
+                                trip.budget == null
+                                    ? 'Set Budget'
+                                    : '\$${trip.budget!.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color:
+                                        const Color.fromARGB(255, 4, 21, 75)),
+                              ),
                             ),
-                          ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.date_range, size: 16),
+                            SizedBox(width: 4),
 
-                          Text(' - ', style: TextStyle(fontSize: 18)),
-
-                          // End Date Picker
-                          GestureDetector(
-                            onTap: () async {
-                              final selectedDate = await showDatePicker(
-                                context: context,
-                                initialDate: trip.endDate ?? DateTime.now(),
-                                firstDate: DateTime.now()
-                                    .subtract(Duration(days: 365)),
-                                lastDate:
-                                    DateTime.now().add(Duration(days: 365)),
-                              );
-                              if (selectedDate != null) {
-                                context.read<TripCubit>().updateTripEndDate(
-                                    selectedDate); // Update the end date
-                              }
-                            },
-                            child: Text(
-                              trip.endDate == null
-                                  ? 'Select Date'
-                                  : '${trip.endDate!.day}.${trip.endDate!.month}',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.blue),
+                            // Start Date Picker
+                            GestureDetector(
+                              onTap: () async {
+                                final selectedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: trip.startDate ?? DateTime.now(),
+                                  firstDate: DateTime.now()
+                                      .subtract(Duration(days: 365)),
+                                  lastDate:
+                                      DateTime.now().add(Duration(days: 365)),
+                                );
+                                if (selectedDate != null) {
+                                  context.read<TripCubit>().updateTripStartDate(
+                                      selectedDate); // Update the start date
+                                }
+                              },
+                              child: Text(
+                                trip.startDate == null
+                                    ? 'Select Date'
+                                    : '${trip.startDate!.day}.${trip.startDate!.month}',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color:
+                                        const Color.fromARGB(255, 4, 21, 75)),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+
+                            Text(' - ', style: TextStyle(fontSize: 18)),
+
+                            // End Date Picker
+                            GestureDetector(
+                              onTap: () async {
+                                final selectedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: trip.endDate ?? DateTime.now(),
+                                  firstDate: DateTime.now()
+                                      .subtract(Duration(days: 365)),
+                                  lastDate:
+                                      DateTime.now().add(Duration(days: 365)),
+                                );
+                                if (selectedDate != null) {
+                                  context.read<TripCubit>().updateTripEndDate(
+                                      selectedDate); // Update the end date
+                                }
+                              },
+                              child: Text(
+                                trip.endDate == null
+                                    ? 'Select Date'
+                                    : '${trip.endDate!.day}.${trip.endDate!.month}',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color:
+                                        const Color.fromARGB(255, 4, 21, 75)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

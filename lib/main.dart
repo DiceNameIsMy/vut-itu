@@ -18,7 +18,7 @@ void main() async {
 
   // TEMPORARY: For debugging the applicaiton
   // await settingsBackend.setOnboardingCompleted(false);
-  await settingsBackend.setGuiMode(GuiModeEnum.alternativeMode);
+  await settingsBackend.setGuiMode(GuiModeEnum.Nmode);
 
   await settingsController.loadSettings();
 
