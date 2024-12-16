@@ -81,4 +81,8 @@ class SearchBarCubit extends Cubit<SearchBarState> {
 
     return suggestions;
   }
+
+  void clearQuery() {
+    state.controller.clear();
+  }
 }

@@ -29,7 +29,18 @@ class SearchBarView extends StatelessWidget {
           return SearchAnchor.bar(
             searchController: state.controller,
             barLeading: Container(),
-            barTrailing: [Icon(Icons.search)],
+            barTrailing: [
+              if (state is SearchBarLoaded)
+                IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    BlocProvider.of<SearchBarCubit>(contextWithCubit)
+                        .clearQuery();
+                  },
+                )
+              else
+                Icon(Icons.search)
+            ],
             barHintText: 'Try Prague, Big Ben...',
             barElevation: WidgetStatePropertyAll(0.0),
 
