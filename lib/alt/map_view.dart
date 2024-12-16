@@ -90,47 +90,6 @@ class MapView extends StatelessWidget {
     );
   }
 
-  Widget _build(BuildContext context, TripScreenState state) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        FlutterMap(
-          mapController: state.mapController,
-          options: MapOptions(
-            cameraConstraint: CameraConstraint.contain(
-              bounds: LatLngBounds(
-                const LatLng(-90, -180),
-                const LatLng(90, 180),
-              ),
-            ),
-            onTap: (tapPosition, point) {
-              logger.d('Tapped on point: $point');
-            },
-          ),
-          children: [tileProvider, _polylineLayer(), _markerLayer()],
-        ),
-        BlocBuilder<DeviceLocationCubit, DeviceLocationState>(
-          builder: (context, state) {
-            return Positioned(
-              right: 10,
-              bottom: 100,
-              child: FloatingActionButton.small(
-                child: Icon(Icons.my_location),
-                onPressed: () {
-                  if (state is DeviceLocationLoaded) {
-                    context
-                        .read<TripScreenCubit>()
-                        .focusOnLocation(state.deviceLocation);
-                  }
-                },
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
   PolylineLayer<Object> _polylineLayer() {
     logger.i('Building polyline');
     // TODO: Load polylines for navigation

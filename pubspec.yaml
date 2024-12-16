@@ -51,7 +51,6 @@ dependencies:
   geolocator: ^13.0.2
   geolocator_android: ^4.6.1
   introduction_screen: ^3.1.14
-  auto_size_text_field: ^2.2.4
 
 dev_dependencies:
   flutter_test:

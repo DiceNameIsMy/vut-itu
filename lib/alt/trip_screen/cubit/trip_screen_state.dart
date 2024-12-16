@@ -20,10 +20,10 @@ final class TripScreenShowLocations extends TripScreenState {
   });
 }
 
-final class TripLoadAttractions extends TripScreenState {
+final class TripLoadingAttractions extends TripScreenState {
   final Location location;
 
-  TripLoadAttractions({
+  TripLoadingAttractions({
     required this.location,
     required super.mapController,
   });

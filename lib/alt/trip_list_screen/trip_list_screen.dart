@@ -1,9 +1,9 @@
-import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
 import 'package:vut_itu/alt/trip_list_screen/cubit/trip_list_screen_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/views/profileView/main_profile_screen.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
@@ -41,6 +41,16 @@ class TripsScreen extends StatelessWidget {
         title: Text('My Trips'),
         actions: [
           SettingsScreen.navigateToUsingIcon(context, settingsViewModel),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(),
+                ),
+              );
+            },
+            icon: Icon(Icons.person),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -70,10 +80,15 @@ class TripsScreen extends StatelessWidget {
       itemCount: tripsState.trips.length,
       itemBuilder: (context, index) {
         var (trip, _) = tripsState.trips[index];
-        var subtitle = trip.startDate != null
-            ? DateFormat('dd MMM, yyyy').format(trip.startDate!)
-            : 'No dates';
+        var startDateString = trip.startDate != null
+            ? DateFormat('dd MMM').format(trip.startDate!)
+            : 'Unset';
+        var endDateString = trip.endDate != null
+            ? DateFormat('dd MMM').format(trip.endDate!)
+            : 'Unset';
+        var subtitle = '$startDateString - $endDateString';
 
+        // Get or create a trip name editing controller
         if (screenState.titleControllers[trip.id] == null) {
           var nameController = TextEditingController(text: trip.name);
           nameController.addListener(() {
@@ -91,10 +106,9 @@ class TripsScreen extends StatelessWidget {
 
         return ListTile(
           leading: Icon(Icons.directions_car),
-          title: AutoSizeTextField(
-            fullwidth: false,
+          title: TextField(
             minLines: 1,
-            maxLines: 2,
+            maxLines: 1,
             controller: screenState.titleControllers[trip.id],
             decoration: InputDecoration(border: InputBorder.none),
             onEditingComplete: () {

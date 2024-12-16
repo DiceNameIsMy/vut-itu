@@ -67,6 +67,9 @@ class SearchBarCubit extends Cubit<SearchBarState> {
       // If request was discarded, do not change state
       return [];
     }
+    if (isClosed) {
+      return [];
+    }
 
     emit(
       SearchBarLoaded(

@@ -28,7 +28,7 @@ class SearchBarView extends StatelessWidget {
             searchController: state.controller,
             barLeading: Container(),
             barTrailing: [
-              if (state is SearchBarLoaded)
+              if (state is SearchBarLoaded && state.controller.text.isNotEmpty)
                 IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
