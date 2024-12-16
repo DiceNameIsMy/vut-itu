@@ -1,57 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:vut_itu/backend/business_logic/trip_model.dart';
+import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
 import 'package:vut_itu/backend/geolocation.dart';
-import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
 
 part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
-  MapCubit(
-    MapController mapController,
-    TripModel trip,
-    List<Location> markers,
-  ) : super(
-          MapInitial(
-            mapController: mapController,
-            trip: trip,
-            markers: markers,
-          ),
-        );
+  final TripScreenCubit tripScreenCubit;
+
+  MapCubit(this.tripScreenCubit) : super(MapInitial());
+
+  factory MapCubit.fromContext(BuildContext context) {
+    return MapCubit(BlocProvider.of<TripScreenCubit>(context));
+  }
 
   Future<void> invalidateDeviceLocation() async {
-    await Geolocation.determinePosition().then((position) {
-      logger.d('Device location: ${position.latitude}, ${position.longitude}');
+    Position position;
+    try {
+      position = await Geolocation.determinePosition();
+    } catch (e) {
+      logger.e('Failed to determine device location: $e');
+      return;
+    }
+    logger.d('Device location: ${position.latitude}, ${position.longitude}');
 
-      logger.d(
-          'Fitting camera to ${state.markers.map((m) => m.latLng).toList()..add(LatLng(position.latitude, position.longitude))}');
+    var markers = tripScreenCubit.state.locations.map((m) => m.latLng).toList()
+      ..add(LatLng(position.latitude, position.longitude));
 
-      // TODO: Add marker of user's location
+    logger.d('Fitting camera to $markers');
 
-      if (isClosed) {
-        // TODO: Can happen in many places. Better to ensure every place is safely handles.
-        return;
-      }
+    if (isClosed) {
+      // TODO: Can happen in many places. Better to ensure every place is safely handles.
+      return;
+    }
 
-      emit(
-        state.copyWith(
-          deviceLocation: LatLng(position.latitude, position.longitude),
-        ),
-      );
-    });
+    emit(
+      state.copyWith(
+        deviceLocation: LatLng(position.latitude, position.longitude),
+      ),
+    );
   }
 
   void openMarkerDetails() {
-    emit(
-      MapMarkerDetailsOpened(
-        deviceLocation: state.deviceLocation,
-        mapController: state.mapController,
-        trip: state.trip,
-        markers: state.markers,
-      ),
-    );
+    emit(MapMarkerDetailsOpened(deviceLocation: state.deviceLocation));
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_ti
 import 'package:latlong2/latlong.dart';
 import 'package:vut_itu/alt/map_view/cubit/map_cubit.dart';
 import 'package:vut_itu/alt/map_view/map_marker_detail_view.dart';
+import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
 import 'package:vut_itu/backend/business_logic/trip_model.dart';
 import 'package:vut_itu/backend/location.dart';
 import 'package:vut_itu/logger.dart';
@@ -36,23 +37,22 @@ class MapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          MapCubit(mapController, trip, locations)..invalidateDeviceLocation(),
-      child: BlocConsumer<MapCubit, MapState>(
-        listener: (context, state) {
-          if (state.deviceLocation != null) {
-            logger.d('Device location: ${state.deviceLocation}');
-          }
-        },
-        builder: (context, state) {
-          return _build(context, state);
-        },
-      ),
+    return BlocBuilder<TripScreenCubit, TripScreenState>(
+      builder: (context, state) {
+        return BlocProvider(
+          create: (context) =>
+              MapCubit.fromContext(context)..invalidateDeviceLocation(),
+          child: BlocBuilder<MapCubit, MapState>(
+            builder: (context, _) {
+              return _build(context, state);
+            },
+          ),
+        );
+      },
     );
   }
 
-  FlutterMap _build(BuildContext context, MapState state) {
+  FlutterMap _build(BuildContext context, TripScreenState state) {
     return FlutterMap(
       mapController: state.mapController,
       options: MapOptions(
