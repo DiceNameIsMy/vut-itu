@@ -225,12 +225,19 @@ class TripScreen extends StatelessWidget {
         itemCount: state.places.length,
         itemBuilder: (context, idx) {
           if (state.places[idx].city == null) {
-            logger.e('City is null for place $idx');
+            logger.w('City ${state.places[idx].id} is not loaded yet');
           }
-          return ListTile(
-            key: Key('$idx'),
-            title: Text(state.places[idx].city?.name ?? 'Unknown city'),
-            trailing: Icon(Icons.drag_handle),
+          return Dismissible(
+            key: Key(idx.toString()),
+            child: ListTile(
+              key: Key('$idx'),
+              title: Text(state.places[idx].city?.name ?? 'Loading...'),
+              trailing: Icon(Icons.drag_handle),
+            ),
+            onDismissed: (direction) {
+              Future.wait(
+                  [BlocProvider.of<TripCubit>(context).removeCity(idx)]);
+            },
           );
         },
         onReorder: (int oldIndex, int newIndex) {
