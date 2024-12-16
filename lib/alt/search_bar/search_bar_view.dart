@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vut_itu/alt/search_bar/cubit/search_bar_cubit.dart';
 import 'package:vut_itu/backend/location.dart';
-import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
 
 class SearchBarView extends StatelessWidget {
@@ -39,7 +38,7 @@ class SearchBarView extends StatelessWidget {
                   },
                 )
               else
-                Icon(Icons.search)
+                Icon(Icons.search),
             ],
             barHintText: 'Try Prague, Big Ben...',
             barElevation: WidgetStatePropertyAll(0.0),
@@ -55,7 +54,6 @@ class SearchBarView extends StatelessWidget {
             // viewBuilder: , // TODO: Try this builder instead of suggestionsBuilder
 
             suggestionsBuilder: (context, controller) async {
-              logger.i('Loading suggestions for query: ${controller.text}');
               var suggestions =
                   await BlocProvider.of<SearchBarCubit>(contextWithCubit)
                       .getSuggestions(controller.text);

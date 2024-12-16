@@ -1,3 +1,4 @@
+import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -90,7 +91,10 @@ class TripsScreen extends StatelessWidget {
 
         return ListTile(
           leading: Icon(Icons.directions_car),
-          title: TextField(
+          title: AutoSizeTextField(
+            fullwidth: false,
+            minLines: 1,
+            maxLines: 2,
             controller: screenState.titleControllers[trip.id],
             decoration: InputDecoration(border: InputBorder.none),
             onEditingComplete: () {
@@ -101,6 +105,7 @@ class TripsScreen extends StatelessWidget {
             },
           ),
           subtitle: Text(subtitle),
+          trailing: Icon(Icons.map),
           onTap: () {
             Navigator.of(context)
                 .push(

@@ -72,11 +72,11 @@ class TripScreen extends StatelessWidget {
           onQuerySubmit: (locations) {
             BlocProvider.of<TripScreenCubit>(context)
                 .showQueryResults(locations);
-            BottomSheetPanel.close();
+            // BottomSheetPanel.close();
           },
           onLocationSelect: (location) {
             BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
-            BottomSheetPanel.close();
+            // BottomSheetPanel.close();
           },
           onLocationAdd: (location) {
             BlocProvider.of<TripScreenCubit>(context).addLocation(location);
