@@ -3,7 +3,6 @@ na informaci umístění klíčových částí FE a autorství konkrétních č�
 
 android/ [Android platform specific settings]
 assets/ [Assets like images, fonts, etc.]
-docs/ [Requirements, documentation, and related content]
 lib/
     backend/ <- Our separate BE layer. Communication is done via non-blocking, asynchronous function calls.
 
