@@ -41,7 +41,7 @@ class TripCubit extends Cubit<TripState> {
 
   Future<void> setStartDate(DateTime newStartDate) async {
     await _db.updateTrip(
-        state.trip.id, {'start_date': newStartDate.toIso8601String()});
+        state.trip.id, {'start_date': newStartDate.toIso8601String()},);
 
     await invalidateTrip();
   }

@@ -28,7 +28,7 @@ class TripsScreen extends StatelessWidget {
             listener: (context, state) async {
               if (state is! TripListScreenAddNew) {
                 logger.w(
-                    'Adding new trip in a modal window, but state is not AddNew');
+                    'Adding new trip in a modal window, but state is not AddNew',);
                 return;
               }
               await _showAddTripBottomSheet(context, state);
@@ -40,7 +40,7 @@ class TripsScreen extends StatelessWidget {
   }
 
   Future<dynamic> _showAddTripBottomSheet(
-      BuildContext context, TripListScreenAddNew state) {
+      BuildContext context, TripListScreenAddNew state,) {
     return showModalBottomSheet(
         context: context,
         enableDrag: true,
@@ -52,24 +52,24 @@ class TripsScreen extends StatelessWidget {
                 TextFormField(
                   controller: state.nameTextFieldController,
                   decoration: InputDecoration(
-                      labelText: 'Trip name', hintText: 'Enter trip name'),
-                )
+                      labelText: 'Trip name', hintText: 'Enter trip name',),
+                ),
                 // TODO: dates + budget
                 // TODO: search & select cities
                 // TODO: confirm button
               ],
             ),
           );
-        });
+        },);
   }
 
   Scaffold _build(
-      BuildContext context, TripsState state, TripListScreenState screenState) {
+      BuildContext context, TripsState state, TripListScreenState screenState,) {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Trips'),
         actions: [
-          SettingsScreen.navigateToUsingIcon(context, settingsViewModel)
+          SettingsScreen.navigateToUsingIcon(context, settingsViewModel),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -84,12 +84,12 @@ class TripsScreen extends StatelessWidget {
           onRefresh: () async {
             await BlocProvider.of<TripsCubit>(context).invalidateTrips();
           },
-          child: _tripsList(context, state, screenState)),
+          child: _tripsList(context, state, screenState),),
     );
   }
 
   Widget _tripsList(BuildContext context, TripsState tripsState,
-      TripListScreenState screenState) {
+      TripListScreenState screenState,) {
     return ListView.builder(
       reverse: false,
       itemCount: tripsState.trips.length,
@@ -101,7 +101,7 @@ class TripsScreen extends StatelessWidget {
   }
 
   ListTile _tripItem(TripModel trip, List<TripCityModel> visitingPlaces,
-      BuildContext context) {
+      BuildContext context,) {
     var subtitle = trip.startDate != null
         ? DateFormat('dd MMM, yyyy').format(trip.startDate!)
         : 'No dates';

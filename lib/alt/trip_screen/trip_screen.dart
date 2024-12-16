@@ -68,19 +68,26 @@ class TripScreen extends StatelessWidget {
     return BottomSheetScaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: SearchBarView(settingsViewModel, onQuerySubmit: (locations) {
-          BlocProvider.of<TripScreenCubit>(context).showQueryResults(locations);
-        }, onLocationSelect: (location) {
-          BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
-        }, onLocationAdd: (location) {
-          BlocProvider.of<TripScreenCubit>(context).addLocation(location);
-        }),
+        title: SearchBarView(
+          settingsViewModel,
+          onQuerySubmit: (locations) {
+            BlocProvider.of<TripScreenCubit>(context)
+                .showQueryResults(locations);
+          },
+          onLocationSelect: (location) {
+            BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
+          },
+          onLocationAdd: (location) {
+            BlocProvider.of<TripScreenCubit>(context).addLocation(location);
+          },
+        ),
         backgroundColor: Colors.transparent,
         leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.arrow_back)),
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(Icons.arrow_back),
+        ),
         actions: [
-          SettingsScreen.navigateToUsingIcon(context, settingsViewModel)
+          SettingsScreen.navigateToUsingIcon(context, settingsViewModel),
         ],
       ),
       body: MapView(
@@ -126,48 +133,52 @@ class TripScreen extends StatelessWidget {
         : 'Unset';
     return Container(
       decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(36), topRight: Radius.circular(36))),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(36),
+          topRight: Radius.circular(36),
+        ),
+      ),
       child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-          child: Column(
-            children: [
-              // Drag handle
-              Container(
-                height: 4,
-                width: 60,
-                margin: const EdgeInsets.only(bottom: 8),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).dividerColor,
-                  borderRadius: BorderRadius.circular(5),
-                ),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+        child: Column(
+          children: [
+            // Drag handle
+            Container(
+              height: 4,
+              width: 60,
+              margin: const EdgeInsets.only(bottom: 8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).dividerColor,
+                borderRadius: BorderRadius.circular(5),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // TODO: If text is too long, it might overflow. Fix this.
-                    OutlinedButton.icon(
-                      onPressed: () {
-                        logger.w('Edit trip name not implemented');
-                      },
-                      icon: const Icon(Icons.edit),
-                      label: Text(state.trip.name),
-                    ),
-                    _tripDateRangePickerButton(
-                      context,
-                      state,
-                      startDateString,
-                      endDateString,
-                    ),
-                  ],
-                ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // TODO: If text is too long, it might overflow. Fix this.
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      logger.w('Edit trip name not implemented');
+                    },
+                    icon: const Icon(Icons.edit),
+                    label: Text(state.trip.name),
+                  ),
+                  _tripDateRangePickerButton(
+                    context,
+                    state,
+                    startDateString,
+                    endDateString,
+                  ),
+                ],
               ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

@@ -15,6 +15,9 @@ final class OnboardingCanStartPlanning extends OnboardingState {
   final TripModel trip;
   final List<TripCityModel> places;
 
-  OnboardingCanStartPlanning(
-      {required this.trip, required this.places, super.interests});
+  OnboardingCanStartPlanning({
+    required this.trip,
+    required this.places,
+    super.interests,
+  });
 }

@@ -28,7 +28,8 @@ class TripScreenCubit extends Cubit<TripScreenState> {
       state.mapController.fitCamera(
         CameraFit.bounds(
           bounds: LatLngBounds.fromPoints(
-              queryResults.map((l) => l.latLng).toList()),
+            queryResults.map((l) => l.latLng).toList(),
+          ),
           padding: EdgeInsets.all(100),
         ),
       );
@@ -92,6 +93,7 @@ class TripScreenCubit extends Cubit<TripScreenState> {
       ),
     );
     logger.i(
-        'Loaded ${attractions.length} attractions for location: ${location.name}');
+      'Loaded ${attractions.length} attractions for location: ${location.name}',
+    );
   }
 }

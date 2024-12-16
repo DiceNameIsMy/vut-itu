@@ -22,7 +22,7 @@ class TripListScreenCubit extends Cubit<TripListScreenState> {
         text: nameController.text,
         selection: TextSelection(
             baseOffset: nameController.text.length,
-            extentOffset: nameController.text.length),
+            extentOffset: nameController.text.length,),
         composing: TextRange.empty,
       );
     });

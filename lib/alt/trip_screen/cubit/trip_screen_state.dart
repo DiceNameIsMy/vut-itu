@@ -14,8 +14,10 @@ final class TripScreenInitial extends TripScreenState {
 }
 
 final class TripScreenShowLocations extends TripScreenState {
-  TripScreenShowLocations(
-      {required super.mapController, super.locations = const []});
+  TripScreenShowLocations({
+    required super.mapController,
+    super.locations = const [],
+  });
 }
 
 final class TripLoadAttractions extends TripScreenState {

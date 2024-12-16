@@ -56,7 +56,7 @@ class TripsCubit extends Cubit<TripsState> {
       futures.add(_db.getTripCities(tripId: trip.id).then((tripCitiesMap) {
         var tripCities = tripCitiesMap.map(TripCityModel.fromMap).toList();
         fetchedData.add((trip, tripCities));
-      }));
+      }),);
     }
     await Future.wait(futures);
 
