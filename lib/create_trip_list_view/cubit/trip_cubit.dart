@@ -57,7 +57,7 @@ class TripCubit extends Cubit<TripModel> {
   //add a city to the trip in the correct order
   Future<void> addCityToTrip(CityModel city) async {
     final tripCity = TripCityModel(
-      cityId: city.id!,
+      cityId: city.id,
       tripId: _trip.id,
       order: _trip.cities.length + 1,
     );
@@ -76,8 +76,8 @@ class TripCubit extends Cubit<TripModel> {
 
   //remove a city from the trip
   Future<void> removeCityFromTrip(TripCityModel tripCity) async {
-    await DatabaseHelper().deleteTripCity(tripCity.id!);
-    await DatabaseHelper().deleteAllTripAttractions(tripCity.id!);
+    await DatabaseHelper().deleteTripCity(tripCity.id);
+    await DatabaseHelper().deleteAllTripAttractions(tripCity.id);
     _trip.cities.remove(tripCity);
     emit(_trip.copyWith(cities: _trip.cities));
   }

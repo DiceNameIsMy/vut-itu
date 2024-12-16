@@ -42,7 +42,7 @@ class SettingsBackend {
 
   Future<GuiModeEnum> guiMode() async {
     var guiMode = await _prefs.getInt('guiMode');
-    guiMode ??= GuiModeEnum.defaultMode.index;
+    guiMode ??= GuiModeEnum.Nmode.index;
 
     return GuiModeEnum.values[guiMode];
   }

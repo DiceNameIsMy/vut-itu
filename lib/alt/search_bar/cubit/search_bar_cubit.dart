@@ -15,7 +15,9 @@ class SearchBarCubit extends Cubit<SearchBarState> {
       : super(SearchBarInitial(controller: SearchController()));
 
   factory SearchBarCubit.fromContext(
-      BuildContext context, SettingsViewModel settingsViewModel) {
+    BuildContext context,
+    SettingsViewModel settingsViewModel,
+  ) {
     return SearchBarCubit(GeoapifyClient(settingsViewModel.geoapifyApiKey));
   }
 
@@ -69,11 +71,32 @@ class SearchBarCubit extends Cubit<SearchBarState> {
       return [];
     }
 
-    emit(SearchBarLoaded(
+    emit(
+      SearchBarLoaded(
         controller: state.controller,
         searchTerm: query,
-        searchSuggestions: suggestions));
+        searchSuggestions: suggestions,
+      ),
+    );
 
     return suggestions;
+  }
+
+  Future<List<Location>> getLastSuggestion(String query) async {
+    var suggestions = await _geoapifyClient.getSearchAutocompletion(query);
+
+    emit(
+      SearchBarLoaded(
+        controller: state.controller,
+        searchTerm: query,
+        searchSuggestions: suggestions,
+      ),
+    );
+
+    return suggestions;
+  }
+
+  void clearQuery() {
+    state.controller.clear();
   }
 }

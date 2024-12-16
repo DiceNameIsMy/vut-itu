@@ -28,7 +28,8 @@ class TripScreenCubit extends Cubit<TripScreenState> {
       state.mapController.fitCamera(
         CameraFit.bounds(
           bounds: LatLngBounds.fromPoints(
-              queryResults.map((l) => l.latLng).toList()),
+            queryResults.map((l) => l.latLng).toList(),
+          ),
           padding: EdgeInsets.all(100),
         ),
       );
@@ -42,39 +43,25 @@ class TripScreenCubit extends Cubit<TripScreenState> {
     );
   }
 
-  void selectLocation(Location location) {
+  Future<void> selectLocation(Location location) async {
     logger.i('Selected location: ${location.name}');
 
     state.mapController.move(location.latLng, 10);
 
     emit(
-      TripScreenShowLocations(
-        mapController: state.mapController,
-        locations: [location],
-      ),
-    );
-  }
-
-  Future<void> addLocation(Location location) async {
-    var allAttractions = await _db.getAllAttractions();
-    allAttractions.map((e) => AttractionModel.fromMap(e)).forEach((a) {
-      logger.d('Attraction: ${a.name}, ${a.cityId}');
-    });
-
-    logger
-        .i('Adding location: ${location.name} with id: ${location.geoapifyId}');
-
-    state.mapController.move(location.latLng, 10);
-
-    emit(
       TripLoadAttractions(
-        location: location,
         mapController: state.mapController,
-        locations: [location],
+        location: location,
       ),
     );
 
-    // TODO: Is already added: do nothing
+    var alreadyAdded = tripCubit.state.places
+        .where((p) => p.city?.geoapifyId == location.geoapifyId)
+        .isNotEmpty;
+    if (alreadyAdded) {
+      logger.i('City already exists in trip');
+      return;
+    }
 
     var tripCity = await tripCubit.addCityToVisit(location);
 
@@ -88,10 +75,22 @@ class TripScreenCubit extends Cubit<TripScreenState> {
         location: location,
         attractions: attractions,
         mapController: state.mapController,
-        locations: [location],
       ),
     );
     logger.i(
-        'Loaded ${attractions.length} attractions for location: ${location.name}');
+      'Loaded ${attractions.length} attractions for location: ${location.name}',
+    );
+  }
+
+  Future<void> addLocation(Location location) async {
+    var allAttractions = await _db.getAllAttractions();
+    allAttractions.map((e) => AttractionModel.fromMap(e)).forEach((a) {
+      logger.d('Attraction: ${a.name}, ${a.cityId}');
+    });
+
+    logger
+        .i('Adding location: ${location.name} with id: ${location.geoapifyId}');
+
+    await selectLocation(location);
   }
 }

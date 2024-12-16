@@ -19,8 +19,9 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       : super(OnboardingInitial());
 
   OnboardingCubit.fromContext(
-      BuildContext context, SettingsViewModel settingsViewModel)
-      : this(BlocProvider.of<TripsCubit>(context), settingsViewModel);
+    BuildContext context,
+    SettingsViewModel settingsViewModel,
+  ) : this(BlocProvider.of<TripsCubit>(context), settingsViewModel);
 
   Future<void> createFirstTrip() async {
     var trip = TripModel(userId: 0, name: 'My First Trip');

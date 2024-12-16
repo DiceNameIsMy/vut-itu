@@ -27,32 +27,37 @@ class AltApp extends StatelessWidget {
         ),
       ],
       child: ListenableBuilder(
-          listenable: settingsViewModel,
-          builder: (BuildContext context, Widget? child) {
-            return MaterialApp(
-              title: 'TripHub',
+        listenable: settingsViewModel,
+        builder: (BuildContext context, Widget? child) {
+          return MaterialApp(
+            title: 'TripHub',
 
-              // Theme
-              theme: ThemeData(
-                  colorScheme: ColorScheme.fromSeed(seedColor: themeSeedColor),
-                  useMaterial3: true),
-              darkTheme: ThemeData.from(
-                  colorScheme: ColorScheme.fromSeed(
-                      seedColor: themeSeedColor, brightness: Brightness.dark),
-                  useMaterial3: true),
-              themeMode: settingsViewModel.themeMode,
+            // Theme
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: themeSeedColor),
+              useMaterial3: true,
+            ),
+            darkTheme: ThemeData.from(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: themeSeedColor,
+                brightness: Brightness.dark,
+              ),
+              useMaterial3: true,
+            ),
+            themeMode: settingsViewModel.themeMode,
 
-              // Routing
-              routes: {
-                '/': (context) => TripsScreen(settingsViewModel),
-                '/onboarding': (context) =>
-                    OnboardingScreen(settingsViewModel: settingsViewModel),
-                '/settings': (context) =>
-                    SettingsScreen(settingsController: settingsViewModel),
-              },
-              initialRoute: initialRoute,
-            );
-          }),
+            // Routing
+            routes: {
+              '/': (context) => TripsScreen(settingsViewModel),
+              '/onboarding': (context) =>
+                  OnboardingScreen(settingsViewModel: settingsViewModel),
+              '/settings': (context) =>
+                  SettingsScreen(settingsController: settingsViewModel),
+            },
+            initialRoute: initialRoute,
+          );
+        },
+      ),
     );
   }
 }
