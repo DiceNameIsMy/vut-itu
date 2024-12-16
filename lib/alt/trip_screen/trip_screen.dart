@@ -104,14 +104,6 @@ class TripScreen extends StatelessWidget {
 
       // Configure the bottom sheet
       bottomSheet: _bottomSheet(context, state),
-      onWillPop: (() async {
-        if (BottomSheetPanel.isOpen) {
-          BottomSheetPanel.close();
-          return false;
-        } else {
-          return true;
-        }
-      }),
     );
   }
 
@@ -223,30 +215,33 @@ class TripScreen extends StatelessWidget {
       color: Theme.of(context).scaffoldBackgroundColor,
       height: maxBottomBarHeight,
       width: double.infinity,
-      child: ReorderableListView.builder(
-        itemCount: state.places.length,
-        itemBuilder: (context, idx) {
-          if (state.places[idx].city == null) {
-            logger.w('City ${state.places[idx].id} is not loaded yet');
-          }
-          return Dismissible(
-            key: Key(idx.toString()),
-            child: ListTile(
-              key: Key('$idx'),
-              title: Text(state.places[idx].city?.name ?? 'Loading...'),
-              trailing: Icon(Icons.drag_handle),
-            ),
-            onDismissed: (direction) {
-              Future.wait(
-                [BlocProvider.of<TripCubit>(context).removeCity(idx)],
-              );
-            },
-          );
-        },
-        onReorder: (int oldIndex, int newIndex) {
-          BlocProvider.of<TripCubit>(context).reoderPlaces(oldIndex, newIndex);
-        },
-      ),
+      child: _visitingPlacesList(state, context),
+    );
+  }
+
+  ReorderableListView _visitingPlacesList(
+      TripState state, BuildContext context) {
+    return ReorderableListView.builder(
+      itemCount: state.places.length,
+      itemBuilder: (context, idx) {
+        if (state.places[idx].city == null) {
+          logger.w('City ${state.places[idx].id} is not loaded yet');
+        }
+        return Dismissible(
+          key: Key(idx.toString()),
+          onDismissed: (direction) {
+            BlocProvider.of<TripCubit>(context).removeCity(idx);
+          },
+          child: ListTile(
+            key: Key('$idx'),
+            title: Text(state.places[idx].city?.name ?? 'Loading...'),
+            trailing: Icon(Icons.drag_handle),
+          ),
+        );
+      },
+      onReorder: (int oldIndex, int newIndex) {
+        BlocProvider.of<TripCubit>(context).reoderPlaces(oldIndex, newIndex);
+      },
     );
   }
 }
