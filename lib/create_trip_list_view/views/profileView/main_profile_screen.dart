@@ -14,9 +14,9 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
     // Initial data
-  String name = "John Doe";
+  String name = "Cool Name";
   String bio = "Flutter Developer | Tech Enthusiast";
-  String profileImage = "https://via.placeholder.com/150";
+  String profileImage = "https://images.prismic.io/doge/67848221-1f53-47ee-9585-85fe997fa4bc_scale_1200.webp?auto=compress,format&rect=239,0,721,721&w=456&h=456";
 
   void updateProfile(String newName, String newBio, String newProfileImage) {
     setState(() {
