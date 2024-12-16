@@ -223,7 +223,7 @@ class TripScreen extends StatelessWidget {
           );
         },
         onReorder: (int oldIndex, int newIndex) {
-          // TODO: Implement reordering
+          BlocProvider.of<TripCubit>(context).reoderPlaces(oldIndex, newIndex);
         },
       ),
     );

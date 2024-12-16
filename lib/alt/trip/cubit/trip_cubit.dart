@@ -84,4 +84,24 @@ class TripCubit extends Cubit<TripState> {
 
     return tripCity;
   }
+
+  void reoderPlaces(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    if (state.places.length < oldIndex || state.places.length < newIndex) {
+      logger.e('Invalid indexes for reordering: $oldIndex, $newIndex');
+      return;
+    }
+
+    final newPlaces = state.places.toList();
+
+    final item = newPlaces.removeAt(oldIndex);
+    newPlaces.insert(newIndex, item);
+
+    // TODO: Emit a specific event so that everything is not rebuilt each time
+    emit(TripLoaded(state.trip, newPlaces));
+
+    // TODO: Update order in the database
+  }
 }
