@@ -73,9 +73,11 @@ class TripScreen extends StatelessWidget {
           onQuerySubmit: (locations) {
             BlocProvider.of<TripScreenCubit>(context)
                 .showQueryResults(locations);
+            BottomSheetPanel.close();
           },
           onLocationSelect: (location) {
             BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
+            BottomSheetPanel.close();
           },
           onLocationAdd: (location) {
             BlocProvider.of<TripScreenCubit>(context).addLocation(location);
@@ -236,7 +238,8 @@ class TripScreen extends StatelessWidget {
             ),
             onDismissed: (direction) {
               Future.wait(
-                  [BlocProvider.of<TripCubit>(context).removeCity(idx)]);
+                [BlocProvider.of<TripCubit>(context).removeCity(idx)],
+              );
             },
           );
         },
