@@ -8,7 +8,7 @@ class TripCityModel {
   final int cityId;
   DateTime? startDate;
   DateTime? endDate;
-  final int order;
+  int order;
 
   /// Optionally loaded from the database. If null then it was not loaded yet.
   final CityModel? city;

@@ -66,30 +66,20 @@ class TripCreationOverviewView extends StatelessWidget {
                   ),
                   // List of cities
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: trip.cities.length,
-                      itemBuilder: (context, index) {
-                        final city = trip.cities[index];
-                        return Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
+                    child: ReorderableListView(
+                      onReorder: (oldIndex, newIndex) {
+                        context
+                            .read<TripCubit>()
+                            .reorderCities(oldIndex, newIndex);
+                      },
+                      children: [
+                        for (int index = 0; index < trip.cities.length; index++)
+                          ListTile(
+                            key: ValueKey(trip.cities[index].cityId),
                             title: FutureBuilder<String>(
                               future: context
                                   .read<TripCubit>()
-                                  .getCityName(city.cityId),
+                                  .getCityName(trip.cities[index].cityId),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
@@ -101,7 +91,7 @@ class TripCreationOverviewView extends StatelessWidget {
                             subtitle: FutureBuilder<String>(
                               future: context
                                   .read<TripCubit>()
-                                  .getCityCountry(city.cityId),
+                                  .getCityCountry(trip.cities[index].cityId),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
@@ -119,25 +109,24 @@ class TripCreationOverviewView extends StatelessWidget {
                               onPressed: () {
                                 context
                                     .read<TripCubit>()
-                                    .removeCityFromTrip(city);
+                                    .removeCityFromTrip(trip.cities[index]);
                               },
                             ),
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => BlocProvider.value(
-                                    value: tripCubit,
+                                    value: context.read<TripCubit>(),
                                     child: CityScreen(
-                                      cityId: city.cityId,
-                                      tripCity: city,
+                                      cityId: trip.cities[index].cityId,
+                                      tripCity: trip.cities[index],
                                     ),
                                   ),
                                 ),
                               );
                             },
                           ),
-                        );
-                      },
+                      ],
                     ),
                   ),
 
