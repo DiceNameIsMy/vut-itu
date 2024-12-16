@@ -4,9 +4,9 @@ class ProfileTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TabBar(
-      indicatorColor: Colors.black,
+      indicatorColor: Colors.orange,
       indicatorWeight: 2,
-      labelColor: Colors.black,
+      labelColor: Colors.orange,
       unselectedLabelColor: Colors.grey,
       tabs: [
         Tab(icon: Icon(Icons.grid_on)), // Posts Tab

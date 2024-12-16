@@ -98,8 +98,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             // Tab Buttons with Values
             TabBar(
-              indicatorColor: Colors.black,
-              labelColor: Colors.black,
+              indicatorColor: Colors.orange,
+              labelColor: Colors.orange,
               unselectedLabelColor: Colors.grey,
               tabs: [
                 Tab(text: 'Posts ($postCount)'),       // Dynamic label for Posts
