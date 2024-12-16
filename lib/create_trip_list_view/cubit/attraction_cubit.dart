@@ -26,10 +26,8 @@ class AttractionCubit extends Cubit<List<AttractionModel>> {
     List<AttractionModel> filtered;
 
     if (category.toLowerCase() == "all") {
-      // If the category is "All", return all attractions
       filtered = _attractions;
     } else {
-      // Otherwise, filter by the given category
       filtered = _attractions
           .where((attraction) => attraction.category
               .toLowerCase()
@@ -37,19 +35,16 @@ class AttractionCubit extends Cubit<List<AttractionModel>> {
           .toList();
     }
 
-    emit(List.from(filtered)); // Emit a new list after filtering
+    emit(List.from(filtered));
   }
 
-  // Hide the attraction from the list by removing it and emitting a new list
   void hideAttraction(AttractionModel attraction) {
     _attractions.remove(attraction);
-    emit(List.from(
-        _attractions)); // Emit a new list after removing the attraction
+    emit(List.from(_attractions));
   }
 
   void addAttractionToCity(AttractionModel attraction) {
     _attractions.add(attraction);
-    emit(
-        List.from(_attractions)); // Emit a new list after adding the attraction
+    emit(List.from(_attractions));
   }
 }

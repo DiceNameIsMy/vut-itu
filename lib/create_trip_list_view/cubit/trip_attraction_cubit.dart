@@ -35,4 +35,11 @@ class TripAttractionCubit extends Cubit<List<TripAttractionModel>> {
         price;
     emit(_tripAttractions);
   }
+
+  //update the tripAttraction with the new order
+  Future<void> updateTripAttractionOrder(int id, int order) async {
+    await DatabaseHelper().updateTripAttraction(id, {'order': order});
+    _tripAttractions.firstWhere((element) => element.id == id).order = order;
+    emit(_tripAttractions);
+  }
 }

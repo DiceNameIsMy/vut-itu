@@ -5,7 +5,7 @@ class TripAttractionModel {
   DateTime? selectedDate;
   double? expectedTimeToVisitInHours;
   double? expectedCost;
-  final int order;
+  int order;
 
   TripAttractionModel({
     this.id, //todo: check if this is correct

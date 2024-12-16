@@ -327,7 +327,6 @@ class _CityScreenState extends State<CityScreen> {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: BlocBuilder<TripCityCubit, TripCityModel>(
         builder: (context, tripCity) {
-          // Check if attractions are null or empty
           if (tripCity.attractions == null || tripCity.attractions!.isEmpty) {
             return Center(
               child: Text(
@@ -337,14 +336,19 @@ class _CityScreenState extends State<CityScreen> {
             );
           }
 
-          // Render the list of attractions
           return SizedBox(
-            height: 400, // Set a fixed height
-            child: ListView.builder(
+            height: 400,
+            child: ReorderableListView.builder(
               itemCount: tripCity.attractions!.length,
+              onReorder: (oldIndex, newIndex) {
+                context
+                    .read<TripCityCubit>()
+                    .reorderAttractions(oldIndex, newIndex);
+              },
               itemBuilder: (context, index) {
                 final attraction = tripCity.attractions![index];
                 return Container(
+                  key: ValueKey(attraction.id),
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -364,10 +368,7 @@ class _CityScreenState extends State<CityScreen> {
                           .read<TripCityCubit>()
                           .getAttractionNameById(attraction.attractionId),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
+                        if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
                           return Text(snapshot.data ?? 'Unknown Attraction');
@@ -379,10 +380,7 @@ class _CityScreenState extends State<CityScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.location_on,
-                              size: 16,
-                            ),
+                            Icon(Icons.location_on, size: 16),
                             SizedBox(width: 4),
                             FutureBuilder<String>(
                               future: context
