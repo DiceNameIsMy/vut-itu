@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:vut_itu/alt/trip_list/cubit/trips_cubit.dart';
 import 'package:vut_itu/alt/trip_list_screen/cubit/trip_list_screen_cubit.dart';
+import 'package:vut_itu/create_trip_list_view/views/profileView/main_profile_screen.dart';
 import 'package:vut_itu/logger.dart';
 import 'package:vut_itu/settings/settings_screen.dart';
 import 'package:vut_itu/settings/settings_view_model.dart';
@@ -40,6 +41,16 @@ class TripsScreen extends StatelessWidget {
         title: Text('My Trips'),
         actions: [
           SettingsScreen.navigateToUsingIcon(context, settingsViewModel),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(),
+                ),
+              );
+            },
+            icon: Icon(Icons.person),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
