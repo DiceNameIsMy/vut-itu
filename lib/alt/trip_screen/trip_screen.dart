@@ -2,7 +2,8 @@ import 'package:bottom_sheet_scaffold/bottom_sheet_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:vut_itu/alt/map_view/map_view.dart';
+import 'package:vut_itu/alt/device_location/cubit/device_location_cubit.dart';
+import 'package:vut_itu/alt/map_view.dart';
 import 'package:vut_itu/alt/search_bar/search_bar_view.dart';
 import 'package:vut_itu/alt/trip/cubit/trip_cubit.dart';
 import 'package:vut_itu/alt/trip_screen/cubit/trip_screen_cubit.dart';
@@ -25,9 +26,17 @@ class TripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          TripCubit.fromContext(context, tripId)..invalidateVisitingPlaces(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TripCubit.fromContext(context, tripId)
+            ..invalidateVisitingPlaces(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              DeviceLocationCubit()..invalidateDeviceLocation(),
+        ),
+      ],
       child: BlocBuilder<TripCubit, TripState>(
         builder: (context, tripState) {
           return BlocProvider(

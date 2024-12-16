@@ -21,8 +21,7 @@ class SearchBarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          SearchBarCubit.fromContext(context, settingsViewModel),
+      create: (context) => SearchBarCubit.fromSettings(settingsViewModel),
       child: BlocBuilder<SearchBarCubit, SearchBarState>(
         builder: (contextWithCubit, state) {
           return SearchAnchor.bar(

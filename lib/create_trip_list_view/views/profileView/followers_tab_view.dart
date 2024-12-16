@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:vut_itu/create_trip_list_view/views/profileView/user_profile_screen.dart';
 
 class FollowersTab extends StatefulWidget {
+
+  final VoidCallback onUnfollow; 
+
+  FollowersTab({required this.onUnfollow});
+
+
   @override
   FollowersTabState createState() => FollowersTabState();
 }
@@ -10,8 +16,9 @@ class FollowersTabState extends State<FollowersTab> {
   // Initial list of followers (mock data) 
   void unfollow(int index) {
     setState(() {
-      followers.removeAt(index);
+      followers.removeAt(index); // Remove user from the list
     });
+    widget.onUnfollow(); // Call the parent callback
   }
 
   static List<Map<String, String>> followers = [

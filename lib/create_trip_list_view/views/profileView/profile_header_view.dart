@@ -6,12 +6,14 @@ class ProfileHeader extends StatelessWidget {
   final String bio;
   final String profileImage;
   final Function(String, String, String) onEdit;
+  final VoidCallback onAddPost; // Callback for creating a new post
 
   ProfileHeader({
     required this.name,
     required this.bio,
     required this.profileImage,
     required this.onEdit,
+    required this.onAddPost,
   });
 
   @override
@@ -36,7 +38,9 @@ class ProfileHeader extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: Colors.grey[700]),
           ),
           SizedBox(height: 15),
-
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
           ElevatedButton(
             onPressed: () async {
               // Navigate to EditProfileScreen and await the updated data
@@ -57,6 +61,12 @@ class ProfileHeader extends StatelessWidget {
             },
             child: Text('Edit Profile'),
           ),
+          ElevatedButton(
+                onPressed: onAddPost, // Call the function to add a new post
+                child: Text('Add Post'),
+          ),
+          ],
+          )
         ],
       ),
     );

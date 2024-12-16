@@ -1,5 +1,6 @@
+import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // For formatting time
+import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 
 class ChatScreen extends StatefulWidget {
   final String userName;
@@ -15,20 +16,46 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // List of messages (text and timestamp)
-  List<Map<String, String>> messages = [];
+  List<Map<String, String>> messages = []; // List of messages (with text and timestamp)
   TextEditingController messageController = TextEditingController();
+  late SharedPreferences prefs;
 
-  // Send a new message with the current timestamp
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages(); // Load chat history
+  }
+
+  // Load messages from SharedPreferences
+  Future<void> _loadMessages() async {
+    prefs = await SharedPreferences.getInstance();
+    String? storedMessages = prefs.getString(widget.userName); // Unique key for the chat
+    if (storedMessages != null) {
+      setState(() {
+        messages = (json.decode(storedMessages) as List)
+    .map((item) => Map<String, String>.from(item))
+    .toList();
+      });
+    }
+  }
+
+  // Save messages to SharedPreferences
+  Future<void> _saveMessages() async {
+    String jsonMessages = json.encode(messages); // Convert messages to JSON
+    await prefs.setString(widget.userName, jsonMessages); // Save messages under the user's key
+  }
+
+  // Send a new message
   void sendMessage() {
     if (messageController.text.isNotEmpty) {
       setState(() {
         messages.add({
           'text': messageController.text,
-          'time': DateFormat('hh:mm a').format(DateTime.now()), // Add timestamp
+          'time': TimeOfDay.now().format(context), // Add timestamp
         });
       });
-      messageController.clear(); // Clear the input field
+      messageController.clear(); // Clear input field
+      _saveMessages(); // Save updated messages
     }
   }
 
@@ -81,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                       // Timestamp
                       Text(
-                        messages[index]['time']!, // Message timestamp
+                        messages[index]['time']!, // Timestamp
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                     ],

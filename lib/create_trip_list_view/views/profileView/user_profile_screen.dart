@@ -16,6 +16,41 @@ class UserProfileScreen extends StatelessWidget {
     required this.profileImage,
   });
 
+  static List<Map<String, dynamic>> users = [
+    {
+      'name': 'John Doe',
+      'profileImage': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+      'posts': [
+        {
+          'image': 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0',
+          'description': 'John’s Post 1',
+          'likeCount': 23,
+        },
+        {
+          'image': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
+          'description': 'John’s Post 2',
+          'likeCount': 12,
+        },
+      ],
+    },
+    {
+      'name': 'Jane Smith',
+      'profileImage': 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e',
+      'posts': [
+        {
+          'image': 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f',
+          'description': 'Jane’s Post 1',
+          'likeCount': 45,
+        },
+        {
+          'image': 'https://images.unsplash.com/photo-1540202404-29c40f06d157',
+          'description': 'Jane’s Post 2',
+          'likeCount': 33,
+        },
+      ],
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -91,7 +126,7 @@ class UserProfileScreen extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  UserPostsTab(postCount: 12),  // User-specific posts
+                  UserPostsTab(userPosts: users), // Pass user-specific postsrPostsTab(postCount: 12),  // User-specific posts
                   UserFollowersTab(name: name),       // Mock followers for this user
                   UserFollowingTab(name: name),       // Mock following for this user
                 ],

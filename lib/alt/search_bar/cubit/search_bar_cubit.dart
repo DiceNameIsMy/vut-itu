@@ -14,10 +14,7 @@ class SearchBarCubit extends Cubit<SearchBarState> {
   SearchBarCubit(this._geoapifyClient)
       : super(SearchBarInitial(controller: SearchController()));
 
-  factory SearchBarCubit.fromContext(
-    BuildContext context,
-    SettingsViewModel settingsViewModel,
-  ) {
+  factory SearchBarCubit.fromSettings(SettingsViewModel settingsViewModel) {
     return SearchBarCubit(GeoapifyClient(settingsViewModel.geoapifyApiKey));
   }
 
