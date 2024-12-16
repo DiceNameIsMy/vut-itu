@@ -68,23 +68,32 @@ class TripCubit extends Cubit<TripState> {
     emit(TripLoaded(trip, visitingPlaces));
   }
 
-  Future<TripCityModel> addCityToVisit(Location location) async {
+  /// Returns whether the city was already in the list of visiting places and is being added again
+  Future<bool> addCityToVisitFromLocation(Location location) async {
+    // If city does not exist in the DB, add it
     var city = await _db.getCityByGeoapifyId(location.geoapifyId);
     if (city == null) {
       city = CityModel.fromLocation(location);
       await _db.insertCity(city);
     }
 
+    return await addCityToVisit(city);
+  }
+
+  /// Returns whether the city was already in the list of visiting places and is being added again
+  Future<bool> addCityToVisit(CityModel city) async {
+    var vistingAgain = state.places.any((element) => element.cityId == city.id);
+
     var cityToVisit = TripCityModel(
       tripId: state.trip.id,
       cityId: city.id,
       order: state.places.length,
     );
-    var tripCity = await _db.insertSingleTripCity(cityToVisit);
+    await _db.insertSingleTripCity(cityToVisit);
 
     await invalidateVisitingPlaces();
 
-    return tripCity;
+    return vistingAgain;
   }
 
   void reoderPlaces(int oldIndex, int newIndex) {

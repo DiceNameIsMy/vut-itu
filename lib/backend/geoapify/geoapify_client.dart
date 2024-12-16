@@ -20,7 +20,7 @@ class GeoapifyClient {
 
     // TODO: Cache results
 
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(milliseconds: 500));
     if (localDebounceId != debounceId) {
       // Autocompletion was requested again. This request is outdated.
       return null;
