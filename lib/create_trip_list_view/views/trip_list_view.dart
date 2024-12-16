@@ -32,7 +32,9 @@ class TripListView extends StatelessWidget {
                       return ListTile(
                         title: Text(trip.name),
                         subtitle: Text(
-                          'Start Date: ${trip.startDate?.toIso8601String() ?? 'Not Set'}',
+                          trip.startDate == null || trip.endDate == null
+                              ? ''
+                              : '${'${trip.startDate!.day}.${trip.startDate!.month} - ${trip.endDate!.day}.${trip.endDate!.month}'}',
                         ),
                         trailing: IconButton(
                           icon: Icon(Icons.delete),
