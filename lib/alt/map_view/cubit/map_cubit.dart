@@ -47,4 +47,16 @@ class MapCubit extends Cubit<MapState> {
   void openMarkerDetails() {
     emit(MapMarkerDetailsOpened(deviceLocation: state.deviceLocation));
   }
+
+  Future<void> focusOnDeviceLocation() async {
+    if (state.deviceLocation == null) {
+      await invalidateDeviceLocation();
+    }
+    if (state.deviceLocation == null) {
+      // TODO: Indicate that location was not found
+      return;
+    }
+
+    tripScreenCubit.state.mapController.move(state.deviceLocation!, 15.0);
+  }
 }
