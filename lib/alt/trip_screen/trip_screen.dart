@@ -87,8 +87,17 @@ class TripScreen extends StatelessWidget {
             BlocProvider.of<TripScreenCubit>(context).selectLocation(location);
             // BottomSheetPanel.close();
           },
-          onLocationAdd: (location) {
-            BlocProvider.of<TripScreenCubit>(context).addLocation(location);
+          onLocationAdd: (location) async {
+            var vistingAgain = await BlocProvider.of<TripScreenCubit>(context)
+                .addLocation(location);
+
+            if (!context.mounted) return;
+
+            var snackBarText = vistingAgain
+                ? '${location.name} is being added for the second time'
+                : '${location.name} is being added';
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(snackBarText)));
           },
         ),
         backgroundColor: Colors.transparent,
@@ -226,7 +235,9 @@ class TripScreen extends StatelessWidget {
   }
 
   ReorderableListView _visitingPlacesList(
-      TripState state, BuildContext context) {
+    TripState state,
+    BuildContext context,
+  ) {
     return ReorderableListView.builder(
       itemCount: state.places.length,
       itemBuilder: (context, idx) {
@@ -234,9 +245,12 @@ class TripScreen extends StatelessWidget {
           logger.w('City ${state.places[idx].id} is not loaded yet');
         }
         return Dismissible(
-          key: Key(idx.toString()),
+          key: Key(state.places[idx].id.toString()),
           onDismissed: (direction) {
             BlocProvider.of<TripCubit>(context).removeCity(idx);
+
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('City was dismissed.')));
           },
           child: ListTile(
             key: Key('$idx'),
