@@ -42,7 +42,7 @@ class DatabaseHelper {
     logger.d('Creating database version $version');
     await _createTables(db);
     await _insertInitialData(db);
-    // await _insertMockAttractions(db);
+    await _insertMockAttractions(db);
   }
 
   // Cities
