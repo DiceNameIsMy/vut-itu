@@ -28,7 +28,7 @@ class DatabaseHelper {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, 'trip_planning.db');
 
-    // deleteDatabase(path);
+    deleteDatabase(path);
 
     return await openDatabase(
       path,
@@ -42,7 +42,7 @@ class DatabaseHelper {
     logger.d('Creating database version $version');
     await _createTables(db);
     await _insertInitialData(db);
-    await _insertMockAttractions(db);
+    // await _insertMockAttractions(db);
   }
 
   // Cities
@@ -382,7 +382,8 @@ class DatabaseHelper {
           coordinates: LatLng(48.8566, 2.3522),
           imageUrl: 'https://example.com/paris.jpg',
           geoapifyId: '',
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
     } catch (e) {
       print(e);
@@ -398,7 +399,8 @@ class DatabaseHelper {
           coordinates: LatLng(40.7128, -74.0060),
           imageUrl: 'https://example.com/newyork.jpg',
           geoapifyId: '',
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
       print('New York inserted');
     } catch (e) {
@@ -415,7 +417,8 @@ class DatabaseHelper {
           coordinates: LatLng(35.6895, 139.6917),
           imageUrl: 'https://example.com/tokyo.jpg',
           geoapifyId: '',
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
       print('Tokyo inserted');
     } catch (e) {
@@ -434,7 +437,8 @@ class DatabaseHelper {
           category: 'Landmark',
           averageTime: 120,
           cost: 10.0,
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
     } catch (e) {
       print(e);
@@ -451,7 +455,8 @@ class DatabaseHelper {
           category: 'Museum',
           averageTime: 180,
           cost: 15.0,
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
     } catch (e) {
       print(e);
@@ -465,10 +470,11 @@ class DatabaseHelper {
           description: 'Iconic statue in New York Harbor',
           cityId: 2,
           coordinates: LatLng(40.6892, -74.0445),
-          category: 'Landmark',
+          category: 'Museum',
           averageTime: 120,
           cost: 10.0,
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
     } catch (e) {
       print(e);
@@ -485,7 +491,8 @@ class DatabaseHelper {
           category: 'Park',
           averageTime: 180,
           cost: 0.0,
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
     } catch (e) {
       print(e);
@@ -502,7 +509,8 @@ class DatabaseHelper {
           category: 'Landmark',
           averageTime: 120,
           cost: 10.0,
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
     } catch (e) {
       print(e);
@@ -519,7 +527,8 @@ class DatabaseHelper {
           category: 'Landmark',
           averageTime: 60,
           cost: 0.0,
-        ).toMap(),
+        ).toMap()
+          ..remove('id'),
       );
     } catch (e) {
       print(e);
@@ -819,10 +828,11 @@ class DatabaseHelper {
       geoapifyId:
           '51ada6eb89aed72c40590a44f410320b4940f00101f9013aa5060000000000c00208',
     );
-    logger.d('Inserting city ${city.toMap()}');
-    city.id = await db.insert('Cities', (city.toMap().remove('id')));
+    logger.d(city.toMap().remove('id'));
+    city.id = await db.insert('Cities', (city.toMap()..remove('id')));
 
     for (var item in jsonData) {
+      logger.d('Inserting attraction $item');
       try {
         item['id'] = 0;
         item['city_id'] = city.id;
